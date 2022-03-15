@@ -1,8 +1,11 @@
 # Workshop: Intermediate Python
 
 _[UC Davis DataLab](https://datalab.ucdavis.edu/)_  
+
 _Spring 2022_  
-_Instructor: Nick Ulle <<naulle@ucdavis.edu>>  
+
+_Instructor: Nick Ulle <<naulle@ucdavis.edu>>_  
+
 _Helpers: Arthur Koehl <<avkoehl@ucdavis.edu>>, Maggie Berrens_
 
 * [Reader](https://ucdavisdatalab.github.io/YOUR_REPOSITORY/)
