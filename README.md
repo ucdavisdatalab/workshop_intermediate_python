@@ -5,7 +5,7 @@ _Spring 2022_
 _Instructor: Nick Ulle <<naulle@ucdavis.edu>>_  
 _Helpers: Arthur Koehl <<avkoehl@ucdavis.edu>>, Maggie Berrens_
 
-* [Reader](https://ucdavisdatalab.github.io/YOUR_REPOSITORY/)
+* [Reader](https://ucdavisdatalab.github.io/workshop_intermediate_python/)
 * Event Pages:
   * [Day 1: Slicing & Dicing Data with Pandas][day1]
   * [Day 2: Making Python Projects & Environments Reproducible][day2]
