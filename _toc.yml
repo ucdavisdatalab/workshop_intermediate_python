@@ -1,0 +1,18 @@
+# Table of contents
+# Learn more at https://jupyterbook.org/customize/toc.html
+
+format: jb-book
+root: chapters/index
+
+parts:
+  - caption: Notes
+    numbered: true
+    chapters:
+      - file: chapters/01_pandas
+#      - file: chapters/02_reproducible
+#      - file: chapters/03_iterators
+#      - file: chapters/04_debugging
+  - caption: Afterword
+    chapters:
+      - file: chapters/references
+      - file: chapters/acknowledgements
