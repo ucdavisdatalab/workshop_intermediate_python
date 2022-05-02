@@ -21,9 +21,15 @@ Making Python Projects & Environments Reproducible
 ==================================================
 
 :::{admonition} Learning Objectives
-* Identify when to use an interactive console, Jupyter notebook, or script
-* Explain and use Python modules and namespaces
-* 
+* Create and organize project directories for projects
+* Create file names that are human and machine readable
+* Identify when to use Python scripts versus Jupyter notebooks
+* Explain different strategies for storing parameters and other configuration
+  details
+* Explain what version control is and why it's beneficial
+* Explain what computing environments and virtual environments are
+* Describe the different environment managers available for Python
+* Use conda to create, manage, save, and restore virtual environments
 :::
 
 This chapter focuses on strategies and advice to make your Python projects
