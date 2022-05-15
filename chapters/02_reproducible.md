@@ -148,7 +148,7 @@ If Taylor wants to load the 2022 data set in the `analysis.ipynb` notebook,
 they could use the path:
 
 ```text
-/Users/taylor/ca_sea_urchins/data/2021-q1_ca_urchins.csv
+/Users/taylor/ca_sea_urchins/data/2022-q1_ca_urchins.csv
 ```
 
 This path is an **absolute path**, meaning it begins from the **root
@@ -163,7 +163,7 @@ You can avoid this problem by making sure every path in your project is a
 instance, the path from `analysis.ipynb` to the 2022 data set is:
 
 ```text
-data/2021-q1_ca_urchins.csv
+data/2022-q1_ca_urchins.csv
 ```
 
 This path avoids any assumptions about the location of the project directory
