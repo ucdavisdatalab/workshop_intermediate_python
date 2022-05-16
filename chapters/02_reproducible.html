@@ -51,7 +51,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="References" href="references.html" />
+    <link rel="next" title="3. Iterator &amp; Generator Crash Course" href="03_iterators.html" />
     <link rel="prev" title="1. Slicing &amp; Dicing Data with pandas" href="01_pandas.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
@@ -110,6 +110,11 @@ const thebe_selector_output = ".output, .cell_output"
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
    2. Making Python Projects &amp; Environments Reproducible
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="03_iterators.html">
+   3. Iterator &amp; Generator Crash Course
   </a>
  </li>
 </ul>
@@ -428,7 +433,7 @@ const thebe_selector_output = ".output, .cell_output"
               <div>
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="making-python-projects-environments-reproducible">
-<h1><span class="section-number">2. </span>Making Python Projects &amp; Environments Reproducible<a class="headerlink" href="#making-python-projects-environments-reproducible" title="Permalink to this headline">¶</a></h1>
+<span id="chapter-reproducible"></span><h1><span class="section-number">2. </span>Making Python Projects &amp; Environments Reproducible<a class="headerlink" href="#making-python-projects-environments-reproducible" title="Permalink to this headline">¶</a></h1>
 <div class="admonition-learning-objectives admonition">
 <p class="admonition-title">Learning Objectives</p>
 <ul class="simple">
@@ -532,7 +537,7 @@ project directory is at:</p>
 </div>
 <p>If Taylor wants to load the 2022 data set in the <code class="docutils literal notranslate"><span class="pre">analysis.ipynb</span></code> notebook,
 they could use the path:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>/Users/taylor/ca_sea_urchins/data/2021-q1_ca_urchins.csv
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>/Users/taylor/ca_sea_urchins/data/2022-q1_ca_urchins.csv
 </pre></div>
 </div>
 <p>This path is an <strong>absolute path</strong>, meaning it begins from the <strong>root
@@ -544,7 +549,7 @@ work correctly.</p>
 <p>You can avoid this problem by making sure every path in your project is a
 <strong>relative path</strong>, written relative to files within the project directory. For
 instance, the path from <code class="docutils literal notranslate"><span class="pre">analysis.ipynb</span></code> to the 2022 data set is:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>data/2021-q1_ca_urchins.csv
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>data/2022-q1_ca_urchins.csv
 </pre></div>
 </div>
 <p>This path avoids any assumptions about the location of the project directory
@@ -1060,10 +1065,10 @@ Reader</p></li>
             <p class="prev-next-title"><span class="section-number">1. </span>Slicing &amp; Dicing Data with pandas</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="references.html" title="next page">
+    <a class='right-next' id="next-link" href="03_iterators.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">References</p>
+        <p class="prev-next-title"><span class="section-number">3. </span>Iterator &amp; Generator Crash Course</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
