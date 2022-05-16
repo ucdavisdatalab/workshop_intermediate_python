@@ -10,7 +10,7 @@ parts:
     chapters:
       - file: chapters/01_pandas
       - file: chapters/02_reproducible
-#      - file: chapters/03_iterators
+      - file: chapters/03_iterators
 #      - file: chapters/04_debugging
   - caption: Afterword
     chapters:

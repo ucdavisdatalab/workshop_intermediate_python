@@ -17,6 +17,7 @@ import os
 os.chdir("..")
 ```
 
+(chapter-reproducible)=
 Making Python Projects & Environments Reproducible 
 ==================================================
 
