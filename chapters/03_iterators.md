@@ -826,7 +826,7 @@ sequence of calls:
 from pathlib import Path
 
 paths = Path("data/easy_ham").glob("*")
-paths = list(paths)
+paths = (p for p in paths if not p.is_dir())
 files = gen_open(paths)
 lines = gen_cat(files)
 at_lines = (l for l in lines if "@" in l)
