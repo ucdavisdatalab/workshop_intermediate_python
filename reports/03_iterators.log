@@ -17,14 +17,38 @@ Traceback (most recent call last):
     raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
 nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
 ------------------
-for in index, i in enumerate([10, 20, 30]):
-    print(i, "at position", index)
+emails = list(emails)
+emails[:20]
 ------------------
 
-[0;36m  Input [0;32mIn [32][0;36m[0m
-[0;31m    for in index, i in enumerate([10, 20, 30]):[0m
-[0m        ^[0m
-[0;31mSyntaxError[0m[0;31m:[0m invalid syntax
+[0;31m---------------------------------------------------------------------------[0m
+[0;31mIsADirectoryError[0m                         Traceback (most recent call last)
+Input [0;32mIn [58][0m, in [0;36m<cell line: 1>[0;34m()[0m
+[0;32m----> 1[0m emails [38;5;241m=[39m [38;5;28;43mlist[39;49m[43m([49m[43memails[49m[43m)[49m
+[1;32m      2[0m emails[:[38;5;241m20[39m]
 
-SyntaxError: invalid syntax (1860723765.py, line 1)
+Input [0;32mIn [56][0m, in [0;36mgen_emails[0;34m(lines)[0m
+[1;32m      3[0m [38;5;28;01mdef[39;00m [38;5;21mgen_emails[39m(lines):
+[0;32m----> 4[0m     [38;5;28;01mfor[39;00m line [38;5;129;01min[39;00m lines:
+[1;32m      5[0m         [38;5;28;01mfor[39;00m term [38;5;129;01min[39;00m re[38;5;241m.[39msplit([38;5;124m"[39m[38;5;124m[^a-zA-Z@.][39m[38;5;124m"[39m, line):
+[1;32m      6[0m             [38;5;28;01mif[39;00m [38;5;124m"[39m[38;5;124m@[39m[38;5;124m"[39m [38;5;129;01min[39;00m term[38;5;241m.[39mstrip([38;5;124m"[39m[38;5;124m@[39m[38;5;124m"[39m):
+
+Input [0;32mIn [57][0m, in [0;36m<genexpr>[0;34m(.0)[0m
+[1;32m      4[0m files [38;5;241m=[39m gen_open(paths)
+[1;32m      5[0m lines [38;5;241m=[39m gen_cat(files)
+[0;32m----> 6[0m at_lines [38;5;241m=[39m (l [38;5;28;01mfor[39;00m l [38;5;129;01min[39;00m lines [38;5;28;01mif[39;00m [38;5;124m"[39m[38;5;124m@[39m[38;5;124m"[39m [38;5;129;01min[39;00m l)
+[1;32m      7[0m emails [38;5;241m=[39m gen_emails(at_lines)
+
+Input [0;32mIn [55][0m, in [0;36mgen_cat[0;34m(files)[0m
+[1;32m      1[0m [38;5;28;01mdef[39;00m [38;5;21mgen_cat[39m(files):
+[0;32m----> 2[0m     [38;5;28;01mfor[39;00m f [38;5;129;01min[39;00m files:
+[1;32m      3[0m         [38;5;28;01myield from[39;00m f
+
+Input [0;32mIn [54][0m, in [0;36mgen_open[0;34m(paths)[0m
+[1;32m      1[0m [38;5;28;01mdef[39;00m [38;5;21mgen_open[39m(paths):
+[1;32m      2[0m     [38;5;28;01mfor[39;00m path [38;5;129;01min[39;00m paths:
+[0;32m----> 3[0m       [38;5;28;01myield[39;00m [38;5;28;43mopen[39;49m[43m([49m[43mpath[49m[43m,[49m[43m [49m[38;5;124;43m"[39;49m[38;5;124;43mrt[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[43mencoding[49m[43m [49m[38;5;241;43m=[39;49m[43m [49m[38;5;124;43m"[39;49m[38;5;124;43mlatin-1[39;49m[38;5;124;43m"[39;49m[43m)[49m
+
+[0;31mIsADirectoryError[0m: [Errno 21] Is a directory: 'data/easy_ham/.ipynb_checkpoints'
+IsADirectoryError: [Errno 21] Is a directory: 'data/easy_ham/.ipynb_checkpoints'
 
