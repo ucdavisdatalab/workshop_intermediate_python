@@ -1,0 +1,55 @@
+Traceback (most recent call last):
+  File "/home/nick/garden/miniconda3/envs/jb/lib/python3.10/site-packages/jupyter_cache/executors/utils.py", line 51, in single_nb_execution
+    executenb(
+  File "/home/nick/garden/miniconda3/envs/jb/lib/python3.10/site-packages/nbclient/client.py", line 1204, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+  File "/home/nick/garden/miniconda3/envs/jb/lib/python3.10/site-packages/nbclient/util.py", line 84, in wrapped
+    return just_run(coro(*args, **kwargs))
+  File "/home/nick/garden/miniconda3/envs/jb/lib/python3.10/site-packages/nbclient/util.py", line 62, in just_run
+    return loop.run_until_complete(coro)
+  File "/home/nick/garden/miniconda3/envs/jb/lib/python3.10/asyncio/base_events.py", line 646, in run_until_complete
+    return future.result()
+  File "/home/nick/garden/miniconda3/envs/jb/lib/python3.10/site-packages/nbclient/client.py", line 663, in async_execute
+    await self.async_execute_cell(
+  File "/home/nick/garden/miniconda3/envs/jb/lib/python3.10/site-packages/nbclient/client.py", line 965, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/home/nick/garden/miniconda3/envs/jb/lib/python3.10/site-packages/nbclient/client.py", line 862, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+import logging
+
+logging.basicConfig(filename = "logs/my_script.log", level = logging.DEBUG)
+------------------
+
+[0;31m---------------------------------------------------------------------------[0m
+[0;31mFileNotFoundError[0m                         Traceback (most recent call last)
+Input [0;32mIn [8][0m, in [0;36m<cell line: 3>[0;34m()[0m
+[1;32m      1[0m [38;5;28;01mimport[39;00m [38;5;21;01mlogging[39;00m
+[0;32m----> 3[0m [43mlogging[49m[38;5;241;43m.[39;49m[43mbasicConfig[49m[43m([49m[43mfilename[49m[43m [49m[38;5;241;43m=[39;49m[43m [49m[38;5;124;43m"[39;49m[38;5;124;43mlogs/my_script.log[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[43mlevel[49m[43m [49m[38;5;241;43m=[39;49m[43m [49m[43mlogging[49m[38;5;241;43m.[39;49m[43mDEBUG[49m[43m)[49m
+
+File [0;32m~/garden/miniconda3/envs/jb/lib/python3.10/logging/__init__.py:2040[0m, in [0;36mbasicConfig[0;34m(**kwargs)[0m
+[1;32m   2038[0m     [38;5;28;01melse[39;00m:
+[1;32m   2039[0m         encoding [38;5;241m=[39m io[38;5;241m.[39mtext_encoding(encoding)
+[0;32m-> 2040[0m     h [38;5;241m=[39m [43mFileHandler[49m[43m([49m[43mfilename[49m[43m,[49m[43m [49m[43mmode[49m[43m,[49m
+[1;32m   2041[0m [43m                    [49m[43mencoding[49m[38;5;241;43m=[39;49m[43mencoding[49m[43m,[49m[43m [49m[43merrors[49m[38;5;241;43m=[39;49m[43merrors[49m[43m)[49m
+[1;32m   2042[0m [38;5;28;01melse[39;00m:
+[1;32m   2043[0m     stream [38;5;241m=[39m kwargs[38;5;241m.[39mpop([38;5;124m"[39m[38;5;124mstream[39m[38;5;124m"[39m, [38;5;28;01mNone[39;00m)
+
+File [0;32m~/garden/miniconda3/envs/jb/lib/python3.10/logging/__init__.py:1169[0m, in [0;36mFileHandler.__init__[0;34m(self, filename, mode, encoding, delay, errors)[0m
+[1;32m   1167[0m     [38;5;28mself[39m[38;5;241m.[39mstream [38;5;241m=[39m [38;5;28;01mNone[39;00m
+[1;32m   1168[0m [38;5;28;01melse[39;00m:
+[0;32m-> 1169[0m     StreamHandler[38;5;241m.[39m[38;5;21m__init__[39m([38;5;28mself[39m, [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_open[49m[43m([49m[43m)[49m)
+
+File [0;32m~/garden/miniconda3/envs/jb/lib/python3.10/logging/__init__.py:1201[0m, in [0;36mFileHandler._open[0;34m(self)[0m
+[1;32m   1196[0m [38;5;124;03m"""[39;00m
+[1;32m   1197[0m [38;5;124;03mOpen the current base file with the (original) mode and encoding.[39;00m
+[1;32m   1198[0m [38;5;124;03mReturn the resulting stream.[39;00m
+[1;32m   1199[0m [38;5;124;03m"""[39;00m
+[1;32m   1200[0m open_func [38;5;241m=[39m [38;5;28mself[39m[38;5;241m.[39m_builtin_open
+[0;32m-> 1201[0m [38;5;28;01mreturn[39;00m [43mopen_func[49m[43m([49m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mbaseFilename[49m[43m,[49m[43m [49m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mmode[49m[43m,[49m
+[1;32m   1202[0m [43m                 [49m[43mencoding[49m[38;5;241;43m=[39;49m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mencoding[49m[43m,[49m[43m [49m[43merrors[49m[38;5;241;43m=[39;49m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43merrors[49m[43m)[49m
+
+[0;31mFileNotFoundError[0m: [Errno 2] No such file or directory: '/home/nick/workshop/datalab/workshops/intermediate_python/logs/my_script.log'
+FileNotFoundError: [Errno 2] No such file or directory: '/home/nick/workshop/datalab/workshops/intermediate_python/logs/my_script.log'
+

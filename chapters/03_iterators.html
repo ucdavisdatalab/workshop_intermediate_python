@@ -51,7 +51,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="References" href="references.html" />
+    <link rel="next" title="4. Squashing Bugs with Python’s Debugging Tools" href="04_debugging.html" />
     <link rel="prev" title="2. Making Python Projects &amp; Environments Reproducible" href="02_reproducible.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
@@ -115,6 +115,11 @@ const thebe_selector_output = ".output, .cell_output"
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
    3. Iterator &amp; Generator Crash Course
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="04_debugging.html">
+   4. Squashing Bugs with Python’s Debugging Tools
   </a>
  </li>
 </ul>
@@ -888,7 +893,7 @@ and memory address of the object:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;__main__.Temperature at 0x7f7acef26e30&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;__main__.Temperature at 0x7f87bff3b400&gt;
 </pre></div>
 </div>
 </div>
@@ -1323,7 +1328,7 @@ evaluation resumes and then pauses at the next yield.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;generator object countdown at 0x7f7acdbf1540&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;generator object countdown at 0x7f87be4919a0&gt;
 </pre></div>
 </div>
 </div>
@@ -1442,9 +1447,7 @@ generator (or iterator). For instance, here’s a generator that counts down fro
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0
+0
 1
 0
 </pre></div>
@@ -1468,7 +1471,7 @@ from <a class="reference internal" href="#comprehensions"><span class="std std-n
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;generator object &lt;genexpr&gt; at 0x7f7acdbf2960&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;generator object &lt;genexpr&gt; at 0x7f87be492b20&gt;
 </pre></div>
 </div>
 </div>
@@ -1647,10 +1650,10 @@ harder to debug problems in the pipeline than it would be to debug a loop.</p>
             <p class="prev-next-title"><span class="section-number">2. </span>Making Python Projects &amp; Environments Reproducible</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="references.html" title="next page">
+    <a class='right-next' id="next-link" href="04_debugging.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">References</p>
+        <p class="prev-next-title"><span class="section-number">4. </span>Squashing Bugs with Python’s Debugging Tools</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
