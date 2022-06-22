@@ -23,7 +23,7 @@ bibtex_bibfiles:
 
 # Information about where the book exists on the web
 repository:
-  url: https://github.com/ucdavisdatalab/jupyter-book
+  url: https://github.com/ucdavisdatalab/workshop_intermediate_python
   path_to_book: docs
   branch: master
 
