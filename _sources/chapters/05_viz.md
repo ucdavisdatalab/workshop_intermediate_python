@@ -848,9 +848,9 @@ This case study shows how to:
 Plotting a curve or function can make it much easier to understand and explain
 its behavior. For this case study, suppose you want to make a visualization
 that shows how the area of overlap between two different probability density
-functions is a measure of how similar they are. They should have have some
-overlap, but not too much. The color palette should be UC blue (`#1a3f68`) and
-gold (`#e6c257`) to match the rest of your presentation.
+functions is a measure of how similar they are. They should have some overlap,
+but not too much. The color palette should be UC blue (`#1a3f68`) and gold
+(`#e6c257`) to match the rest of your presentation.
 
 :::{note}
 A *probability density function* is a function that shows how likely different
@@ -1227,6 +1227,7 @@ sns.move_legend(ax, loc = "center left", bbox_to_anchor = (1, 0.5))
 ax.plot(flu["date"], flu["weekly_rate"] * 100, color = "#000000")
 
 ax.set_title("Flu Rates for Birds and Humans")
+ax.set_xlabel("Date")
 ax.set_ylabel("Reported bird deaths\nHospitalizations per 10 million people")
 ```
 
@@ -1240,6 +1241,7 @@ This case study shows how to:
 * Plot other shapes on top of an image, such as rectangles
 :::
 
+<!--
 ### Egg Prices
 
 ```{code-cell}
@@ -1303,3 +1305,4 @@ Low priority:
 * Changing coordinates (log, polar, …)
 * Zoomed/inset plots
 * Writing convenience functions (i.e., functions that produce customized plots)
+-->
