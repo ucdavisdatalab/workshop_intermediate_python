@@ -1,23 +1,11 @@
-# Workshop: Intermediate Python
+# Workshop Series: Intermediate Python
 
 _[UC Davis DataLab](https://datalab.ucdavis.edu/)_  
-_Spring 2022_  
-_Instructor: Nick Ulle <<naulle@ucdavis.edu>>_  
-_Helpers: Arthur Koehl <<avkoehl@ucdavis.edu>>, Maggie Berrens_
+_Author & Maintainer: Nick Ulle <<naulle@ucdavis.edu>>_  
 
 * [Reader](https://ucdavisdatalab.github.io/workshop_intermediate_python/)
-* Event Pages:
-  * [Day 1: Slicing & Dicing Data with Pandas][day1]
-  * [Day 2: Making Python Projects & Environments Reproducible][day2]
-  * [Day 3: Iterator & Generator Crash Course][day3]
-  * [Day 4: Squashing Bugs with Python's Debugging Tools][day4]
 
-[day1]: https://datalab.ucdavis.edu/eventscalendar/intermediate-python-slicing-dicing-data-with-pandas/
-[day2]: https://datalab.ucdavis.edu/eventscalendar/intermediate-python-making-python-projects-environments-reproducible/
-[day3]: https://datalab.ucdavis.edu/eventscalendar/intermediate-python-iterator-generator-crash-course/
-[day4]: https://datalab.ucdavis.edu/eventscalendar/intermediate-python-squashing-bugs-with-pythons-debugging/
-
-These four standalone workshops aim to help Python users understand language
+These five standalone workshops aim to help Python users understand language
 features, packages, and programming strategies that will enable them to write
 more efficient code, be more productive when writing code, and debug code more
 effectively. This is not an introduction to Python and is appropriate for
@@ -25,22 +13,15 @@ motivated intermediate to advanced users who want a better understanding of
 working with Python for their research. Researchers from all domains at UC
 Davis who meet the workshop prerequisites are welcome to enroll.
 
+<!--
 In order to satisfy the requirements for the GradPathways microcredential,
 students must attend all four Intermediate Python workshops scheduled for April
 18, May 2, May 16, and June 6, 2022.
+-->
 
 ### Learning Objectives
 
-After completing all four Intermediate Python workshops, learners should be
-able to:
-
-* Identify problems that can be solved efficiently with Pandas indexing
-* Use Pandas indexes and multi-indexes to extract subsets of data
-* Convert between columns and (multi-)indexes in a Pandas data frame
-* Organize project files using modules and namespaces
-* Install and remove Python, Python packages, and other software with conda
-* Explain how Python’s iterators and generators work
-* Determine the cause(s) of bugs in code using Python’s debugging tools
+See the reader for learning objectives.
 
 ### Prerequisites
 
