@@ -819,7 +819,9 @@ checklist whenever you design a visualization. The case studies in the
 {numref}`case-studies` show how to fix some of the issues on the checklist.
 
 
+<!--
 ### Color Palettes
+-->
 
 
 (case-studies)=
@@ -832,179 +834,6 @@ put it into practice. This section
 ```{code-cell}
 import seaborn as sns
 ```
-
-### Plotting a Function
-
-:::{note}
-This case study shows how to:
-
-* Plot a function
-* Fill the area under a function
-* Set custom colors for lines, fills, and annotations
-* Hide the axes of a plot
-* Add annotations to a plot
-:::
-
-Plotting a curve or function can make it much easier to understand and explain
-its behavior. For this case study, suppose you want to make a visualization
-that shows how the area of overlap between two different probability density
-functions is a measure of how similar they are. They should have have some
-overlap, but not too much. The color palette should be UC blue (`#1a3f68`) and
-gold (`#e6c257`) to match the rest of your presentation.
-
-:::{note}
-A *probability density function* is a function that shows how likely different
-outcomes are for a continuous probability distribution. The probability of
-outcomes in any given interval is the area under the curve. For example, if the
-area under the curve between 0 and 1 is 0.2, then there's a 20% chance of an
-outcome between 0 and 1. The total area under the curve is always 1.
-
-Since the total area under a probability density function is always 1, the area
-of overlap between two density functions is always between 0 and 1. As a
-result, the area of overlap is a convenient measure of similarity.
-:::
-
-To plot a function, first evaluate it at many points over the interval of
-interest. Let's start with 1,000 points in the interval $(-20, 20)$. You can
-use NumPy's `np.linspace` function to compute evenly spaced points:
-
-```{code-cell}
-import numpy as np
-
-x = np.linspace(-20, 20, 1000)
-```
-
-The SciPy package provides probability density functions for common
-distributions. Let's use a normal distribution and a gamma distribution. Normal
-distributions are widely known, while gamma distributions are visually
-different but will still have some overlap. You can import the probability
-density functions for these distributions from `scipy.stats`. The gamma
-distribution requires a shape parameter; let's use 10. Evaluate functions the
-at the x-coordinates:
-
-```{code-cell}
-from scipy.stats import norm, gamma
-
-y1 = norm.pdf(x)
-y2 = gamma.pdf(x, 10)
-```
-
-You can use Matplotlib to plot the $(x, y)$ coordinates as lines. The `.plot`
-method creates a line plot by default. Set the `linestyle` parameter on one of
-the lines to a dash (`--`) so that the lines are distinct:
-
-```{code-cell}
-fig, ax = plt.subplots()
-ax.plot(x, y1)
-ax.plot(x, y2, linestyle = "--")
-```
-
-The two distributions don't overlap much, but you can fix that by adjusting
-their parameters. SciPy provides location (`loc`) and scale (`scale`)
-parameters to control where distributions are located and how much they spread
-out. The defaults are 0 and 1, respectively. To get some overlap, let's
-increase the scale of the normal distribution to 4 and shift the location of
-the gamma distribution over to -2. Then the code for the plot becomes:
-
-```{code-cell}
-x = np.linspace(-20, 20, 1000)
-y1 = norm.pdf(x, scale = 4)
-y2 = gamma.pdf(x, 10, loc = -2)
-
-fig, ax = plt.subplots()
-ax.plot(x, y1)
-ax.plot(x, y2, linestyle = "--")
-```
-
-Let's emphasize the overlap by filling it with a color. Axes have a
-`.fill_between` method that fills the area underneath a curve. In this case,
-the area of overlap is the area underneath whichever function happens to be
-smaller at a given point---the minimum of the two functions. NumPy's `np.fmin`
-function computes the element-wise minimum of two arrays. So the code becomes:
-
-```{code-cell}
-x = np.linspace(-20, 20, 1000)
-y1 = norm.pdf(x, scale = 4)
-y2 = gamma.pdf(x, 10, loc = -2)
-
-fig, ax = plt.subplots()
-ax.plot(x, y1)
-ax.plot(x, y2, linestyle = "--")
-
-# Fill area of overlap.
-ymin = np.fmin(y1, y2)
-ax.fill_between(x, ymin)
-```
-
-This diagram is meant to make it easier to explain area of overlap, which is
-shown by the curves and fill. The axis ticks and labels don't aid
-understanding, so let's remove them. You can use the Axes `.axis` method with
-the argument `"off"` to do so. Let's adjust the x interval to $(-15, 25)$ to
-center the curves, change the color to UC blue for the lines, and change the
-color to UC gold for the fill:
-
-```{code-cell}
-x = np.linspace(-15, 25, 1000)
-y1 = norm.pdf(x, scale = 4)
-y2 = gamma.pdf(x, 10, loc = -2)
-
-fig, ax = plt.subplots()
-ax.plot(x, y1, color = "#1a3f68")
-ax.plot(x, y2, color = "#1a3f68", linestyle = "--")
-
-# Fill area of overlap.
-ymin = np.fmin(y1, y2)
-ax.fill_between(x, ymin, color = "#e6c257")
-
-ax.axis("off")
-```
-
-Finally, let's add a text label and arrow to emphasize the area of overlap. You
-can use the [`.annotate` method][mpl-ann] to add an annotation to an Axes.
-Annotations are flexible: they can be lines, arrows, text, images, or some
-combination of these. 
-
-For making a text label and arrow with `.annotate`, the following parameters
-are important:
-
-* `text`: the text of the label, as a string
-* `xy`: the coordinates of the arrow's tip, as a tuple
-* `xytext`: the coordinates of the text and the arrow's tail, as a tuple
-* `xycoords`: a string that specifies the coordinate system; for example, the
-  default `"data"` uses the data's coordinate system, while `"axes fraction"`
-  uses 0 to 1 along each axis, so $(0.5, 0.5)$ is the center; see [the
-  documentation][mpl-ann] for all possible options
-* `color`: the color of the text (but not the arrow), as a string
-* `arrowprops`: a dictionary with properties for the arrow, such as:
-    - `arrowstyle`: a string that specifies the arrow's head and line style
-    - `color`: the color of the arrow, as a string
-* `fontsize`: the point size of the text, as an integer
-
-With the annotation, the plot becomes:
-
-[mpl-ann]: https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.annotate.html#matplotlib.axes.Axes.annotate
-
-```{code-cell}
-x = np.linspace(-15, 25, 1000)
-y1 = norm.pdf(x, scale = 4)
-y2 = gamma.pdf(x, 10, loc = -2)
-
-fig, ax = plt.subplots()
-ax.plot(x, y1, color = "#1a3f68")
-ax.plot(x, y2, color = "#1a3f68", linestyle = "--")
-
-# Fill area of overlap.
-ymin = np.fmin(y1, y2)
-ax.fill_between(x, ymin, color = "#e6c257")
-
-ax.axis("off")
-
-ax.annotate(
-    text = "overlap", color = "#1a3f68", fontsize = 20,
-    xy = (0.5, 0.15), xytext = (0.75, 0.75), xycoords = "axes fraction",
-    arrowprops = {"color": "#1a3f68", "arrowstyle": "->"})
-```
-
 
 ### Plotting a Distribution
 
@@ -1232,6 +1061,180 @@ ax.set_ylabel("Reported bird deaths\nHospitalizations per 10 million people")
 ```
 
 
+
+### Plotting a Function
+
+:::{note}
+This case study shows how to:
+
+* Plot a function
+* Fill the area under a function
+* Set custom colors for lines, fills, and annotations
+* Hide the axes of a plot
+* Add annotations to a plot
+:::
+
+Plotting a curve or function can make it much easier to understand and explain
+its behavior. For this case study, suppose you want to make a visualization
+that shows how the area of overlap between two different probability density
+functions is a measure of how similar they are. They should have some overlap,
+but not too much. The color palette should be UC blue (`#1a3f68`) and gold
+(`#e6c257`) to match the rest of your presentation.
+
+:::{note}
+A *probability density function* is a function that shows how likely different
+outcomes are for a continuous probability distribution. The probability of
+outcomes in any given interval is the area under the curve. For example, if the
+area under the curve between 0 and 1 is 0.2, then there's a 20% chance of an
+outcome between 0 and 1. The total area under the curve is always 1.
+
+Since the total area under a probability density function is always 1, the area
+of overlap between two density functions is always between 0 and 1. As a
+result, the area of overlap is a convenient measure of similarity.
+:::
+
+To plot a function, first evaluate it at many points over the interval of
+interest. Let's start with 1,000 points in the interval $(-20, 20)$. You can
+use NumPy's `np.linspace` function to compute evenly spaced points:
+
+```{code-cell}
+import numpy as np
+
+x = np.linspace(-20, 20, 1000)
+```
+
+The SciPy package provides probability density functions for common
+distributions. Let's use a normal distribution and a gamma distribution. Normal
+distributions are widely known, while gamma distributions are visually
+different but will still have some overlap. You can import the probability
+density functions for these distributions from `scipy.stats`. The gamma
+distribution requires a shape parameter; let's use 10. Evaluate functions the
+at the x-coordinates:
+
+```{code-cell}
+from scipy.stats import norm, gamma
+
+y1 = norm.pdf(x)
+y2 = gamma.pdf(x, 10)
+```
+
+You can use Matplotlib to plot the $(x, y)$ coordinates as lines. The `.plot`
+method creates a line plot by default. Set the `linestyle` parameter on one of
+the lines to a dash (`--`) so that the lines are distinct:
+
+```{code-cell}
+fig, ax = plt.subplots()
+ax.plot(x, y1)
+ax.plot(x, y2, linestyle = "--")
+```
+
+The two distributions don't overlap much, but you can fix that by adjusting
+their parameters. SciPy provides location (`loc`) and scale (`scale`)
+parameters to control where distributions are located and how much they spread
+out. The defaults are 0 and 1, respectively. To get some overlap, let's
+increase the scale of the normal distribution to 4 and shift the location of
+the gamma distribution over to -2. Then the code for the plot becomes:
+
+```{code-cell}
+x = np.linspace(-20, 20, 1000)
+y1 = norm.pdf(x, scale = 4)
+y2 = gamma.pdf(x, 10, loc = -2)
+
+fig, ax = plt.subplots()
+ax.plot(x, y1)
+ax.plot(x, y2, linestyle = "--")
+```
+
+Let's emphasize the overlap by filling it with a color. Axes have a
+`.fill_between` method that fills the area underneath a curve. In this case,
+the area of overlap is the area underneath whichever function happens to be
+smaller at a given point---the minimum of the two functions. NumPy's `np.fmin`
+function computes the element-wise minimum of two arrays. So the code becomes:
+
+```{code-cell}
+x = np.linspace(-20, 20, 1000)
+y1 = norm.pdf(x, scale = 4)
+y2 = gamma.pdf(x, 10, loc = -2)
+
+fig, ax = plt.subplots()
+ax.plot(x, y1)
+ax.plot(x, y2, linestyle = "--")
+
+# Fill area of overlap.
+ymin = np.fmin(y1, y2)
+ax.fill_between(x, ymin)
+```
+
+This diagram is meant to make it easier to explain area of overlap, which is
+shown by the curves and fill. The axis ticks and labels don't aid
+understanding, so let's remove them. You can use the Axes `.axis` method with
+the argument `"off"` to do so. Let's adjust the x interval to $(-15, 25)$ to
+center the curves, change the color to UC blue for the lines, and change the
+color to UC gold for the fill:
+
+```{code-cell}
+x = np.linspace(-15, 25, 1000)
+y1 = norm.pdf(x, scale = 4)
+y2 = gamma.pdf(x, 10, loc = -2)
+
+fig, ax = plt.subplots()
+ax.plot(x, y1, color = "#1a3f68")
+ax.plot(x, y2, color = "#1a3f68", linestyle = "--")
+
+# Fill area of overlap.
+ymin = np.fmin(y1, y2)
+ax.fill_between(x, ymin, color = "#e6c257")
+
+ax.axis("off")
+```
+
+Finally, let's add a text label and arrow to emphasize the area of overlap. You
+can use the [`.annotate` method][mpl-ann] to add an annotation to an Axes.
+Annotations are flexible: they can be lines, arrows, text, images, or some
+combination of these. 
+
+For making a text label and arrow with `.annotate`, the following parameters
+are important:
+
+* `text`: the text of the label, as a string
+* `xy`: the coordinates of the arrow's tip, as a tuple
+* `xytext`: the coordinates of the text and the arrow's tail, as a tuple
+* `xycoords`: a string that specifies the coordinate system; for example, the
+  default `"data"` uses the data's coordinate system, while `"axes fraction"`
+  uses 0 to 1 along each axis, so $(0.5, 0.5)$ is the center; see [the
+  documentation][mpl-ann] for all possible options
+* `color`: the color of the text (but not the arrow), as a string
+* `arrowprops`: a dictionary with properties for the arrow, such as:
+    - `arrowstyle`: a string that specifies the arrow's head and line style
+    - `color`: the color of the arrow, as a string
+* `fontsize`: the point size of the text, as an integer
+
+With the annotation, the plot becomes:
+
+[mpl-ann]: https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.annotate.html#matplotlib.axes.Axes.annotate
+
+```{code-cell}
+x = np.linspace(-15, 25, 1000)
+y1 = norm.pdf(x, scale = 4)
+y2 = gamma.pdf(x, 10, loc = -2)
+
+fig, ax = plt.subplots()
+ax.plot(x, y1, color = "#1a3f68")
+ax.plot(x, y2, color = "#1a3f68", linestyle = "--")
+
+# Fill area of overlap.
+ymin = np.fmin(y1, y2)
+ax.fill_between(x, ymin, color = "#e6c257")
+
+ax.axis("off")
+
+ax.annotate(
+    text = "overlap", color = "#1a3f68", fontsize = 20,
+    xy = (0.5, 0.15), xytext = (0.75, 0.75), xycoords = "axes fraction",
+    arrowprops = {"color": "#1a3f68", "arrowstyle": "->"})
+```
+
+
 ### Plotting an Image
 
 :::{note}
@@ -1241,6 +1244,7 @@ This case study shows how to:
 * Plot other shapes on top of an image, such as rectangles
 :::
 
+<!--
 ### Egg Prices
 
 ```{code-cell}
@@ -1304,3 +1308,4 @@ Low priority:
 * Changing coordinates (log, polar, …)
 * Zoomed/inset plots
 * Writing convenience functions (i.e., functions that produce customized plots)
+-->
