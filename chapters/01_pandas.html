@@ -1,476 +1,408 @@
 
+
 <!DOCTYPE html>
 
-<html>
+
+<html >
+
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>1. Slicing &amp; Dicing Data with pandas &#8212; Intermediate Python</title>
-    
-  <link href="../_static/css/theme.css" rel="stylesheet">
-  <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
 
-    
-  <link rel="stylesheet"
-    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    
-      
-
-    
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
     <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
-    
-  <link rel="preload" as="script" href="../_static/js/index.be7d3bbb2ef33a8344ce.js">
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
-    <script src="../_static/togglebutton.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
 const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script src="https://unpkg.com/mermaid@9.4.0/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({startOnLoad:true});</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapters/01_pandas';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="2. Making Python Projects &amp; Environments Reproducible" href="02_reproducible.html" />
+    <link rel="next" title="2. Iterator &amp; Generator Crash Course" href="03_iterators.html" />
     <link rel="prev" title="Overview" href="index.html" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="docsearch:language" content="None">
-    
-
-    <!-- Google Analytics -->
-    
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="None"/>
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
-    
-    <div class="container-fluid" id="banner"></div>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
 
-    
-
-    <div class="container-xl">
-      <div class="row">
-          
-<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
-    
-        <div class="navbar-brand-box">
-    <a class="navbar-brand text-wrap" href="../index.html">
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
       
-        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+      <div class="bd-sidebar-primary bd-sidebar">
         
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+    
+    
       
-      
-      <img src="../_static/datalab-logo-full-color-rgb-1.png" class="logo" alt="logo">
-      
-      
-      <h1 class="site-logo" id="site-title">Intermediate Python</h1>
-      
-    </a>
-</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
-  <i class="icon fas fa-search"></i>
-  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
-</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
-    <div class="bd-toc-item active">
-        <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="index.html">
-   Overview
-  </a>
- </li>
-</ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Notes
- </span>
-</p>
+    
+    
+    <img src="../_static/datalab-logo-full-color-rgb-1.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/datalab-logo-full-color-rgb-1.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="index.html">
+                    Overview
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Thinking in Python</span></p>
 <ul class="current nav bd-sidenav">
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
-   1. Slicing &amp; Dicing Data with pandas
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="02_reproducible.html">
-   2. Making Python Projects &amp; Environments Reproducible
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="03_iterators.html">
-   3. Iterator &amp; Generator Crash Course
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="04_debugging.html">
-   4. Squashing Bugs with Python’s Debugging Tools
-  </a>
- </li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">1. Slicing &amp; Dicing Data with pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_iterators.html">2. Iterator &amp; Generator Crash Course</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_debugging.html">3. Squashing Bugs with Python’s Debugging Tools</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Afterword
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Writing Python Scripts</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="references.html">
-   References
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="acknowledgements.html">
-   Acknowledgements
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="02_reproducible.html">4. Making Python Projects &amp; Environments Reproducible</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Other Workshops</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="05_viz.html">5. Next-level Data Visualization</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Afterword</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
+<li class="toctree-l1"><a class="reference internal" href="acknowledgements.html">Acknowledgements</a></li>
 </ul>
 
     </div>
-</nav> <!-- To handle the deprecated key -->
-
-<div class="navbar_extra_footer">
-  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
-</div>
-
-</div>
-
-
-          
-
-
-          
-<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
-    
-    <div class="topbar container-xl fixed-top">
-    <div class="topbar-contents row">
-        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
-        <div class="col pl-md-4 topbar-main">
-            
-            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
-                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
-                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
-                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
-                <i class="fas fa-bars"></i>
-                <i class="fas fa-arrow-left"></i>
-                <i class="fas fa-arrow-up"></i>
-            </button>
-            
-            
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
-            class="fas fa-download"></i></button>
-
-    <div class="dropdown-buttons">
-        <!-- ipynb file if we had a myst markdown file -->
-        <a class="dropdown-buttons"
-            href="../_sources/chapters/01_pandas.ipynb"><button type="button"
-                class="btn btn-secondary topbarbtn" title="Download notebook file" data-toggle="tooltip"
-                data-placement="left">.ipynb</button></a>
-        <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../_sources/chapters/01_pandas.md"><button type="button"
-                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
-                data-placement="left">.md</button></a>
-        <!-- Download PDF via print -->
-        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
-                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
+</nav></div>
     </div>
-</div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
 
-            <!-- Source interaction buttons -->
 
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
-        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
-    <div class="dropdown-buttons sourcebuttons">
-        <a class="repository-button"
-            href="https://github.com/ucdavisdatalab/workshop_intermediate_python"><button type="button" class="btn btn-secondary topbarbtn"
-                data-toggle="tooltip" data-placement="left" title="Source repository"><i
-                    class="fab fa-github"></i>repository</button></a>
-        <a class="issues-button"
-            href="https://github.com/ucdavisdatalab/workshop_intermediate_python/issues/new?title=Issue%20on%20page%20%2Fchapters/01_pandas.html&body=Your%20issue%20content%20here."><button
-                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
-                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+      </div>
+      
+      <main id="main-content" class="bd-main">
         
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
     </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/ucdavisdatalab/workshop_intermediate_python" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/ucdavisdatalab/workshop_intermediate_python/issues/new?title=Issue%20on%20page%20%2Fchapters/01_pandas.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
 </div>
 
-            <!-- Full screen (wrap in <a> to have style consistency -->
 
-<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
-        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
-        title="Fullscreen mode"><i
-            class="fas fa-expand"></i></button></a>
 
-            <!-- Launch buttons -->
 
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
-        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
-    <div class="dropdown-buttons">
-        
-        <a class="binder-button" href="https://mybinder.org/v2/gh/ucdavisdatalab/workshop_intermediate_python/master?urlpath=tree/docs/chapters/01_pandas.md"><button type="button"
-                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
-                data-placement="left"><img class="binder-button-logo"
-                    src="../_static/images/logo_binder.svg"
-                    alt="Interact on binder">Binder</button></a>
-        
-        
-        
-        
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/chapters/01_pandas.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
     </div>
+  
 </div>
+</div>
+              
+              
 
-        </div>
-
-        <!-- Table of contents -->
-        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Slicing & Dicing Data with pandas</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
             
-            <div class="tocsection onthispage pt-5 pb-3">
-                <i class="fas fa-list"></i> Contents
+            <div>
+                <h2> Contents </h2>
             </div>
-            <nav id="bd-toc-nav" aria-label="Page">
+            <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#prerequisites">
-   1.1. Prerequisites
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#what-s-an-index">
-   1.2. What’s an Index?
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#indexes-on-series">
-     1.2.1. Indexes on Series
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#indexes-on-data-frames">
-     1.2.2. Indexes on Data Frames
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#alignment">
-     1.2.3. Alignment
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#indexing-operators">
-   1.3. Indexing Operators
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#slices">
-     1.3.1. Slices
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#by-position-with-iloc">
-     1.3.2. By Position with
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       .iloc
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#by-label-with-loc">
-     1.3.3. By Label with
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       .loc
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#by-a-condition">
-     1.3.4. By a Condition
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#by-a-callable">
-     1.3.5. By a Callable
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#data-frames">
-     1.3.6. Data Frames
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#columns-as-indexes">
-   1.4. Columns as Indexes
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#multiindexes">
-     1.4.1. MultiIndexes
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#the-query-method">
-   1.5. The
-   <code class="docutils literal notranslate">
-    <span class="pre">
-     .query
-    </span>
-   </code>
-   Method
-  </a>
- </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">1.1. Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-s-an-index">1.2. What’s an Index?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#indexes-on-series">1.2.1. Indexes on Series</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#indexes-on-data-frames">1.2.2. Indexes on Data Frames</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#alignment">1.2.3. Alignment</a></li>
 </ul>
-
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#indexing-operators">1.3. Indexing Operators</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#slices">1.3.1. Slices</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#by-position-with-iloc">1.3.2. By Position with <code class="docutils literal notranslate"><span class="pre">.iloc</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#by-label-with-loc">1.3.3. By Label with <code class="docutils literal notranslate"><span class="pre">.loc</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#by-a-condition">1.3.4. By a Condition</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#by-a-callable">1.3.5. By a Callable</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-frames">1.3.6. Data Frames</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#columns-as-indexes">1.4. Columns as Indexes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multiindexes">1.4.1. MultiIndexes</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-query-method">1.5. The <code class="docutils literal notranslate"><span class="pre">.query</span></code> Method</a></li>
+</ul>
             </nav>
         </div>
     </div>
 </div>
-    <div id="main-content" class="row">
-        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
-            <!-- Table of contents that is only displayed when printing the page -->
-            <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Slicing & Dicing Data with pandas</h1>
-                <!-- Table of contents -->
-                <div id="print-main-content">
-                    <div id="jb-print-toc">
-                        
-                        <div>
-                            <h2> Contents </h2>
-                        </div>
-                        <nav aria-label="Page">
-                            <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#prerequisites">
-   1.1. Prerequisites
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#what-s-an-index">
-   1.2. What’s an Index?
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#indexes-on-series">
-     1.2.1. Indexes on Series
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#indexes-on-data-frames">
-     1.2.2. Indexes on Data Frames
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#alignment">
-     1.2.3. Alignment
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#indexing-operators">
-   1.3. Indexing Operators
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#slices">
-     1.3.1. Slices
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#by-position-with-iloc">
-     1.3.2. By Position with
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       .iloc
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#by-label-with-loc">
-     1.3.3. By Label with
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       .loc
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#by-a-condition">
-     1.3.4. By a Condition
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#by-a-callable">
-     1.3.5. By a Callable
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#data-frames">
-     1.3.6. Data Frames
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#columns-as-indexes">
-   1.4. Columns as Indexes
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#multiindexes">
-     1.4.1. MultiIndexes
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#the-query-method">
-   1.5. The
-   <code class="docutils literal notranslate">
-    <span class="pre">
-     .query
-    </span>
-   </code>
-   Method
-  </a>
- </li>
-</ul>
 
-                        </nav>
-                    </div>
-                </div>
-            </div>
-            
-              <div>
+              
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="slicing-dicing-data-with-pandas">
-<span id="chapter-indexing"></span><h1><span class="section-number">1. </span>Slicing &amp; Dicing Data with pandas<a class="headerlink" href="#slicing-dicing-data-with-pandas" title="Permalink to this headline">¶</a></h1>
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="slicing-dicing-data-with-pandas">
+<span id="chapter-indexing"></span><h1><span class="section-number">1. </span>Slicing &amp; Dicing Data with pandas<a class="headerlink" href="#slicing-dicing-data-with-pandas" title="Permalink to this headline">#</a></h1>
 <div class="admonition-learning-objectives admonition">
 <p class="admonition-title">Learning Objectives</p>
 <ul class="simple">
@@ -489,8 +421,8 @@ or setting elements of a data structure—works in the <a class="reference exter
 Indexing is sometimes also called <strong>subsetting</strong> or (element) extraction, and
 is a fundamental operation when using a programming language to solve problems
 in data science.</p>
-<div class="section" id="prerequisites">
-<h2><span class="section-number">1.1. </span>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
+<section id="prerequisites">
+<h2><span class="section-number">1.1. </span>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">#</a></h2>
 <p>This chapter assumes you already have basic familiarity with Python and pandas.
 In particular, you should be comfortable indexing Python lists and dictionaries
 with the square bracket operator <code class="docutils literal notranslate"><span class="pre">[</span> <span class="pre">]</span></code>, and should be able to explain what a
@@ -510,23 +442,23 @@ Chapter 2 provides more details about Anaconda and the <code class="docutils lit
 chapter. After clicking the link, you’ll need to right-click on the page and
 select “Save Page As…”. Make sure to save the page somewhere you can easily
 access from your Python session.</p>
-</div>
-<div class="section" id="what-s-an-index">
-<h2><span class="section-number">1.2. </span>What’s an Index?<a class="headerlink" href="#what-s-an-index" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="what-s-an-index">
+<h2><span class="section-number">1.2. </span>What’s an Index?<a class="headerlink" href="#what-s-an-index" title="Permalink to this headline">#</a></h2>
 <p>In pandas, an <code class="docutils literal notranslate"><span class="pre">Index</span></code> is a Python object that stores a sequence of labels or
 names. The labels usually correspond to the elements of a data structure along
 a given dimension or <strong>axis</strong>. Indexes are a key feature that differentiates
 pandas from other software for programming with tabular data (such as R).</p>
 <p>According to the pandas documentation, indexes serve three important roles:</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>As metadata to provide additional context about a data set</p></li>
 <li><p>As a way to explicitly and automatically align data, avoiding bugs due to
 misalignment (see <a class="reference internal" href="#alignment"><span class="std std-numref">Section 1.2.3</span></a>)</p></li>
 <li><p>As a convenience for getting and setting subsets of the data (see
 <a class="reference internal" href="#column-indexes"><span class="std std-numref">Section 1.4</span></a>)</p></li>
 </ol>
-<div class="section" id="indexes-on-series">
-<h3><span class="section-number">1.2.1. </span>Indexes on Series<a class="headerlink" href="#indexes-on-series" title="Permalink to this headline">¶</a></h3>
+<section id="indexes-on-series">
+<h3><span class="section-number">1.2.1. </span>Indexes on Series<a class="headerlink" href="#indexes-on-series" title="Permalink to this headline">#</a></h3>
 <p>As an example of where pandas uses indexes, <code class="docutils literal notranslate"><span class="pre">Series</span></code> are 1-dimensional and
 always have exactly one index. You can see the index just to the left of the
 elements when you print out a series:</p>
@@ -617,13 +549,13 @@ For instance:</p>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">TypeError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="nn">Input In [6],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">6</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">idx</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">5</span>
 
-<span class="nn">File ~/garden/miniconda3/envs/jb/lib/python3.10/site-packages/pandas/core/indexes/base.py:5021,</span> in <span class="ni">Index.__setitem__</span><span class="nt">(self, key, value)</span>
-<span class="g g-Whitespace">   </span><span class="mi">5019</span> <span class="nd">@final</span>
-<span class="g g-Whitespace">   </span><span class="mi">5020</span> <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-<span class="ne">-&gt; </span><span class="mi">5021</span>     <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Index does not support mutable operations&quot;</span><span class="p">)</span>
+<span class="nn">File ~/garden/micromamba/envs/workshop/lib/python3.11/site-packages/pandas/core/indexes/base.py:5302,</span> in <span class="ni">Index.__setitem__</span><span class="nt">(self, key, value)</span>
+<span class="g g-Whitespace">   </span><span class="mi">5300</span> <span class="nd">@final</span>
+<span class="g g-Whitespace">   </span><span class="mi">5301</span> <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<span class="ne">-&gt; </span><span class="mi">5302</span>     <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Index does not support mutable operations&quot;</span><span class="p">)</span>
 
 <span class="ne">TypeError</span>: Index does not support mutable operations
 </pre></div>
@@ -707,9 +639,9 @@ list of all 4 labels.</p>
 <p>Hint: the Python <code class="docutils literal notranslate"><span class="pre">list</span></code> function can convert many types of objects into lists,
 including pandas indexes.</p>
 </div>
-</div>
-<div class="section" id="indexes-on-data-frames">
-<h3><span class="section-number">1.2.2. </span>Indexes on Data Frames<a class="headerlink" href="#indexes-on-data-frames" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="indexes-on-data-frames">
+<h3><span class="section-number">1.2.2. </span>Indexes on Data Frames<a class="headerlink" href="#indexes-on-data-frames" title="Permalink to this headline">#</a></h3>
 <p>Pandas <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code>s are 2-dimensional and always have exactly two indexes. The
 indexes correspond to the rows and the columns, respectively. To see this, use
 pandas to load the data from the <code class="docutils literal notranslate"><span class="pre">sports.csv</span></code> file:</p>
@@ -935,9 +867,9 @@ number of rows.</p>
 </div>
 <p>The indexes stored in the <code class="docutils literal notranslate"><span class="pre">.index</span></code> and <code class="docutils literal notranslate"><span class="pre">.columns</span></code> attributes of a data frame
 have the same classes and basic properties as indexes on series.</p>
-</div>
-<div class="section" id="alignment">
-<span id="id1"></span><h3><span class="section-number">1.2.3. </span>Alignment<a class="headerlink" href="#alignment" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="alignment">
+<span id="id1"></span><h3><span class="section-number">1.2.3. </span>Alignment<a class="headerlink" href="#alignment" title="Permalink to this headline">#</a></h3>
 <p>For arithmetic operations that involve more than one series or data frame,
 pandas automatically <strong>aligns</strong> the elements based on the indexes. As an
 example, consider these two series:</p>
@@ -1027,25 +959,25 @@ raises an error if they’re not already aligned:</p>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
-<span class="nn">Input In [18],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">18</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">u</span> <span class="o">&gt;</span> <span class="n">v</span>
 
-<span class="nn">File ~/garden/miniconda3/envs/jb/lib/python3.10/site-packages/pandas/core/ops/common.py:70,</span> in <span class="ni">_unpack_zerodim_and_defer.&lt;locals&gt;.new_method</span><span class="nt">(self, other)</span>
-<span class="g g-Whitespace">     </span><span class="mi">66</span>             <span class="k">return</span> <span class="bp">NotImplemented</span>
-<span class="g g-Whitespace">     </span><span class="mi">68</span> <span class="n">other</span> <span class="o">=</span> <span class="n">item_from_zerodim</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
-<span class="ne">---&gt; </span><span class="mi">70</span> <span class="k">return</span> <span class="n">method</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
+<span class="nn">File ~/garden/micromamba/envs/workshop/lib/python3.11/site-packages/pandas/core/ops/common.py:72,</span> in <span class="ni">_unpack_zerodim_and_defer.&lt;locals&gt;.new_method</span><span class="nt">(self, other)</span>
+<span class="g g-Whitespace">     </span><span class="mi">68</span>             <span class="k">return</span> <span class="bp">NotImplemented</span>
+<span class="g g-Whitespace">     </span><span class="mi">70</span> <span class="n">other</span> <span class="o">=</span> <span class="n">item_from_zerodim</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+<span class="ne">---&gt; </span><span class="mi">72</span> <span class="k">return</span> <span class="n">method</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
 
-<span class="nn">File ~/garden/miniconda3/envs/jb/lib/python3.10/site-packages/pandas/core/arraylike.py:56,</span> in <span class="ni">OpsMixin.__gt__</span><span class="nt">(self, other)</span>
-<span class="g g-Whitespace">     </span><span class="mi">54</span> <span class="nd">@unpack_zerodim_and_defer</span><span class="p">(</span><span class="s2">&quot;__gt__&quot;</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">55</span> <span class="k">def</span> <span class="fm">__gt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-<span class="ne">---&gt; </span><span class="mi">56</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cmp_method</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">operator</span><span class="o">.</span><span class="n">gt</span><span class="p">)</span>
+<span class="nn">File ~/garden/micromamba/envs/workshop/lib/python3.11/site-packages/pandas/core/arraylike.py:58,</span> in <span class="ni">OpsMixin.__gt__</span><span class="nt">(self, other)</span>
+<span class="g g-Whitespace">     </span><span class="mi">56</span> <span class="nd">@unpack_zerodim_and_defer</span><span class="p">(</span><span class="s2">&quot;__gt__&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">57</span> <span class="k">def</span> <span class="fm">__gt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+<span class="ne">---&gt; </span><span class="mi">58</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cmp_method</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">operator</span><span class="o">.</span><span class="n">gt</span><span class="p">)</span>
 
-<span class="nn">File ~/garden/miniconda3/envs/jb/lib/python3.10/site-packages/pandas/core/series.py:5617,</span> in <span class="ni">Series._cmp_method</span><span class="nt">(self, other, op)</span>
-<span class="g g-Whitespace">   </span><span class="mi">5614</span> <span class="n">res_name</span> <span class="o">=</span> <span class="n">ops</span><span class="o">.</span><span class="n">get_op_result_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">5616</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Series</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_indexed_same</span><span class="p">(</span><span class="n">other</span><span class="p">):</span>
-<span class="ne">-&gt; </span><span class="mi">5617</span>     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Can only compare identically-labeled Series objects&quot;</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">5619</span> <span class="n">lvalues</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span>
-<span class="g g-Whitespace">   </span><span class="mi">5620</span> <span class="n">rvalues</span> <span class="o">=</span> <span class="n">extract_array</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">extract_numpy</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">extract_range</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nn">File ~/garden/micromamba/envs/workshop/lib/python3.11/site-packages/pandas/core/series.py:6237,</span> in <span class="ni">Series._cmp_method</span><span class="nt">(self, other, op)</span>
+<span class="g g-Whitespace">   </span><span class="mi">6234</span> <span class="n">res_name</span> <span class="o">=</span> <span class="n">ops</span><span class="o">.</span><span class="n">get_op_result_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">6236</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Series</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_indexed_same</span><span class="p">(</span><span class="n">other</span><span class="p">):</span>
+<span class="ne">-&gt; </span><span class="mi">6237</span>     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Can only compare identically-labeled Series objects&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">6239</span> <span class="n">lvalues</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span>
+<span class="g g-Whitespace">   </span><span class="mi">6240</span> <span class="n">rvalues</span> <span class="o">=</span> <span class="n">extract_array</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">extract_numpy</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">extract_range</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="ne">ValueError</span>: Can only compare identically-labeled Series objects
 </pre></div>
@@ -1123,10 +1055,10 @@ select the type of join (<code class="docutils literal notranslate"><span class=
 relational series and data frames, you can break a join into smaller steps by
 using a combination of the <code class="docutils literal notranslate"><span class="pre">align</span></code> function , column indexing, and the pandas
 <code class="docutils literal notranslate"><span class="pre">concat</span></code> function.</p>
-</div>
-</div>
-<div class="section" id="indexing-operators">
-<h2><span class="section-number">1.3. </span>Indexing Operators<a class="headerlink" href="#indexing-operators" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="indexing-operators">
+<h2><span class="section-number">1.3. </span>Indexing Operators<a class="headerlink" href="#indexing-operators" title="Permalink to this headline">#</a></h2>
 <p>Pandas provides several different operators for indexing series and data
 frames, as well as several different ways to use each. The primary indexing
 operator is the square bracket <code class="docutils literal notranslate"><span class="pre">[</span> <span class="pre">]</span></code>.</p>
@@ -1211,8 +1143,8 @@ with string indexes. For instance, to get the element <code class="docutils lite
 used to access elements with a label that’s the same as the name of an
 attribute or method. When in doubt, it’s safer to use <code class="docutils literal notranslate"><span class="pre">[</span> <span class="pre">]</span></code> to access elements
 by label.</p>
-<div class="section" id="slices">
-<h3><span class="section-number">1.3.1. </span>Slices<a class="headerlink" href="#slices" title="Permalink to this headline">¶</a></h3>
+<section id="slices">
+<h3><span class="section-number">1.3.1. </span>Slices<a class="headerlink" href="#slices" title="Permalink to this headline">#</a></h3>
 <p>A <strong>slice</strong> selects a range of elements. The syntax is <code class="docutils literal notranslate"><span class="pre">start:stop:step</span></code>, with
 the second colon <code class="docutils literal notranslate"><span class="pre">:</span></code> and arguments optional, the same as for Python’s built-in
 slicing. The default start value is the beginning of the series, the default
@@ -1308,9 +1240,9 @@ details.</p>
 <p class="admonition-title">Checkpoint Exercise</p>
 <p>What happens if you include an integer step value in a slice by label?</p>
 </div>
-</div>
-<div class="section" id="by-position-with-iloc">
-<h3><span class="section-number">1.3.2. </span>By Position with <code class="docutils literal notranslate"><span class="pre">.iloc</span></code><a class="headerlink" href="#by-position-with-iloc" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="by-position-with-iloc">
+<h3><span class="section-number">1.3.2. </span>By Position with <code class="docutils literal notranslate"><span class="pre">.iloc</span></code><a class="headerlink" href="#by-position-with-iloc" title="Permalink to this headline">#</a></h3>
 <p>When you want to index a series or data frame by position, use <code class="docutils literal notranslate"><span class="pre">[</span> <span class="pre">]</span></code> on the
 <code class="docutils literal notranslate"><span class="pre">.iloc</span></code> attribute. Then any integer arguments are assumed to be positions,
 regardless of the type of index on the object.</p>
@@ -1394,9 +1326,9 @@ CPU time), so it’s important to use <code class="docutils literal notranslate"
 code. In addition, <code class="docutils literal notranslate"><span class="pre">.iat</span></code> raises an error if your code attempts to get or set
 more than one value, which can potentially alert you to bugs that would go
 undetected with <code class="docutils literal notranslate"><span class="pre">.iloc</span></code>.</p>
-</div>
-<div class="section" id="by-label-with-loc">
-<h3><span class="section-number">1.3.3. </span>By Label with <code class="docutils literal notranslate"><span class="pre">.loc</span></code><a class="headerlink" href="#by-label-with-loc" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="by-label-with-loc">
+<h3><span class="section-number">1.3.3. </span>By Label with <code class="docutils literal notranslate"><span class="pre">.loc</span></code><a class="headerlink" href="#by-label-with-loc" title="Permalink to this headline">#</a></h3>
 <p>When you want to index a series or data frame by label, use <code class="docutils literal notranslate"><span class="pre">[</span> <span class="pre">]</span></code> on the
 <code class="docutils literal notranslate"><span class="pre">.loc</span></code> attribute. Then any integer arguments are assumed to be labels.</p>
 <p>For example:</p>
@@ -1502,9 +1434,9 @@ dtype: int64
 </div>
 </div>
 <p>This doesn’t work when setting elements by position.</p>
-</div>
-<div class="section" id="by-a-condition">
-<h3><span class="section-number">1.3.4. </span>By a Condition<a class="headerlink" href="#by-a-condition" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="by-a-condition">
+<h3><span class="section-number">1.3.4. </span>By a Condition<a class="headerlink" href="#by-a-condition" title="Permalink to this headline">#</a></h3>
 <p>The square bracket operator <code class="docutils literal notranslate"><span class="pre">[</span> <span class="pre">]</span></code>, the <code class="docutils literal notranslate"><span class="pre">.iloc</span></code> attribute, and the <code class="docutils literal notranslate"><span class="pre">.loc</span></code>
 attribute all support indexing a series by a condition. The condition must be
 represented by a Boolean array with the same length as the series.</p>
@@ -1598,34 +1530,34 @@ dtype: int64
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NotImplementedError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
-<span class="nn">Input In [49],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">49</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">x</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">is_positive</span><span class="p">]</span>
 
-<span class="nn">File ~/garden/miniconda3/envs/jb/lib/python3.10/site-packages/pandas/core/indexing.py:967,</span> in <span class="ni">_LocationIndexer.__getitem__</span><span class="nt">(self, key)</span>
-<span class="g g-Whitespace">    </span><span class="mi">964</span> <span class="n">axis</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">axis</span> <span class="ow">or</span> <span class="mi">0</span>
-<span class="g g-Whitespace">    </span><span class="mi">966</span> <span class="n">maybe_callable</span> <span class="o">=</span> <span class="n">com</span><span class="o">.</span><span class="n">apply_if_callable</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">)</span>
-<span class="ne">--&gt; </span><span class="mi">967</span> <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getitem_axis</span><span class="p">(</span><span class="n">maybe_callable</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
+<span class="nn">File ~/garden/micromamba/envs/workshop/lib/python3.11/site-packages/pandas/core/indexing.py:1073,</span> in <span class="ni">_LocationIndexer.__getitem__</span><span class="nt">(self, key)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1070</span> <span class="n">axis</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">axis</span> <span class="ow">or</span> <span class="mi">0</span>
+<span class="g g-Whitespace">   </span><span class="mi">1072</span> <span class="n">maybe_callable</span> <span class="o">=</span> <span class="n">com</span><span class="o">.</span><span class="n">apply_if_callable</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">)</span>
+<span class="ne">-&gt; </span><span class="mi">1073</span> <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getitem_axis</span><span class="p">(</span><span class="n">maybe_callable</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
 
-<span class="nn">File ~/garden/miniconda3/envs/jb/lib/python3.10/site-packages/pandas/core/indexing.py:1506,</span> in <span class="ni">_iLocIndexer._getitem_axis</span><span class="nt">(self, key, axis)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1503</span>     <span class="n">key</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1505</span> <span class="k">if</span> <span class="n">com</span><span class="o">.</span><span class="n">is_bool_indexer</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
-<span class="ne">-&gt; </span><span class="mi">1506</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_validate_key</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1507</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getbool_axis</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1509</span> <span class="c1"># a list of integers</span>
+<span class="nn">File ~/garden/micromamba/envs/workshop/lib/python3.11/site-packages/pandas/core/indexing.py:1611,</span> in <span class="ni">_iLocIndexer._getitem_axis</span><span class="nt">(self, key, axis)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1608</span>     <span class="n">key</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1610</span> <span class="k">if</span> <span class="n">com</span><span class="o">.</span><span class="n">is_bool_indexer</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+<span class="ne">-&gt; </span><span class="mi">1611</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_validate_key</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1612</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getbool_axis</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1614</span> <span class="c1"># a list of integers</span>
 
-<span class="nn">File ~/garden/miniconda3/envs/jb/lib/python3.10/site-packages/pandas/core/indexing.py:1347,</span> in <span class="ni">_iLocIndexer._validate_key</span><span class="nt">(self, key, axis)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1345</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s2">&quot;index&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">Index</span><span class="p">):</span>
-<span class="g g-Whitespace">   </span><span class="mi">1346</span>     <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">inferred_type</span> <span class="o">==</span> <span class="s2">&quot;integer&quot;</span><span class="p">:</span>
-<span class="ne">-&gt; </span><span class="mi">1347</span>         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-<span class="g g-Whitespace">   </span><span class="mi">1348</span>             <span class="s2">&quot;iLocation based boolean &quot;</span>
-<span class="g g-Whitespace">   </span><span class="mi">1349</span>             <span class="s2">&quot;indexing on an integer type &quot;</span>
-<span class="g g-Whitespace">   </span><span class="mi">1350</span>             <span class="s2">&quot;is not available&quot;</span>
-<span class="g g-Whitespace">   </span><span class="mi">1351</span>         <span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1352</span>     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-<span class="g g-Whitespace">   </span><span class="mi">1353</span>         <span class="s2">&quot;iLocation based boolean indexing cannot use &quot;</span>
-<span class="g g-Whitespace">   </span><span class="mi">1354</span>         <span class="s2">&quot;an indexable as a mask&quot;</span>
-<span class="g g-Whitespace">   </span><span class="mi">1355</span>     <span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1356</span> <span class="k">return</span>
+<span class="nn">File ~/garden/micromamba/envs/workshop/lib/python3.11/site-packages/pandas/core/indexing.py:1452,</span> in <span class="ni">_iLocIndexer._validate_key</span><span class="nt">(self, key, axis)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1450</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s2">&quot;index&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">Index</span><span class="p">):</span>
+<span class="g g-Whitespace">   </span><span class="mi">1451</span>     <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">inferred_type</span> <span class="o">==</span> <span class="s2">&quot;integer&quot;</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">1452</span>         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">1453</span>             <span class="s2">&quot;iLocation based boolean &quot;</span>
+<span class="g g-Whitespace">   </span><span class="mi">1454</span>             <span class="s2">&quot;indexing on an integer type &quot;</span>
+<span class="g g-Whitespace">   </span><span class="mi">1455</span>             <span class="s2">&quot;is not available&quot;</span>
+<span class="g g-Whitespace">   </span><span class="mi">1456</span>         <span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1457</span>     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">1458</span>         <span class="s2">&quot;iLocation based boolean indexing cannot use &quot;</span>
+<span class="g g-Whitespace">   </span><span class="mi">1459</span>         <span class="s2">&quot;an indexable as a mask&quot;</span>
+<span class="g g-Whitespace">   </span><span class="mi">1460</span>     <span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1461</span> <span class="k">return</span>
 
 <span class="ne">NotImplementedError</span>: iLocation based boolean indexing on an integer type is not available
 </pre></div>
@@ -1674,9 +1606,9 @@ dtype: int64
 <p>In compound conditions, each sub-condition must be enclosed in parentheses
 <code class="docutils literal notranslate"><span class="pre">()</span></code>, because in Python’s <a class="reference external" href="https://docs.python.org/3/reference/expressions.html#operator-precedence">order of operations</a>, the <code class="docutils literal notranslate"><span class="pre">|</span></code>, <code class="docutils literal notranslate"><span class="pre">&amp;</span></code>, and <code class="docutils literal notranslate"><span class="pre">~</span></code>
 operators are evaluated before comparison operators such as <code class="docutils literal notranslate"><span class="pre">==</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, and <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>.</p>
-</div>
-<div class="section" id="by-a-callable">
-<h3><span class="section-number">1.3.5. </span>By a Callable<a class="headerlink" href="#by-a-callable" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="by-a-callable">
+<h3><span class="section-number">1.3.5. </span>By a Callable<a class="headerlink" href="#by-a-callable" title="Permalink to this headline">#</a></h3>
 <p>The square bracket operator <code class="docutils literal notranslate"><span class="pre">[</span> <span class="pre">]</span></code>, the <code class="docutils literal notranslate"><span class="pre">.iloc</span></code> attribute, and the <code class="docutils literal notranslate"><span class="pre">.loc</span></code>
 attribute also all support indexing a series by a function (or <strong>callable</strong>
 object defined with <code class="docutils literal notranslate"><span class="pre">def</span></code> or <code class="docutils literal notranslate"><span class="pre">lambda</span></code>. The function must accept one argument:
@@ -1708,9 +1640,9 @@ rather than indexing by a callable.</p>
 positions) to twice their current value.</p>
 <p>What’s a simpler way to do this using other indexing modes?</p>
 </div>
-</div>
-<div class="section" id="data-frames">
-<h3><span class="section-number">1.3.6. </span>Data Frames<a class="headerlink" href="#data-frames" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="data-frames">
+<h3><span class="section-number">1.3.6. </span>Data Frames<a class="headerlink" href="#data-frames" title="Permalink to this headline">#</a></h3>
 <p>The indexing operators <code class="docutils literal notranslate"><span class="pre">[</span> <span class="pre">]</span></code>, <code class="docutils literal notranslate"><span class="pre">.iloc</span></code>, and <code class="docutils literal notranslate"><span class="pre">.loc</span></code> can all be used with data
 frames in addition to series. Since data frames are 2-dimensional, you can pass
 the indexing operators a separate argument for each dimension. The rows come
@@ -2090,10 +2022,10 @@ with a string argument (or list of strings) accesses columns:</p>
 <p>132327 rows × 2 columns</p>
 </div></div></div>
 </div>
-</div>
-</div>
-<div class="section" id="columns-as-indexes">
-<span id="column-indexes"></span><h2><span class="section-number">1.4. </span>Columns as Indexes<a class="headerlink" href="#columns-as-indexes" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="columns-as-indexes">
+<span id="column-indexes"></span><h2><span class="section-number">1.4. </span>Columns as Indexes<a class="headerlink" href="#columns-as-indexes" title="Permalink to this headline">#</a></h2>
 <p>An important feature of pandas is that you can use arbitrary columns in a data
 frame as indexes. Generally the columns should contain identifiers for the rows
 or other categorical data. For example, in the <code class="docutils literal notranslate"><span class="pre">sports</span></code> data frame, the column
@@ -2821,8 +2753,8 @@ to the data frame and reset the index to a range:</p>
 </div>
 <p>Setting indexes appropriately makes it much more convenient to filter the rows
 of a data frame.</p>
-<div class="section" id="multiindexes">
-<h3><span class="section-number">1.4.1. </span>MultiIndexes<a class="headerlink" href="#multiindexes" title="Permalink to this headline">¶</a></h3>
+<section id="multiindexes">
+<h3><span class="section-number">1.4.1. </span>MultiIndexes<a class="headerlink" href="#multiindexes" title="Permalink to this headline">#</a></h3>
 <p>One of pandas’ most powerful features is the ability to set multiple columns as
 the index at the same time. This creates a <code class="docutils literal notranslate"><span class="pre">MultiIndex</span></code>, a hierarchical index
 with multiple levels. For example, this code creates a MultiIndex from <code class="docutils literal notranslate"><span class="pre">year</span></code>,
@@ -2845,7 +2777,7 @@ level of the MultiIndex:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_16978/1887213640.py:1: PerformanceWarning: indexing past lexsort depth may impact performance.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_6750/1887213640.py:1: PerformanceWarning: indexing past lexsort depth may impact performance.
   sports.loc[(2015, &quot;Stanford University&quot;, &quot;Football&quot;)]
 </pre></div>
 </div>
@@ -3657,10 +3589,10 @@ variety of ways MultiIndexes can be used to slice and dice data frames.</p>
 <p>Use a MultiIndex to get a series that lists the sports for which there were
 university athletics programs in Aberdeen, WA in 2018.</p>
 </div>
-</div>
-</div>
-<div class="section" id="the-query-method">
-<h2><span class="section-number">1.5. </span>The <code class="docutils literal notranslate"><span class="pre">.query</span></code> Method<a class="headerlink" href="#the-query-method" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="the-query-method">
+<h2><span class="section-number">1.5. </span>The <code class="docutils literal notranslate"><span class="pre">.query</span></code> Method<a class="headerlink" href="#the-query-method" title="Permalink to this headline">#</a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">.query</span></code> method is another powerful way to extract information from a data
 frame. The idea of <code class="docutils literal notranslate"><span class="pre">.query</span></code> is that you write a query string using a query
 mini-language to select a subset of the rows. This has several advantages over
@@ -3770,8 +3702,8 @@ were university athletics programs in Aberdeen, WA in 2018.</p>
 </div>
 <p>The pandas documentation provides <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#the-query-method">further details about how to write query
 strings</a>.</p>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -3785,7 +3717,7 @@ strings</a>.</p>
             mode: "python"
         },
         kernelOptions: {
-            kernelName: "python3",
+            name: "python3",
             path: "./chapters"
         },
         predefinedOutput: true
@@ -3793,44 +3725,125 @@ strings</a>.</p>
     </script>
     <script>kernelName = 'python3'</script>
 
-              </div>
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Overview</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="03_iterators.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">2. </span>Iterator &amp; Generator Crash Course</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">1.1. Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-s-an-index">1.2. What’s an Index?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#indexes-on-series">1.2.1. Indexes on Series</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#indexes-on-data-frames">1.2.2. Indexes on Data Frames</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#alignment">1.2.3. Alignment</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#indexing-operators">1.3. Indexing Operators</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#slices">1.3.1. Slices</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#by-position-with-iloc">1.3.2. By Position with <code class="docutils literal notranslate"><span class="pre">.iloc</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#by-label-with-loc">1.3.3. By Label with <code class="docutils literal notranslate"><span class="pre">.loc</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#by-a-condition">1.3.4. By a Condition</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#by-a-callable">1.3.5. By a Callable</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-frames">1.3.6. Data Frames</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#columns-as-indexes">1.4. Columns as Indexes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multiindexes">1.4.1. MultiIndexes</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-query-method">1.5. The <code class="docutils literal notranslate"><span class="pre">.query</span></code> Method</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
-                <!-- Previous / next buttons -->
-<div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="index.html" title="previous page">
-        <i class="fas fa-angle-left"></i>
-        <div class="prev-next-info">
-            <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Overview</p>
-        </div>
-    </a>
-    <a class='right-next' id="next-link" href="02_reproducible.html" title="next page">
-    <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">2. </span>Making Python Projects &amp; Environments Reproducible</p>
-    </div>
-    <i class="fas fa-angle-right"></i>
-    </a>
-</div>
+          </div>
+          <footer class="bd-footer-content">
             
-        </div>
-    </div>
-    <footer class="footer">
-  <p>
-    
-      By Nick Ulle<br/>
-    
-        &copy; Copyright 2022.<br/>
-  </p>
-</footer>
-</main>
-
-
-      </div>
-    </div>
+<div class="bd-footer-content__inner container">
   
-  <script src="../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+  <div class="footer-item">
+    
+<p class="component-author">
+By Nick Ulle
+</p>
 
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
   </body>
 </html>

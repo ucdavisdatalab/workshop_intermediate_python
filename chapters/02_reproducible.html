@@ -1,444 +1,408 @@
 
+
 <!DOCTYPE html>
 
-<html>
+
+<html >
+
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>2. Making Python Projects &amp; Environments Reproducible &#8212; Intermediate Python</title>
-    
-  <link href="../_static/css/theme.css" rel="stylesheet">
-  <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    
-  <link rel="stylesheet"
-    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+    <title>4. Making Python Projects &amp; Environments Reproducible &#8212; Intermediate Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
 
-    
-      
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
     <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
-    
-  <link rel="preload" as="script" href="../_static/js/index.be7d3bbb2ef33a8344ce.js">
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
-    <script src="../_static/togglebutton.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
 const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script src="https://unpkg.com/mermaid@9.4.0/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({startOnLoad:true});</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapters/02_reproducible';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="3. Iterator &amp; Generator Crash Course" href="03_iterators.html" />
-    <link rel="prev" title="1. Slicing &amp; Dicing Data with pandas" href="01_pandas.html" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="docsearch:language" content="None">
-    
-
-    <!-- Google Analytics -->
-    
+    <link rel="next" title="5. Next-level Data Visualization" href="05_viz.html" />
+    <link rel="prev" title="3. Squashing Bugs with Python’s Debugging Tools" href="04_debugging.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="None"/>
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
-    
-    <div class="container-fluid" id="banner"></div>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
 
-    
-
-    <div class="container-xl">
-      <div class="row">
-          
-<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
-    
-        <div class="navbar-brand-box">
-    <a class="navbar-brand text-wrap" href="../index.html">
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
       
-        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+      <div class="bd-sidebar-primary bd-sidebar">
         
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+    
+    
       
-      
-      <img src="../_static/datalab-logo-full-color-rgb-1.png" class="logo" alt="logo">
-      
-      
-      <h1 class="site-logo" id="site-title">Intermediate Python</h1>
-      
-    </a>
-</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
-  <i class="icon fas fa-search"></i>
-  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
-</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
-    <div class="bd-toc-item active">
-        <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="index.html">
-   Overview
-  </a>
- </li>
-</ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Notes
- </span>
-</p>
-<ul class="current nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="01_pandas.html">
-   1. Slicing &amp; Dicing Data with pandas
-  </a>
- </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
-   2. Making Python Projects &amp; Environments Reproducible
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="03_iterators.html">
-   3. Iterator &amp; Generator Crash Course
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="04_debugging.html">
-   4. Squashing Bugs with Python’s Debugging Tools
-  </a>
- </li>
-</ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Afterword
- </span>
-</p>
+    
+    
+    <img src="../_static/datalab-logo-full-color-rgb-1.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/datalab-logo-full-color-rgb-1.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="index.html">
+                    Overview
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Thinking in Python</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="references.html">
-   References
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="acknowledgements.html">
-   Acknowledgements
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="01_pandas.html">1. Slicing &amp; Dicing Data with pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_iterators.html">2. Iterator &amp; Generator Crash Course</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_debugging.html">3. Squashing Bugs with Python’s Debugging Tools</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Writing Python Scripts</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">4. Making Python Projects &amp; Environments Reproducible</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Other Workshops</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="05_viz.html">5. Next-level Data Visualization</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Afterword</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
+<li class="toctree-l1"><a class="reference internal" href="acknowledgements.html">Acknowledgements</a></li>
 </ul>
 
     </div>
-</nav> <!-- To handle the deprecated key -->
-
-<div class="navbar_extra_footer">
-  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
-</div>
-
-</div>
-
-
-          
-
-
-          
-<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
-    
-    <div class="topbar container-xl fixed-top">
-    <div class="topbar-contents row">
-        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
-        <div class="col pl-md-4 topbar-main">
-            
-            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
-                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
-                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
-                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
-                <i class="fas fa-bars"></i>
-                <i class="fas fa-arrow-left"></i>
-                <i class="fas fa-arrow-up"></i>
-            </button>
-            
-            
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
-            class="fas fa-download"></i></button>
-
-    <div class="dropdown-buttons">
-        <!-- ipynb file if we had a myst markdown file -->
-        <a class="dropdown-buttons"
-            href="../_sources/chapters/02_reproducible.ipynb"><button type="button"
-                class="btn btn-secondary topbarbtn" title="Download notebook file" data-toggle="tooltip"
-                data-placement="left">.ipynb</button></a>
-        <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../_sources/chapters/02_reproducible.md"><button type="button"
-                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
-                data-placement="left">.md</button></a>
-        <!-- Download PDF via print -->
-        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
-                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
+</nav></div>
     </div>
-</div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
 
-            <!-- Source interaction buttons -->
 
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
-        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
-    <div class="dropdown-buttons sourcebuttons">
-        <a class="repository-button"
-            href="https://github.com/ucdavisdatalab/workshop_intermediate_python"><button type="button" class="btn btn-secondary topbarbtn"
-                data-toggle="tooltip" data-placement="left" title="Source repository"><i
-                    class="fab fa-github"></i>repository</button></a>
-        <a class="issues-button"
-            href="https://github.com/ucdavisdatalab/workshop_intermediate_python/issues/new?title=Issue%20on%20page%20%2Fchapters/02_reproducible.html&body=Your%20issue%20content%20here."><button
-                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
-                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+      </div>
+      
+      <main id="main-content" class="bd-main">
         
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
     </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/ucdavisdatalab/workshop_intermediate_python" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/ucdavisdatalab/workshop_intermediate_python/issues/new?title=Issue%20on%20page%20%2Fchapters/02_reproducible.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
 </div>
 
-            <!-- Full screen (wrap in <a> to have style consistency -->
 
-<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
-        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
-        title="Fullscreen mode"><i
-            class="fas fa-expand"></i></button></a>
 
-            <!-- Launch buttons -->
 
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
-        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
-    <div class="dropdown-buttons">
-        
-        <a class="binder-button" href="https://mybinder.org/v2/gh/ucdavisdatalab/workshop_intermediate_python/master?urlpath=tree/docs/chapters/02_reproducible.md"><button type="button"
-                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
-                data-placement="left"><img class="binder-button-logo"
-                    src="../_static/images/logo_binder.svg"
-                    alt="Interact on binder">Binder</button></a>
-        
-        
-        
-        
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/chapters/02_reproducible.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
     </div>
+  
 </div>
+</div>
+              
+              
 
-        </div>
-
-        <!-- Table of contents -->
-        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Making Python Projects & Environments Reproducible</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
             
-            <div class="tocsection onthispage pt-5 pb-3">
-                <i class="fas fa-list"></i> Contents
+            <div>
+                <h2> Contents </h2>
             </div>
-            <nav id="bd-toc-nav" aria-label="Page">
+            <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#prerequisites">
-   2.1. Prerequisites
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#what-s-a-project-directory">
-   2.2. What’s a Project Directory?
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#use-relative-paths">
-     2.2.1. Use Relative Paths!
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#naming-files">
-     2.2.2. Naming Files
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#organizing-files">
-     2.2.3. Organizing Files
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#documentation">
-     2.2.4. Documentation
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#scripts-vs-notebooks">
-     2.2.5. Scripts vs. Notebooks
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#parameters-configuration-files">
-     2.2.6. Parameters &amp; Configuration Files
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#version-control">
-   2.3. Version Control
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#what-s-an-environment">
-   2.4. What’s an Environment?
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#virtual-environments">
-     2.4.1. Virtual Environments
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#managing-environments-with-conda">
-   2.5. Managing Environments with conda
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#creating-environments">
-     2.5.1. Creating Environments
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#saving-restoring-environments">
-     2.5.2. Saving &amp; Restoring Environments
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#additional-references">
-     2.5.3. Additional References
-    </a>
-   </li>
-  </ul>
- </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">4.1. Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-s-a-project-directory">4.2. What’s a Project Directory?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#use-relative-paths">4.2.1. Use Relative Paths!</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#naming-files">4.2.2. Naming Files</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#organizing-files">4.2.3. Organizing Files</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#documentation">4.2.4. Documentation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#scripts-vs-notebooks">4.2.5. Scripts vs. Notebooks</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#parameters-configuration-files">4.2.6. Parameters &amp; Configuration Files</a></li>
 </ul>
-
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#version-control">4.3. Version Control</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-s-an-environment">4.4. What’s an Environment?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#virtual-environments">4.4.1. Virtual Environments</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#managing-environments-with-conda">4.5. Managing Environments with conda</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-environments">4.5.1. Creating Environments</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#saving-restoring-environments">4.5.2. Saving &amp; Restoring Environments</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-references">4.5.3. Additional References</a></li>
+</ul>
+</li>
+</ul>
             </nav>
         </div>
     </div>
 </div>
-    <div id="main-content" class="row">
-        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
-            <!-- Table of contents that is only displayed when printing the page -->
-            <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Making Python Projects & Environments Reproducible</h1>
-                <!-- Table of contents -->
-                <div id="print-main-content">
-                    <div id="jb-print-toc">
-                        
-                        <div>
-                            <h2> Contents </h2>
-                        </div>
-                        <nav aria-label="Page">
-                            <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#prerequisites">
-   2.1. Prerequisites
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#what-s-a-project-directory">
-   2.2. What’s a Project Directory?
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#use-relative-paths">
-     2.2.1. Use Relative Paths!
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#naming-files">
-     2.2.2. Naming Files
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#organizing-files">
-     2.2.3. Organizing Files
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#documentation">
-     2.2.4. Documentation
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#scripts-vs-notebooks">
-     2.2.5. Scripts vs. Notebooks
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#parameters-configuration-files">
-     2.2.6. Parameters &amp; Configuration Files
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#version-control">
-   2.3. Version Control
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#what-s-an-environment">
-   2.4. What’s an Environment?
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#virtual-environments">
-     2.4.1. Virtual Environments
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#managing-environments-with-conda">
-   2.5. Managing Environments with conda
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#creating-environments">
-     2.5.1. Creating Environments
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#saving-restoring-environments">
-     2.5.2. Saving &amp; Restoring Environments
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#additional-references">
-     2.5.3. Additional References
-    </a>
-   </li>
-  </ul>
- </li>
-</ul>
 
-                        </nav>
-                    </div>
-                </div>
-            </div>
-            
-              <div>
+              
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="making-python-projects-environments-reproducible">
-<span id="chapter-reproducible"></span><h1><span class="section-number">2. </span>Making Python Projects &amp; Environments Reproducible<a class="headerlink" href="#making-python-projects-environments-reproducible" title="Permalink to this headline">¶</a></h1>
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="making-python-projects-environments-reproducible">
+<span id="chapter-reproducible"></span><h1><span class="section-number">4. </span>Making Python Projects &amp; Environments Reproducible<a class="headerlink" href="#making-python-projects-environments-reproducible" title="Permalink to this headline">#</a></h1>
 <div class="admonition-learning-objectives admonition">
 <p class="admonition-title">Learning Objectives</p>
 <ul class="simple">
@@ -463,8 +427,8 @@ cornerstone of responsible scientific research.</p>
 projects which don’t use Python. The second half of the chapter describes how
 to use conda to manage Python and Python packages, but conda can also be used
 to manage other scientific computing software.</p>
-<div class="section" id="prerequisites">
-<h2><span class="section-number">2.1. </span>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
+<section id="prerequisites">
+<h2><span class="section-number">4.1. </span>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">#</a></h2>
 <p>This chapter assumes you already have basic familiarity with Python. DataLab’s
 <a class="reference external" href="https://ucdavisdatalab.github.io/workshop_python_basics/">Python Basics Reader</a> and its accompanying workshop provide a
 suitable introduction.</p>
@@ -478,10 +442,10 @@ installed on your computer:</p>
 <li><p><a class="reference external" href="https://www.python.org/">Python</a> 3.10</p></li>
 </ul>
 <p>One way to install these is to install the <a class="reference external" href="https://www.anaconda.com/">Anaconda</a> Python distribution.
-Anaconda is explained in <a class="reference internal" href="#whats-an-environment"><span class="std std-numref">Section 2.4</span></a>.</p>
-</div>
-<div class="section" id="what-s-a-project-directory">
-<h2><span class="section-number">2.2. </span>What’s a Project Directory?<a class="headerlink" href="#what-s-a-project-directory" title="Permalink to this headline">¶</a></h2>
+Anaconda is explained in <a class="reference internal" href="#whats-an-environment"><span class="std std-numref">Section 4.4</span></a>.</p>
+</section>
+<section id="what-s-a-project-directory">
+<h2><span class="section-number">4.2. </span>What’s a Project Directory?<a class="headerlink" href="#what-s-a-project-directory" title="Permalink to this headline">#</a></h2>
 <p>Whenever you start a new computing project, no matter how small, I recommend
 that you create a new <strong>project directory</strong> as a centralized place to store all
 of the project’s files. As you produce or download new files, make sure that
@@ -510,8 +474,8 @@ instructions to setup necessary software (such as Python), and then run the
 code <em>without any modifications</em> to get the expected result.</p>
 <p>The following subsections describe best practices for project directories, in
 approximate order from highest to lowest priority.</p>
-<div class="section" id="use-relative-paths">
-<h3><span class="section-number">2.2.1. </span>Use Relative Paths!<a class="headerlink" href="#use-relative-paths" title="Permalink to this headline">¶</a></h3>
+<section id="use-relative-paths">
+<h3><span class="section-number">4.2.1. </span>Use Relative Paths!<a class="headerlink" href="#use-relative-paths" title="Permalink to this headline">#</a></h3>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This section assumes you’re familiar with file paths. You can find a detailed
@@ -561,9 +525,9 @@ instance, the path from <code class="docutils literal notranslate"><span class="
 (and more generally, about <em>anything outside of the project directory</em>).</p>
 <p>In summary, you can make your projects more portable by using only relative
 paths.</p>
-</div>
-<div class="section" id="naming-files">
-<h3><span class="section-number">2.2.2. </span>Naming Files<a class="headerlink" href="#naming-files" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="naming-files">
+<h3><span class="section-number">4.2.2. </span>Naming Files<a class="headerlink" href="#naming-files" title="Permalink to this headline">#</a></h3>
 <p>When naming files in a project directory, choose names that are both human
 readable and <strong>machine readable</strong>.</p>
 <p>Choosing human readable file names ensures that you and others will be able to
@@ -617,9 +581,9 @@ if your project is “UC Davis Sheepmowers”, should you write
 <li><p><a class="reference external" href="https://the-turing-way.netlify.app/project-design/filenaming.html">This chapter</a> of The Turing Way</p></li>
 <li><p><a class="reference external" href="https://speakerdeck.com/jennybc/how-to-name-files">These slides</a> from Jenny Bryan</p></li>
 </ul>
-</div>
-<div class="section" id="organizing-files">
-<span id="id1"></span><h3><span class="section-number">2.2.3. </span>Organizing Files<a class="headerlink" href="#organizing-files" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="organizing-files">
+<span id="id1"></span><h3><span class="section-number">4.2.3. </span>Organizing Files<a class="headerlink" href="#organizing-files" title="Permalink to this headline">#</a></h3>
 <p>Use subdirectories to organize files within a project directory. Here’s the
 basic directory structure I recommend and use for data science projects:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>env.yml       Conda environment
@@ -653,9 +617,9 @@ listing at the beginning of this subsection.</p>
 <li><p><a class="reference external" href="https://the-turing-way.netlify.app/project-design/project-repo/project-repo-advanced.html">This chapter</a> of The Turing Way</p></li>
 <li><p><a class="reference external" href="https://docs.python-guide.org/writing/structure/">This chapter</a> of The Hitchhiker’s Guide to Python</p></li>
 </ul>
-</div>
-<div class="section" id="documentation">
-<h3><span class="section-number">2.2.4. </span>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="documentation">
+<h3><span class="section-number">4.2.4. </span>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h3>
 <p>A project directory should always include a <strong>README</strong>, a plain text file that
 serves as an introduction to and overview of your project. At a minimum, the
 README should include:</p>
@@ -692,7 +656,7 @@ the parameters (inputs), describe the return value (output), and provide
 examples of use. Docstrings are accessible through Python’s <code class="docutils literal notranslate"><span class="pre">help</span></code>
 function. Here’s an example of a function with a docstring:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">central_indexes</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">5</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Compute the k central indexes for an array with n elements.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the k central indexes for an array with n elements.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -724,9 +688,9 @@ function. Here’s an example of a function with a docstring:</p>
 <li><p><a class="reference external" href="https://www.writethedocs.org/">Write the Docs</a>, a global community dedicated to writing good
 documentation</p></li>
 </ul>
-</div>
-<div class="section" id="scripts-vs-notebooks">
-<h3><span class="section-number">2.2.5. </span>Scripts vs. Notebooks<a class="headerlink" href="#scripts-vs-notebooks" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="scripts-vs-notebooks">
+<h3><span class="section-number">4.2.5. </span>Scripts vs. Notebooks<a class="headerlink" href="#scripts-vs-notebooks" title="Permalink to this headline">#</a></h3>
 <p>There are two common ways to store Python code:</p>
 <ul class="simple">
 <li><p>Python scripts (<code class="docutils literal notranslate"><span class="pre">.py</span></code> files).</p></li>
@@ -766,7 +730,7 @@ you start working on a new task, consider which format is more appropriate for
 what you’re trying to do.</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>If you use the directory structure described in <a class="reference internal" href="#organizing-files"><span class="std std-numref">Section 2.2.3</span></a> and
+<p>If you use the directory structure described in <a class="reference internal" href="#organizing-files"><span class="std std-numref">Section 4.2.3</span></a> and
 create Python modules, it can be difficult to figure out how to import the
 modules for code that exists outside of the <code class="docutils literal notranslate"><span class="pre">src/</span></code> directory, such as notebooks
 (in <code class="docutils literal notranslate"><span class="pre">notebooks/</span></code>). Adding this code snippet to the beginning of a notebook or
@@ -787,9 +751,9 @@ the <code class="docutils literal notranslate"><span class="pre">module_path</sp
 </div>
 <p>You can learn more about how to create Python modules and packages in <a class="reference external" href="https://docs.python-guide.org/writing/structure/#modules">this
 chapter</a> of The Hitchhiker’s Guide to Python.</p>
-</div>
-<div class="section" id="parameters-configuration-files">
-<h3><span class="section-number">2.2.6. </span>Parameters &amp; Configuration Files<a class="headerlink" href="#parameters-configuration-files" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="parameters-configuration-files">
+<h3><span class="section-number">4.2.6. </span>Parameters &amp; Configuration Files<a class="headerlink" href="#parameters-configuration-files" title="Permalink to this headline">#</a></h3>
 <p>Most code, especially in scientific computing, includes a collection of
 adjustable parameters. For instance, code to run a simulation might allow for
 different initial conditions and code to fit a statistical model might allow
@@ -835,10 +799,10 @@ lowest to highest reproducibility. Using separate configuration files (the last
 option) is the best way to ensure that your project is reproducible, because
 you can create a new configuration file to record the parameters for each run
 of the code.</p>
-</div>
-</div>
-<div class="section" id="version-control">
-<h2><span class="section-number">2.3. </span>Version Control<a class="headerlink" href="#version-control" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="version-control">
+<h2><span class="section-number">4.3. </span>Version Control<a class="headerlink" href="#version-control" title="Permalink to this headline">#</a></h2>
 <p>A <strong>version control system</strong> (VCS) is software that tracks the changes you make
 to files, so that you can go back to a previous version at any time. You might
 already be familiar with the version control systems built-in to Microsoft Word
@@ -864,9 +828,9 @@ version control systems for data.</p>
 <p>One VCS for data that looks promising is <a class="reference external" href="https://dvc.org/"><code class="docutils literal notranslate"><span class="pre">dvc</span></code></a>, which is designed to
 coexist with git and provides a similar interface.</p>
 </div>
-</div>
-<div class="section" id="what-s-an-environment">
-<span id="whats-an-environment"></span><h2><span class="section-number">2.4. </span>What’s an Environment?<a class="headerlink" href="#what-s-an-environment" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="what-s-an-environment">
+<span id="whats-an-environment"></span><h2><span class="section-number">4.4. </span>What’s an Environment?<a class="headerlink" href="#what-s-an-environment" title="Permalink to this headline">#</a></h2>
 <p>A <strong>computing environment</strong> is a collection of hardware and software used to
 run code. Whether code runs correctly or at all depends on the computing
 environment, so an important part of making a project reproducible is
@@ -889,8 +853,8 @@ was designed.</p>
 packages. Python’s built-in package manager is <a class="reference external" href="https://pip.pypa.io/en/stable/"><code class="docutils literal notranslate"><span class="pre">pip</span></code></a>. Even if you use an
 alternative package manager, it’s good to know the basics of pip in order to
 troubleshoot problems with package installations.</p>
-<div class="section" id="virtual-environments">
-<h3><span class="section-number">2.4.1. </span>Virtual Environments<a class="headerlink" href="#virtual-environments" title="Permalink to this headline">¶</a></h3>
+<section id="virtual-environments">
+<h3><span class="section-number">4.4.1. </span>Virtual Environments<a class="headerlink" href="#virtual-environments" title="Permalink to this headline">#</a></h3>
 <p>A <strong>virtual environment</strong> is a computing environment with specific software
 versions that can coexist alongside other virtual environments with different
 software versions. Virtual environments make it possible to work on several
@@ -913,10 +877,10 @@ designed with data science projects in mind.</p></li>
 of programming languages, not just Python. This is its standout feature, and
 the reason why the rest of this chapter will focus on conda rather than any of
 the others.</p>
-</div>
-</div>
-<div class="section" id="managing-environments-with-conda">
-<h2><span class="section-number">2.5. </span>Managing Environments with conda<a class="headerlink" href="#managing-environments-with-conda" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="managing-environments-with-conda">
+<h2><span class="section-number">4.5. </span>Managing Environments with conda<a class="headerlink" href="#managing-environments-with-conda" title="Permalink to this headline">#</a></h2>
 <p>There are two major ways to get conda:</p>
 <ul class="simple">
 <li><p>Install <a class="reference external" href="https://www.anaconda.com/">Anaconda</a>. Anaconda is a Python distribution designed to be
@@ -932,11 +896,11 @@ actually want. Moreover, because you have to install the packages yourself,
 you’ll quickly become familiar with conda’s basic commands.</p>
 <p>Both Anaconda and Miniconda provide detailed installation instructions on their
 respective websites.</p>
-<div class="section" id="creating-environments">
-<h3><span class="section-number">2.5.1. </span>Creating Environments<a class="headerlink" href="#creating-environments" title="Permalink to this headline">¶</a></h3>
+<section id="creating-environments">
+<h3><span class="section-number">4.5.1. </span>Creating Environments<a class="headerlink" href="#creating-environments" title="Permalink to this headline">#</a></h3>
 <p>Once you have conda installed, get a list of your conda environments with the
 shell command:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda env list
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>env<span class="w"> </span>list
 </pre></div>
 </div>
 <p>The default environment for conda is called <code class="docutils literal notranslate"><span class="pre">base</span></code>. It’s generally recommended
@@ -945,29 +909,29 @@ itself is installed. Any problems you create in the <code class="docutils litera
 potentially break your entire conda installation.</p>
 <p>You can create a new environment with the command <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">create</span></code>. For example,
 the command to create a new environment called <code class="docutils literal notranslate"><span class="pre">datasci</span></code> is:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda create --name datasci
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>create<span class="w"> </span>--name<span class="w"> </span>datasci
 </pre></div>
 </div>
 <p>You can get help with most conda commands by appending <code class="docutils literal notranslate"><span class="pre">--help</span></code>. For instance,
 you can see all of th options for <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">create</span></code> with the command:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda create --help
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>create<span class="w"> </span>--help
 </pre></div>
 </div>
 <p>You can switch to or <strong>activate</strong> a specific conda environment with the command
 <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">activate</span></code>. Go ahead and activate the <code class="docutils literal notranslate"><span class="pre">datasci</span></code> environment:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda activate datasci
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>activate<span class="w"> </span>datasci
 </pre></div>
 </div>
 <p>Once an environment is activated, you can install software with the command
 <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">install</span></code>. For example, this command installs Python:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda install python
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>install<span class="w"> </span>python
 </pre></div>
 </div>
 <p>You can request a specific version of software by appending <code class="docutils literal notranslate"><span class="pre">=</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>,
 <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code>, or <code class="docutils literal notranslate"><span class="pre">&lt;</span></code> and a version number after the name, and then enclosing the name
 and version in single quotes. For example, this command specifically requests
 the latest version of Python 2:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda install <span class="s1">&#39;python&lt;3&#39;</span>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>install<span class="w"> </span><span class="s1">&#39;python&lt;3&#39;</span>
 </pre></div>
 </div>
 <p>Say no at the prompt so that your environment still has Python 3.</p>
@@ -978,7 +942,7 @@ repository often has newer versions and also has many packages that are not
 available through Anaconda. You can specify that you want to install a package
 from conda-forge by including <code class="docutils literal notranslate"><span class="pre">-c</span> <span class="pre">conda-forge</span></code> in the <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">install</span></code> command.
 For instance, to install <code class="docutils literal notranslate"><span class="pre">numpy</span></code> from conda-forge:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda install -c conda-forge numpy
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>install<span class="w"> </span>-c<span class="w"> </span>conda-forge<span class="w"> </span>numpy
 </pre></div>
 </div>
 <div class="admonition tip">
@@ -994,38 +958,38 @@ environment with the command:</p>
 </div>
 <p>You can see a list of installed software in a conda environment with the
 command:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda list
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>list
 </pre></div>
 </div>
 <p>You can also use the commands <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">update</span></code> and <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">uninstall</span></code> to update
 and uninstall packages within an environment.</p>
 <p>When you’re finished using a conda environment, you can deactivate it with the
 command:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda deactivate
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>deactivate
 </pre></div>
 </div>
 <p>Finally, you can delete an environment with the command <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">env</span> <span class="pre">remove</span></code>. Use
 the <code class="docutils literal notranslate"><span class="pre">--name</span></code> option to provide the name of the environment.</p>
-</div>
-<div class="section" id="saving-restoring-environments">
-<h3><span class="section-number">2.5.2. </span>Saving &amp; Restoring Environments<a class="headerlink" href="#saving-restoring-environments" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="saving-restoring-environments">
+<h3><span class="section-number">4.5.2. </span>Saving &amp; Restoring Environments<a class="headerlink" href="#saving-restoring-environments" title="Permalink to this headline">#</a></h3>
 <p>In order to make a project reproducible, you should include information about
 the conda environment used to develop and test the code. You can export the
 details of a conda environment to a file with the command <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">env</span> <span class="pre">export</span></code>.
 For example, to export the details of the <code class="docutils literal notranslate"><span class="pre">datasci</span></code> environment:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda env <span class="nb">export</span> --name datasci &gt; env.yml
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>env<span class="w"> </span><span class="nb">export</span><span class="w"> </span>--name<span class="w"> </span>datasci<span class="w"> </span>&gt;<span class="w"> </span>env.yml
 </pre></div>
 </div>
 <p>Then anyone conda and a copy of your project directory can install the
 environment on their machine with the command:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda env create --file env.yml
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>env<span class="w"> </span>create<span class="w"> </span>--file<span class="w"> </span>env.yml
 </pre></div>
 </div>
 <p>Note that you can include <code class="docutils literal notranslate"><span class="pre">--name</span> <span class="pre">NAME</span></code> in this command to explicitly set the
 name of the new environment to <code class="docutils literal notranslate"><span class="pre">NAME</span></code>.</p>
-</div>
-<div class="section" id="additional-references">
-<h3><span class="section-number">2.5.3. </span>Additional References<a class="headerlink" href="#additional-references" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="additional-references">
+<h3><span class="section-number">4.5.3. </span>Additional References<a class="headerlink" href="#additional-references" title="Permalink to this headline">#</a></h3>
 <p>The <a class="reference external" href="https://docs.conda.io/projects/conda/en/latest/_downloads/843d9e0198f2a193a3484886fa28163c/conda-cheatsheet.pdf">conda cheatsheet</a> provides a list of the most common conda
 commands.</p>
 <p>For more suggestions and examples of how to use conda, see:</p>
@@ -1034,9 +998,9 @@ commands.</p>
 <li><p><a class="reference external" href="https://ngs-docs.github.io/2021-august-remote-computing/installing-software-on-remote-computers-with-conda.html">This chapter</a> of DataLab’s Introduction to Remote Computing
 Reader</p></li>
 </ul>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -1050,7 +1014,7 @@ Reader</p></li>
             mode: "python"
         },
         kernelOptions: {
-            kernelName: "python3",
+            name: "python3",
             path: "./chapters"
         },
         predefinedOutput: true
@@ -1058,44 +1022,125 @@ Reader</p></li>
     </script>
     <script>kernelName = 'python3'</script>
 
-              </div>
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="04_debugging.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">3. </span>Squashing Bugs with Python’s Debugging Tools</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="05_viz.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">5. </span>Next-level Data Visualization</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">4.1. Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-s-a-project-directory">4.2. What’s a Project Directory?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#use-relative-paths">4.2.1. Use Relative Paths!</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#naming-files">4.2.2. Naming Files</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#organizing-files">4.2.3. Organizing Files</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#documentation">4.2.4. Documentation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#scripts-vs-notebooks">4.2.5. Scripts vs. Notebooks</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#parameters-configuration-files">4.2.6. Parameters &amp; Configuration Files</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#version-control">4.3. Version Control</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-s-an-environment">4.4. What’s an Environment?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#virtual-environments">4.4.1. Virtual Environments</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#managing-environments-with-conda">4.5. Managing Environments with conda</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-environments">4.5.1. Creating Environments</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#saving-restoring-environments">4.5.2. Saving &amp; Restoring Environments</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-references">4.5.3. Additional References</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
-                <!-- Previous / next buttons -->
-<div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="01_pandas.html" title="previous page">
-        <i class="fas fa-angle-left"></i>
-        <div class="prev-next-info">
-            <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title"><span class="section-number">1. </span>Slicing &amp; Dicing Data with pandas</p>
-        </div>
-    </a>
-    <a class='right-next' id="next-link" href="03_iterators.html" title="next page">
-    <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">3. </span>Iterator &amp; Generator Crash Course</p>
-    </div>
-    <i class="fas fa-angle-right"></i>
-    </a>
-</div>
+          </div>
+          <footer class="bd-footer-content">
             
-        </div>
-    </div>
-    <footer class="footer">
-  <p>
-    
-      By Nick Ulle<br/>
-    
-        &copy; Copyright 2022.<br/>
-  </p>
-</footer>
-</main>
-
-
-      </div>
-    </div>
+<div class="bd-footer-content__inner container">
   
-  <script src="../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+  <div class="footer-item">
+    
+<p class="component-author">
+By Nick Ulle
+</p>
 
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
   </body>
 </html>
