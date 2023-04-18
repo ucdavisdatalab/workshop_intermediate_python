@@ -5,13 +5,22 @@ format: jb-book
 root: chapters/index
 
 parts:
-  - caption: Notes
+  - caption: Thinking in Python
     numbered: true
     chapters:
       - file: chapters/01_pandas
-      - file: chapters/02_reproducible
       - file: chapters/03_iterators
       - file: chapters/04_debugging
+        #  - caption: Cleaning Data
+        #    chapters:
+  - caption: Writing Python Scripts
+    numbered: true
+    chapters:
+      - file: chapters/02_reproducible
+  - caption: Other Workshops
+    numbered: true
+    chapters:
+      - file: chapters/05_viz
   - caption: Afterword
     chapters:
       - file: chapters/references
