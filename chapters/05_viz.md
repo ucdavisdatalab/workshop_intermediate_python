@@ -490,12 +490,12 @@ colors][mpl-colors].
 [hex]: https://en.wikipedia.org/wiki/Hexadecimal
 [mpl-colors]: https://matplotlib.org/stable/tutorials/colors/colors.html
 
-To explicitly set the color of the points in a call to `.scatter`, use the `c`
-parameter. In {numref}`flipper-bill`, Adelie orange is approximately `#fe8700`, 
-Chinstrap purple is approximately `#9a27ef`, and Gentoo teal is approximately
-`#098b8b`. The points are slightly transparent, so it's also a good idea to
-append `c0` to each color code to set 75% opacity. You can add the color codes
-to the groups dictionary:
+To explicitly set the color of the points in a call to `.scatter`, use the
+`color` parameter. In {numref}`flipper-bill`, Adelie orange is approximately
+`#fe8700`, Chinstrap purple is approximately `#9a27ef`, and Gentoo teal is
+approximately `#098b8b`. The points are slightly transparent, so it's also a
+good idea to append `c0` to each color code to set 75% opacity. You can add the
+color codes to the groups dictionary:
 
 ```{code-cell}
 fig, ax = plt.subplots(layout = "constrained")
