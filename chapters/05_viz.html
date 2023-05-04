@@ -383,10 +383,12 @@ document.write(`
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualization-best-practices">5.3. Visualization Best Practices</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#case-studies">5.4. Case Studies</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting-a-distribution">5.4.1. Plotting a Distribution</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting-a-time-series">5.4.2. Plotting a Time Series</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting-a-function">5.4.3. Plotting a Function</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting-an-image">5.4.4. Plotting an Image</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting-a-categorical-distribution">5.4.1. Plotting a Categorical Distribution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting-a-continuous-distribution">5.4.2. Plotting a Continuous Distribution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting-a-time-series">5.4.3. Plotting a Time Series</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting-a-function">5.4.4. Plotting a Function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting-an-image">5.4.5. Plotting an Image</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting-a-map">5.4.6. Plotting a Map</a></li>
 </ul>
 </li>
 </ul>
@@ -405,7 +407,18 @@ document.write(`
 <div class="admonition-learning-objectives admonition">
 <p class="admonition-title">Learning Objectives</p>
 <ul class="simple">
-<li><p>TODO</p></li>
+<li><p>Describe Matplotlib</p></li>
+<li><p>Describe and identify the components of a Matplotlib Figure</p></li>
+<li><p>Describe a Matplotlib Axes</p></li>
+<li><p>Explain the difference between Matplotlib’s explicit and implicit interfaces</p></li>
+<li><p>Create Matplotlib Figures and Axes</p></li>
+<li><p>Modify Matplotlib plots with Figure and Axes methods</p></li>
+<li><p>Describe Matplotlib’s coding styles</p></li>
+<li><p>Choose appropriate visualizations based on data type(s)</p></li>
+<li><p>List the steps to making a well-designed visualization</p></li>
+<li><p>Assess what aspects of a visualization need improvement</p></li>
+<li><p>Use Matplotlib to customize visualizations made with other packages</p></li>
+<li><p>Create well-designed data visualizations</p></li>
 </ul>
 </div>
 <p>This chapter is about customizing data visualizations in Python. <a class="reference external" href="https://seaborn.pydata.org/">Seaborn</a>,
@@ -427,9 +440,11 @@ provide a suitable introduction to these topics.</p>
 installed on your computer:</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://www.python.org/">Python</a> 3.10</p></li>
+<li><p><a class="reference external" href="https://matplotlib.org/">Matplotlib</a> 3.7</p></li>
 <li><p><a class="reference external" href="https://numpy.org/">NumPy</a> 1.24</p></li>
 <li><p><a class="reference external" href="https://pandas.pydata.org/">Pandas</a> 1.5</p></li>
-<li><p><a class="reference external" href="https://matplotlib.org/">Matplotlib</a> 3.7</p></li>
+<li><p><a class="reference external" href="https://pillow.readthedocs.io/en/stable/">Pillow</a> 9.5</p></li>
+<li><p><a class="reference external" href="https://arrow.apache.org/docs/python/">PyArrow</a> 11.0</p></li>
 <li><p><a class="reference external" href="https://seaborn.pydata.org/">Seaborn</a> 0.12</p></li>
 </ul>
 <p>One way to install all of these at once is to install the <a class="reference external" href="https://www.anaconda.com/">Anaconda</a> Python
@@ -468,7 +483,7 @@ Antarctica</a>, and packaged for public use by <a class="reference external" hre
 <div class="admonition important">
 <p class="admonition-title">Important</p>
 <p>You can download a version of the Palmer Penguins data set that we’ve prepared
-for Python <span class="xref myst">HERE</span>.</p>
+for Python <a class="reference external" href="https://ucdavis.box.com/s/pjcr4l989v6k4ikxou7r4ws54t2qrbjs">HERE</a>.</p>
 </div>
 <figure class="align-default" id="flipper-bill">
 <img alt="../_images/flipper-bill.png" src="../_images/flipper-bill.png" />
@@ -623,7 +638,7 @@ plot:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x7ff8c735b1d0&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x7f5bf2a9d5d0&gt;
 </pre></div>
 </div>
 <img alt="../_images/70b707f6c6fc246f546dcc41ef3f79f39dbed538608a5a530cb6d2d47e05e1e3.png" src="../_images/70b707f6c6fc246f546dcc41ef3f79f39dbed538608a5a530cb6d2d47e05e1e3.png" />
@@ -729,7 +744,7 @@ is to use the <code class="docutils literal notranslate"><span class="pre">.scat
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x7ff8c70d9710&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x7f5bf1e3b050&gt;
 </pre></div>
 </div>
 <img alt="../_images/70b707f6c6fc246f546dcc41ef3f79f39dbed538608a5a530cb6d2d47e05e1e3.png" src="../_images/70b707f6c6fc246f546dcc41ef3f79f39dbed538608a5a530cb6d2d47e05e1e3.png" />
@@ -874,7 +889,7 @@ version of the plot:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x7ff8c6d9e090&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x7f5bf1dcb310&gt;
 </pre></div>
 </div>
 <img alt="../_images/d248ae372041e94e5b30efc581b8802d84aa0ec458d72d4b29e99fca82d1842c.png" src="../_images/d248ae372041e94e5b30efc581b8802d84aa0ec458d72d4b29e99fca82d1842c.png" />
@@ -902,7 +917,7 @@ penguins:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x7ff8c6bb6150&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x7f5bf1d6b050&gt;
 </pre></div>
 </div>
 <img alt="../_images/fb42d75d8a131caf900692608cbddbe1a832df0efeffcd62d5ef4aa0446f52f5.png" src="../_images/fb42d75d8a131caf900692608cbddbe1a832df0efeffcd62d5ef4aa0446f52f5.png" />
@@ -1011,7 +1026,7 @@ code becomes:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x7ff8c6a56990&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x7f5bf1842250&gt;
 </pre></div>
 </div>
 <img alt="../_images/69be23c8c8078836aef528954a45333a9c6e3b96d9be530ebd2f463d5eb230d5.png" src="../_images/69be23c8c8078836aef528954a45333a9c6e3b96d9be530ebd2f463d5eb230d5.png" />
@@ -1254,13 +1269,13 @@ You can fix problems with the positioning of tick marks on an axis with the
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.axis.YTick at 0x7ff8c6a71010&gt;,
- &lt;matplotlib.axis.YTick at 0x7ff8c6a81150&gt;,
- &lt;matplotlib.axis.YTick at 0x7ff8c6b3d350&gt;,
- &lt;matplotlib.axis.YTick at 0x7ff8c6b42110&gt;,
- &lt;matplotlib.axis.YTick at 0x7ff8c6e64c10&gt;,
- &lt;matplotlib.axis.YTick at 0x7ff8c6c37050&gt;,
- &lt;matplotlib.axis.YTick at 0x7ff8c6e5bf90&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.axis.YTick at 0x7f5bf196f890&gt;,
+ &lt;matplotlib.axis.YTick at 0x7f5bf18ebdd0&gt;,
+ &lt;matplotlib.axis.YTick at 0x7f5bf1bdc610&gt;,
+ &lt;matplotlib.axis.YTick at 0x7f5bf1bdfd50&gt;,
+ &lt;matplotlib.axis.YTick at 0x7f5bf1be2a10&gt;,
+ &lt;matplotlib.axis.YTick at 0x7f5bf199c0d0&gt;,
+ &lt;matplotlib.axis.YTick at 0x7f5bf1bc9610&gt;]
 </pre></div>
 </div>
 <img alt="../_images/635ce7173245b758f078951cffa8080a2a73d6bd1f30dff9662a5fdb69ac5962.png" src="../_images/635ce7173245b758f078951cffa8080a2a73d6bd1f30dff9662a5fdb69ac5962.png" />
@@ -1323,14 +1338,71 @@ Visualization</a> covers these important skills.</p>
 reminder of these skills. Bookmark or print out a copy and run through the
 checklist whenever you design a visualization. The case studies in the
 <a class="reference internal" href="#case-studies"><span class="std std-numref">Section 5.4</span></a> show how to fix some of the issues on the checklist.</p>
-<!--
-### Color Palettes
--->
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Choosing colors is often one of the visualization details that trips people up.
+Matplotlib’s <a class="reference external" href="https://matplotlib.org/stable/tutorials/colors/colormaps.html">Choosing Colormaps Guide</a> is a good source of
+information for what colormaps are available in Matplotlib and how to choose an
+appropriate one.</p>
+</div>
 </section>
 <section id="case-studies">
 <span id="id1"></span><h2><span class="section-number">5.4. </span>Case Studies<a class="headerlink" href="#case-studies" title="Permalink to this headline">#</a></h2>
 <p>Now that you’ve learned a little bit about how to use Matplotlib, it’s time to
-put it into practice. This section</p>
+put it into practice. This section presents a variety of case studies in making
+visualizations, using a mix of Matplotlib and Seaborn.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Although the case studies use Seaborn, most of the strategies shown apply to
+any Matplotlib-based visualization package. Plotting functions in these
+packages often take an Axes as input or return an Axes as output. As long as
+you can get access to the Axes object, you can use Matplotlib methods to
+customize the plot.</p>
+</div>
+<section id="plotting-a-categorical-distribution">
+<span id="id2"></span><h3><span class="section-number">5.4.1. </span>Plotting a Categorical Distribution<a class="headerlink" href="#plotting-a-categorical-distribution" title="Permalink to this headline">#</a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This case study shows how to:</p>
+<ul class="simple">
+<li><p>Use Seaborn to plot the distribution of one or more categorical features</p></li>
+<li><p>Use Seaborn to create faceted plots</p></li>
+</ul>
+</div>
+<p>When you start working with a new data set, the first thing you should do is
+explore (and clean) the features. Exploring the features means inspecting the
+distribution of each feature, as well as checking for relationships between
+features. For this case study, let’s use Seaborn and Matplotlib to explore the
+categorical features in the Palmer Penguins data set from
+<a class="reference internal" href="#mpl-introduction"><span class="std std-numref">Section 5.2.1</span></a>.</p>
+<p>Consider the species of the penguins the data set. Are the three
+species—Adélie, Chinstrap, and Gentoo—equally represented? This question is
+asking how the categorical <code class="docutils literal notranslate"><span class="pre">species</span></code> feature is distributed. Tables, bar plots,
+and dot plots are all good tools for examining the distribution of a single
+categorical feature. Let’s make a table and a bar plot.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Inspecting data through multiple methods is a good way to verify that your code
+and interpretations are correct.</p>
+</div>
+<p>You can use the Pandas <code class="docutils literal notranslate"><span class="pre">.value_counts</span></code> method to make a table:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">penguins</span><span class="p">[</span><span class="s2">&quot;species&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Adelie       152
+Gentoo       124
+Chinstrap     68
+Name: species, dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<p>To make the bar plot, first import Seaborn. The conventional abbreviation for
+the package is <code class="docutils literal notranslate"><span class="pre">sns</span></code>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
@@ -1338,11 +1410,351 @@ put it into practice. This section</p>
 </div>
 </div>
 </div>
-<section id="plotting-a-distribution">
-<h3><span class="section-number">5.4.1. </span>Plotting a Distribution<a class="headerlink" href="#plotting-a-distribution" title="Permalink to this headline">#</a></h3>
+<p>Seaborn provides two different functions for making bar plots:</p>
+<ul class="simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">sns.barplot</span></code> function requires two features: the category for each bar
+and the length of each bar. It’s best for data that’s already been grouped
+and aggregated. For example, you could compute the median flipper length of
+each penguin species and then plot the means with <code class="docutils literal notranslate"><span class="pre">sns.barplot</span></code>.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">sns.countplot</span></code> function only requires one feature: a categorical array.
+The function automatically groups and aggregates the values by counting them.
+It’s best for visualizing the distribution of a categorical feature. Note
+that this is purely a convenience function—you could just compute the
+counts yourself and plot them with <code class="docutils literal notranslate"><span class="pre">sns.barplot</span></code>.</p></li>
+</ul>
+<p>Use the <code class="docutils literal notranslate"><span class="pre">sns.countplot</span></code> function to make a bar plot of the distribution of
+penguin species:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">countplot</span><span class="p">(</span><span class="n">penguins</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;species&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: xlabel=&#39;species&#39;, ylabel=&#39;count&#39;&gt;
+</pre></div>
+</div>
+<img alt="../_images/c7850fb1ed2531dbb112d29eb82e8503145dad4ab96522542fedbd1703401616.png" src="../_images/c7850fb1ed2531dbb112d29eb82e8503145dad4ab96522542fedbd1703401616.png" />
+</div>
+</div>
+<p>The function returns a Matplotlib Axes. You can use this to customize the plot.
+For example, to capitalize the axis labels:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">countplot</span><span class="p">(</span><span class="n">penguins</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;species&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Species&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Count&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0, 0.5, &#39;Count&#39;)
+</pre></div>
+</div>
+<img alt="../_images/8b445f891a6c6020f6a19ba8dd917fd8edcc6ee468a21c1af26e541344c72b05.png" src="../_images/8b445f891a6c6020f6a19ba8dd917fd8edcc6ee468a21c1af26e541344c72b05.png" />
+</div>
+</div>
+<p>Most Seaborn plotting functions also have an <code class="docutils literal notranslate"><span class="pre">ax</span></code> parameter you can use to
+specify an Axes on which to plot. This makes it possible to add to existing
+Axes and to customize plots produced by plotting functions that don’t return an
+Axes object. Using this approach, the equivalent of the previous example is:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">countplot</span><span class="p">(</span><span class="n">penguins</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;species&quot;</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Species&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Count&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0, 0.5, &#39;Count&#39;)
+</pre></div>
+</div>
+<img alt="../_images/8b445f891a6c6020f6a19ba8dd917fd8edcc6ee468a21c1af26e541344c72b05.png" src="../_images/8b445f891a6c6020f6a19ba8dd917fd8edcc6ee468a21c1af26e541344c72b05.png" />
+</div>
+</div>
+<p>Besides species, the Palmer Penguins data set also includes information about
+the island where each bird was observed and the biological sex of each bird.
+When a data set has multiple categorical features, it’s important to check how
+the observations are grouped within them, since unbalanced groups can bias
+analyses. You can use color to represent a second categorical feature in a bar
+plot. Seaborn uses the <code class="docutils literal notranslate"><span class="pre">hue</span></code> parameter to link color to a feature. So to make
+the bar plot show both species and sex:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">countplot</span><span class="p">(</span><span class="n">penguins</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;species&quot;</span><span class="p">,</span> <span class="n">hue</span> <span class="o">=</span> <span class="s2">&quot;sex&quot;</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Species&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Count&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0, 0.5, &#39;Count&#39;)
+</pre></div>
+</div>
+<img alt="../_images/0e8089f9f7bfbbc59f15380de147703a0e760791830b56b37e18d276408df8d9.png" src="../_images/0e8089f9f7bfbbc59f15380de147703a0e760791830b56b37e18d276408df8d9.png" />
+</div>
+</div>
+<p>The plot suggests the sexes are relatively well-balanced across the observed
+penguins, regardless of species. Of course, there’s still the island feature to
+consider.</p>
+<p>A bar plot can really only summarize two features at once, and many other types
+of plots are also limited to just two or three features. One way to represent
+more categorical features is to use <strong>facets</strong>, side-by-side plots that each
+show data for a mutually exclusive category or combination of categories.</p>
+<p>Most plotting packages provide convenience functions for making faceted plots,
+and Seaborn is no exception. The <a class="reference external" href="https://seaborn.pydata.org/generated/seaborn.FacetGrid.html"><code class="docutils literal notranslate"><span class="pre">sns.FacetGrid</span></code></a> function creates
+a grid of plots based on one or two categorical features. You can use the
+returned FacetGrid’s <code class="docutils literal notranslate"><span class="pre">.map_dataframe</span></code> method to call a plotting function for
+each facet with the appropriate subsets of the data. For example, to indicate
+sex by row, island by column, and use a separate bar for each species:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grid</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">FacetGrid</span><span class="p">(</span><span class="n">penguins</span><span class="p">,</span> <span class="n">row</span> <span class="o">=</span> <span class="s2">&quot;sex&quot;</span><span class="p">,</span> <span class="n">col</span> <span class="o">=</span> <span class="s2">&quot;island&quot;</span><span class="p">)</span>
+<span class="n">grid</span><span class="o">.</span><span class="n">map_dataframe</span><span class="p">(</span><span class="n">sns</span><span class="o">.</span><span class="n">countplot</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;species&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;seaborn.axisgrid.FacetGrid at 0x7f5bd4d287d0&gt;
+</pre></div>
+</div>
+<img alt="../_images/b19c1c84d19468f29719eb83ae1c15fe10f2ee856c1225eae1b5e4a30d591f13.png" src="../_images/b19c1c84d19468f29719eb83ae1c15fe10f2ee856c1225eae1b5e4a30d591f13.png" />
+</div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">margin_titles</span></code> parameter of <code class="docutils literal notranslate"><span class="pre">sns.FacetGrid</span></code> controls whether the group
+titles are placed in the margins. The default is <code class="docutils literal notranslate"><span class="pre">False</span></code>, but setting the
+parameter to <code class="docutils literal notranslate"><span class="pre">True</span></code> makes the plot easier to read:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grid</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">FacetGrid</span><span class="p">(</span>
+    <span class="n">penguins</span><span class="p">,</span> <span class="n">row</span> <span class="o">=</span> <span class="s2">&quot;sex&quot;</span><span class="p">,</span> <span class="n">col</span> <span class="o">=</span> <span class="s2">&quot;island&quot;</span><span class="p">,</span> <span class="n">margin_titles</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">grid</span><span class="o">.</span><span class="n">map_dataframe</span><span class="p">(</span><span class="n">sns</span><span class="o">.</span><span class="n">countplot</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;species&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;seaborn.axisgrid.FacetGrid at 0x7f5bd4c14390&gt;
+</pre></div>
+</div>
+<img alt="../_images/5f624106473893e6b54f3bb6da01edff4b73c69047fbfa074223811b94d1e609.png" src="../_images/5f624106473893e6b54f3bb6da01edff4b73c69047fbfa074223811b94d1e609.png" />
+</div>
+</div>
+<p>You can use the FacetGrid method <code class="docutils literal notranslate"><span class="pre">.set_titles</span></code> to set the titles of faceted
+plots. The title strings are treated as templates with some values replaced
+automatically. For instance, <code class="docutils literal notranslate"><span class="pre">{row_name}</span></code> is replaced by the row’s category.
+Here’s how to change the titles so that they only show the categories and not
+the feature names:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grid</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">FacetGrid</span><span class="p">(</span>
+    <span class="n">penguins</span><span class="p">,</span> <span class="n">row</span> <span class="o">=</span> <span class="s2">&quot;sex&quot;</span><span class="p">,</span> <span class="n">col</span> <span class="o">=</span> <span class="s2">&quot;island&quot;</span><span class="p">,</span> <span class="n">margin_titles</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">grid</span><span class="o">.</span><span class="n">map_dataframe</span><span class="p">(</span><span class="n">sns</span><span class="o">.</span><span class="n">countplot</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;species&quot;</span><span class="p">)</span>
+<span class="n">grid</span><span class="o">.</span><span class="n">set_titles</span><span class="p">(</span><span class="n">row_template</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{row_name}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">col_template</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{col_name}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;seaborn.axisgrid.FacetGrid at 0x7f5bd48ada50&gt;
+</pre></div>
+</div>
+<img alt="../_images/352a2429ff2b217ba33f5f44dc8a8b7d417d5868c6fabbc740af768c9a84767d.png" src="../_images/352a2429ff2b217ba33f5f44dc8a8b7d417d5868c6fabbc740af768c9a84767d.png" />
+</div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>If you want to change the names of the categories in a feature, do that as a
+separate step before making visualizations. The <a class="reference external" href="https://pandas.pydata.org/docs/user_guide/categorical.html">Pandas documentation about
+Categorical data</a> provides details about how to create categorical
+features and set category names.</p>
+</div>
+<p>Similarly, you can use the <code class="docutils literal notranslate"><span class="pre">.set_axis_labels</span></code> to set the axis labels:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grid</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">FacetGrid</span><span class="p">(</span>
+    <span class="n">penguins</span><span class="p">,</span> <span class="n">row</span> <span class="o">=</span> <span class="s2">&quot;sex&quot;</span><span class="p">,</span> <span class="n">col</span> <span class="o">=</span> <span class="s2">&quot;island&quot;</span><span class="p">,</span> <span class="n">margin_titles</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">grid</span><span class="o">.</span><span class="n">map_dataframe</span><span class="p">(</span><span class="n">sns</span><span class="o">.</span><span class="n">countplot</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;species&quot;</span><span class="p">)</span>
+<span class="n">grid</span><span class="o">.</span><span class="n">set_titles</span><span class="p">(</span><span class="n">row_template</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{row_name}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">col_template</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{col_name}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">grid</span><span class="o">.</span><span class="n">set_axis_labels</span><span class="p">(</span><span class="n">x_var</span> <span class="o">=</span> <span class="s2">&quot;Species&quot;</span><span class="p">,</span> <span class="n">y_var</span> <span class="o">=</span> <span class="s2">&quot;Count&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;seaborn.axisgrid.FacetGrid at 0x7f5bd4130350&gt;
+</pre></div>
+</div>
+<img alt="../_images/ed7b15cd4b69c24fe2a946ccf0118e5f2b1eee3d34abe33248947e77f0a732b1.png" src="../_images/ed7b15cd4b69c24fe2a946ccf0118e5f2b1eee3d34abe33248947e77f0a732b1.png" />
+</div>
+</div>
+<p>Seaborn’s methods for creating and customizing faceted plots are convenient,
+and you can read more about them in the <a class="reference external" href="https://seaborn.pydata.org/generated/seaborn.FacetGrid.html">FacetGrid documentation</a>.
+Occasionally, you may need to work with the underlying Matplotlib Figure and
+Axes. Fortunately, FacetGrid objects provide access to these through the
+<code class="docutils literal notranslate"><span class="pre">.figure</span></code> and <code class="docutils literal notranslate"><span class="pre">.axes</span></code> attributes.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This case study focuses on categorical features and the next focuses on
+continuous features. So what should you do if you have a discrete feature?</p>
+<p>Discrete features share properties of categorical features (both are
+enumerable) and properties of continuous features (both are quantitative). This
+usually means you can choose whether to treat discrete features as categorical
+or continuous. Categorical methods tend to be more appropriate for discrete
+features that take relatively few distinct values, and continuous methods tend
+to be more appropriate for ones that don’t.</p>
+</div>
+</section>
+<section id="plotting-a-continuous-distribution">
+<h3><span class="section-number">5.4.2. </span>Plotting a Continuous Distribution<a class="headerlink" href="#plotting-a-continuous-distribution" title="Permalink to this headline">#</a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This case study shows how to:</p>
+<ul class="simple">
+<li><p>Use Seaborn to plot the distribution of one or more continuous features</p></li>
+</ul>
+</div>
+<p><a class="reference internal" href="#plotting-a-categorical-distribution"><span class="std std-numref">Section 5.4.1</span></a> shows how to visualize the
+distribution of a categorical feature. For this case study, let’s examine one
+of the continuous features in the Palmer Penguins data set from
+<a class="reference internal" href="#mpl-introduction"><span class="std std-numref">Section 5.2.1</span></a>.</p>
+<p>There are many different ways to visualize continuous features, such as
+histograms, density plots, box plots, violin plots, and empirical cumulative
+distribution function plots. The Seaborn documentation provides a <a class="reference external" href="https://seaborn.pydata.org/tutorial/distributions.html">detailed
+guide to visualizing distributions</a>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">sns.displot</span></code> function can create many different kinds of distribution
+plots, but it operates at the Figure level and does not accept or return an
+Axes, making it difficult to customize the result. For this reason, we
+recommend against using <code class="docutils literal notranslate"><span class="pre">sns.displot</span></code>.</p>
+<p>If you decide to use <code class="docutils literal notranslate"><span class="pre">sns.displot</span></code> anyways, be careful not to confuse it with
+<code class="docutils literal notranslate"><span class="pre">sns.distplot</span></code> (with two “t”s). Both make distribution plots, but the former
+uses a new interface that’s more consistent with other Seaborn functions. You
+should use the new interface (<code class="docutils literal notranslate"><span class="pre">sns.displot</span></code>) in any new code you write, as
+support for the old interface may eventually end.</p>
+</div>
+<p>Let’s visualize the distribution of the birds’ body mass, which is recorded in
+the <code class="docutils literal notranslate"><span class="pre">body_mass_g</span></code> feature. Some of Seaborn’s functions for plotting continuous
+distributions are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">sns.histplot</span></code> to make a histogram</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sns.kdeplot</span></code> to make a density (or “kernel density estimator”) plot</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sns.boxplot</span></code> to make a box plot</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sns.boxenplot</span></code> to make a boxen (or “letter value”) plot</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sns.ecdfplot</span></code> to make an empirical cumulative distribution function plot</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sns.violinplot</span></code> to make a violin plot</p></li>
+</ul>
+<p>For example, to make a histogram:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">penguins</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;body_mass_g&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: xlabel=&#39;body_mass_g&#39;, ylabel=&#39;Count&#39;&gt;
+</pre></div>
+</div>
+<img alt="../_images/b3ecaa80c43f19195e3ec12041681e4ee9f4f6ccc4968b2c0cabc118e9a33630.png" src="../_images/b3ecaa80c43f19195e3ec12041681e4ee9f4f6ccc4968b2c0cabc118e9a33630.png" />
+</div>
+</div>
+<p>And to make a density plot:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">kdeplot</span><span class="p">(</span><span class="n">penguins</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;body_mass_g&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: xlabel=&#39;body_mass_g&#39;, ylabel=&#39;Density&#39;&gt;
+</pre></div>
+</div>
+<img alt="../_images/a4de933cb0a7c188bebc653c9b34d26dbfe11b672f03b809f565b1e099c00ab2.png" src="../_images/a4de933cb0a7c188bebc653c9b34d26dbfe11b672f03b809f565b1e099c00ab2.png" />
+</div>
+</div>
+<p>Like most other Seaborn plotting functions, these functions have an <code class="docutils literal notranslate"><span class="pre">ax</span></code>
+parameter for the Axes on which to plot, and also returns an Axes. So to make
+the x-axis label easier to read:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">kdeplot</span><span class="p">(</span><span class="n">penguins</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;body_mass_g&quot;</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Body Mass (g)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 0, &#39;Body Mass (g)&#39;)
+</pre></div>
+</div>
+<img alt="../_images/461775219071f0ec917f2bdbab3c232ef9c16c9129aefbdb43b29c13a3bb3cb7.png" src="../_images/461775219071f0ec917f2bdbab3c232ef9c16c9129aefbdb43b29c13a3bb3cb7.png" />
+</div>
+</div>
+<p>Density plots are convenient when you want to break down the distribution of a
+continuous feature across the categories of a categorical feature, because the
+plot can show a separate line for each category. For instance, to group body
+mass by species:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">kdeplot</span><span class="p">(</span><span class="n">penguins</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;body_mass_g&quot;</span><span class="p">,</span> <span class="n">hue</span> <span class="o">=</span> <span class="s2">&quot;species&quot;</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Body Mass (g)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 0, &#39;Body Mass (g)&#39;)
+</pre></div>
+</div>
+<img alt="../_images/44d8b324eb11f1d79ef7fc9e944382026005c173db6c5c26e828351b9272841c.png" src="../_images/44d8b324eb11f1d79ef7fc9e944382026005c173db6c5c26e828351b9272841c.png" />
+</div>
+</div>
+<p>This makes it easy to see that Gentoo penguins typically have more mass than
+the other two species.</p>
+<p>As in <a class="reference internal" href="#plotting-a-categorical-distribution"><span class="std std-numref">Section 5.4.1</span></a>, you can incorporate more
+categorical features by faceting. To incorporate another continuous feature,
+it’s necessary to change plot types.</p>
+<p>You can visualize the distributions of and relationship between two continuous
+features with a scatter plot (<code class="docutils literal notranslate"><span class="pre">sns.scatterplot</span></code>) or a smoothed scatter plot
+(again <code class="docutils literal notranslate"><span class="pre">sns.kdeplot</span></code>). The latter smooths out the points in a scatter plot to
+show their relative density, using a 2-dimensional generalization of the method
+used to estimate a density plot. For instance, to plot body weight against
+flipper length:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">kdeplot</span><span class="p">(</span>
+    <span class="n">penguins</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;body_mass_g&quot;</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="s2">&quot;flipper_length_mm&quot;</span><span class="p">,</span> <span class="n">hue</span> <span class="o">=</span> <span class="s2">&quot;species&quot;</span><span class="p">,</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Body Mass (g)&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Flipper Length (mm)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0, 0.5, &#39;Flipper Length (mm)&#39;)
+</pre></div>
+</div>
+<img alt="../_images/bdbe0b20fcefff30331a43d19b84a10d43c92fa68b03a6352560c9f0ceead312.png" src="../_images/bdbe0b20fcefff30331a43d19b84a10d43c92fa68b03a6352560c9f0ceead312.png" />
+</div>
+</div>
+<p>In this plot it’s possible to see how the distributions of body mass and
+flipper length differ across species, as well as how body mass and flipper mass
+are related.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Visualizing more than two continuous features at once can be challenging. One
+way to get around this problem is to create a separate plot for each pair of
+features.</p>
+<p>If it really is necessary to visualize more than two at once, consider
+converting at least one of them into a categorical feature by <strong>binning</strong> or
+<strong>discretizing</strong> the values. Then you can use strategies for categorical
+features such as varying colors and faceting.</p>
+</div>
 </section>
 <section id="plotting-a-time-series">
-<h3><span class="section-number">5.4.2. </span>Plotting a Time Series<a class="headerlink" href="#plotting-a-time-series" title="Permalink to this headline">#</a></h3>
+<h3><span class="section-number">5.4.3. </span>Plotting a Time Series<a class="headerlink" href="#plotting-a-time-series" title="Permalink to this headline">#</a></h3>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This case study shows how to:</p>
@@ -1363,7 +1775,7 @@ to find out why they died. The USDA compiles the information into a public
 <a class="reference external" href="https://www.aphis.usda.gov/aphis/ourfocus/animalhealth/animal-disease-information/avian/avian-influenza/">Avian Influenza data set</a> each year.</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
-<p>You can download the data HERE.</p>
+<p>You can download the Avian Influenza data <a class="reference external" href="https://ucdavis.box.com/s/babz1b5ak0kh7q7cktg7k5gzrt2ve9gc">HERE</a>.</p>
 </div>
 <p>You can use pandas’ <code class="docutils literal notranslate"><span class="pre">pd.read_csv</span></code> function to read the data. Each row
 corresponds to one bird death. There are 8 columns with information about the
@@ -1563,15 +1975,15 @@ the histogram with the x-axis tick labels at 45 degrees:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.axis.XTick at 0x7ff8c6af4790&gt;,
- &lt;matplotlib.axis.XTick at 0x7ff8c6a5ca10&gt;,
- &lt;matplotlib.axis.XTick at 0x7ff8a6230c10&gt;,
- &lt;matplotlib.axis.XTick at 0x7ff8c6a01f90&gt;,
- &lt;matplotlib.axis.XTick at 0x7ff8c6b10110&gt;,
- &lt;matplotlib.axis.XTick at 0x7ff8c69d21d0&gt;,
- &lt;matplotlib.axis.XTick at 0x7ff8c6b2e910&gt;,
- &lt;matplotlib.axis.XTick at 0x7ff8a61060d0&gt;,
- &lt;matplotlib.axis.XTick at 0x7ff8a6110350&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.axis.XTick at 0x7f5bcf650b50&gt;,
+ &lt;matplotlib.axis.XTick at 0x7f5bcf64c410&gt;,
+ &lt;matplotlib.axis.XTick at 0x7f5bcf4b9510&gt;,
+ &lt;matplotlib.axis.XTick at 0x7f5bcf4bb850&gt;,
+ &lt;matplotlib.axis.XTick at 0x7f5bcf4bda10&gt;,
+ &lt;matplotlib.axis.XTick at 0x7f5bcf4bfd50&gt;,
+ &lt;matplotlib.axis.XTick at 0x7f5bcf652250&gt;,
+ &lt;matplotlib.axis.XTick at 0x7f5bcf4c6f90&gt;,
+ &lt;matplotlib.axis.XTick at 0x7f5bcf4dd390&gt;]
 </pre></div>
 </div>
 <img alt="../_images/10c87f066a2e18639d15db34623c2cc2eac6c4699ce10584039c868faeac5c96.png" src="../_images/10c87f066a2e18639d15db34623c2cc2eac6c4699ce10584039c868faeac5c96.png" />
@@ -1591,15 +2003,15 @@ alignment parameter <code class="docutils literal notranslate"><span class="pre"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.axis.XTick at 0x7ff8a5f3bd10&gt;,
- &lt;matplotlib.axis.XTick at 0x7ff8a607ab50&gt;,
- &lt;matplotlib.axis.XTick at 0x7ff8a5f97410&gt;,
- &lt;matplotlib.axis.XTick at 0x7ff8a5fa0f50&gt;,
- &lt;matplotlib.axis.XTick at 0x7ff8a5fa3210&gt;,
- &lt;matplotlib.axis.XTick at 0x7ff8a5fa5550&gt;,
- &lt;matplotlib.axis.XTick at 0x7ff8a6116010&gt;,
- &lt;matplotlib.axis.XTick at 0x7ff8a5fa84d0&gt;,
- &lt;matplotlib.axis.XTick at 0x7ff8a5faa850&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.axis.XTick at 0x7f5bcf507bd0&gt;,
+ &lt;matplotlib.axis.XTick at 0x7f5bcf4e7750&gt;,
+ &lt;matplotlib.axis.XTick at 0x7f5bcf643490&gt;,
+ &lt;matplotlib.axis.XTick at 0x7f5bcf36d810&gt;,
+ &lt;matplotlib.axis.XTick at 0x7f5bcf36fbd0&gt;,
+ &lt;matplotlib.axis.XTick at 0x7f5bcf375f50&gt;,
+ &lt;matplotlib.axis.XTick at 0x7f5bcf51cb50&gt;,
+ &lt;matplotlib.axis.XTick at 0x7f5bcf379210&gt;,
+ &lt;matplotlib.axis.XTick at 0x7f5bcf37b410&gt;]
 </pre></div>
 </div>
 <img alt="../_images/78c8e7ef4ead46b4839c917036dfa5b52fe7db68a43c7363cb3d3221019e3c70.png" src="../_images/78c8e7ef4ead46b4839c917036dfa5b52fe7db68a43c7363cb3d3221019e3c70.png" />
@@ -1622,15 +2034,15 @@ stack by setting the <code class="docutils literal notranslate"><span class="pre
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.axis.XTick at 0x7ff8a5fa16d0&gt;,
- &lt;matplotlib.axis.XTick at 0x7ff8a5fe1710&gt;,
- &lt;matplotlib.axis.XTick at 0x7ff8a600b350&gt;,
- &lt;matplotlib.axis.XTick at 0x7ff8a5f06910&gt;,
- &lt;matplotlib.axis.XTick at 0x7ff8a5f0cdd0&gt;,
- &lt;matplotlib.axis.XTick at 0x7ff8a5f0f1d0&gt;,
- &lt;matplotlib.axis.XTick at 0x7ff8a5f11590&gt;,
- &lt;matplotlib.axis.XTick at 0x7ff8a5f11fd0&gt;,
- &lt;matplotlib.axis.XTick at 0x7ff8a5f18390&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.axis.XTick at 0x7f5bcf3b2f50&gt;,
+ &lt;matplotlib.axis.XTick at 0x7f5bcf3b1550&gt;,
+ &lt;matplotlib.axis.XTick at 0x7f5bcf410090&gt;,
+ &lt;matplotlib.axis.XTick at 0x7f5bcf2d2c50&gt;,
+ &lt;matplotlib.axis.XTick at 0x7f5bcf26ce90&gt;,
+ &lt;matplotlib.axis.XTick at 0x7f5bcf26f350&gt;,
+ &lt;matplotlib.axis.XTick at 0x7f5bcf2d96d0&gt;,
+ &lt;matplotlib.axis.XTick at 0x7f5bcf2da350&gt;,
+ &lt;matplotlib.axis.XTick at 0x7f5bcf2e0590&gt;]
 </pre></div>
 </div>
 <img alt="../_images/4cbeec86cb05929adf0972379b7144cf1e75b1b36280eaa784438dd60def38b9.png" src="../_images/4cbeec86cb05929adf0972379b7144cf1e75b1b36280eaa784438dd60def38b9.png" />
@@ -1660,7 +2072,7 @@ collects data about flu hospitalizations across 13 states. The data is publicly
 available as the <a class="reference external" href="https://gis.cdc.gov/GRASP/Fluview/FluHospRates.html">FluServ-NET data set</a>.</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
-<p>You can download the data HERE.</p>
+<p>You can download the FluServ-NET data <a class="reference external" href="https://ucdavis.box.com/s/a4m4ermwm0lqes2sh1jckdf16h0rpdkc">HERE</a>.</p>
 </div>
 <p>In the FluServ-NET data set, each row corresponds to a single combination of
 week, year, age, sex, and race. There are 10 columns, which are a mix of data
@@ -1829,7 +2241,7 @@ The code becomes:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7ff8a5a75f10&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f5bcf3245d0&gt;]
 </pre></div>
 </div>
 <img alt="../_images/955a119c3634e4726d860c5edb87562e68caf05c8e91c7e1a3183f42b16d651f.png" src="../_images/955a119c3634e4726d860c5edb87562e68caf05c8e91c7e1a3183f42b16d651f.png" />
@@ -1862,7 +2274,7 @@ The code becomes:</p>
 </div>
 </section>
 <section id="plotting-a-function">
-<h3><span class="section-number">5.4.3. </span>Plotting a Function<a class="headerlink" href="#plotting-a-function" title="Permalink to this headline">#</a></h3>
+<h3><span class="section-number">5.4.4. </span>Plotting a Function<a class="headerlink" href="#plotting-a-function" title="Permalink to this headline">#</a></h3>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This case study shows how to:</p>
@@ -1932,7 +2344,7 @@ the lines to a dash (<code class="docutils literal notranslate"><span class="pre
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7ff8a58747d0&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f5bced707d0&gt;]
 </pre></div>
 </div>
 <img alt="../_images/58226a13e7833f764c681554d86c3a46a878c1c87cb7681d3707a6d98233654f.png" src="../_images/58226a13e7833f764c681554d86c3a46a878c1c87cb7681d3707a6d98233654f.png" />
@@ -1957,7 +2369,7 @@ the gamma distribution over to -2. Then the code for the plot becomes:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7ff8a5fc2650&gt;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f5bcee25990&gt;]
 </pre></div>
 </div>
 <img alt="../_images/cad1e0b2e6f53932a34b0dad910bc23a7902295a6f99d95c4ff5a82f406649b0.png" src="../_images/cad1e0b2e6f53932a34b0dad910bc23a7902295a6f99d95c4ff5a82f406649b0.png" />
@@ -1985,7 +2397,7 @@ function computes the element-wise minimum of two arrays. So the code becomes:</
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PolyCollection at 0x7ff8a574d850&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PolyCollection at 0x7f5bcec8e390&gt;
 </pre></div>
 </div>
 <img alt="../_images/3abaa02c3b99da233158d5e2a15877a802fe0929bc308c468b9b5325d241f49b.png" src="../_images/3abaa02c3b99da233158d5e2a15877a802fe0929bc308c468b9b5325d241f49b.png" />
@@ -2078,7 +2490,7 @@ documentation</a> for all possible options</p></li>
 </div>
 </section>
 <section id="plotting-an-image">
-<h3><span class="section-number">5.4.4. </span>Plotting an Image<a class="headerlink" href="#plotting-an-image" title="Permalink to this headline">#</a></h3>
+<h3><span class="section-number">5.4.5. </span>Plotting an Image<a class="headerlink" href="#plotting-an-image" title="Permalink to this headline">#</a></h3>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This case study shows how to:</p>
@@ -2086,6 +2498,156 @@ documentation</a> for all possible options</p></li>
 <li><p>Plot an image</p></li>
 <li><p>Plot other shapes on top of an image, such as rectangles</p></li>
 </ul>
+</div>
+<p>Image data sets are common in many disciplines. For example, a radiologist
+might have a collection of x-ray images. For these data sets, being able to
+display and annotate images is extremely helpful. In this case study, suppose
+you want to display the picture of American Bison in <a class="reference internal" href="#bison"><span class="std std-numref">Fig. 5.4</span></a> and add a
+box around each animal.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>You can download the American Bison image by right-clicking on the image in
+<a class="reference internal" href="#bison"><span class="std std-numref">Fig. 5.4</span></a> and selecting <code class="docutils literal notranslate"><span class="pre">Save</span> <span class="pre">Image</span> <span class="pre">As...</span></code> from the context menu.</p>
+</div>
+<figure class="align-default" id="bison">
+<img alt="../_images/bison.png" src="../_images/bison.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 5.4 </span><span class="caption-text">American Bison</span><a class="headerlink" href="#bison" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>The first step is to read the image into Python. The <a class="reference external" href="https://pillow.readthedocs.io/en/stable/">Pillow</a> package
+provides functions for reading, editing, and writing images. The package is a
+fork (an alternative version) of the older Python Imaging Library (PIL), and
+still uses the PIL name in Python code. Import the <code class="docutils literal notranslate"><span class="pre">Image</span></code> class from the
+package:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>You can use the Image method <code class="docutils literal notranslate"><span class="pre">.open</span></code> to read the image:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;data/bison.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In computing contexts, an image is typically represented by an array of color
+values. Grayscale images can be represented by a 2-dimensional matrix, but
+color images require an extra dimension for the red, green, and blue channels.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">.imshow</span></code> method expects an image with dimensions:</p>
+<div class="math notranslate nohighlight">
+\[
+\textrm{width} \times \textrm{height} \times \textrm{channel}
+\]</div>
+<p>The channel dimension should have 3 elements: red, green, and blue, in that
+order. The <code class="docutils literal notranslate"><span class="pre">.imshow</span></code> method also works with grayscale images that only have 2
+dimensions.</p>
+<p>If you try to plot an image with <code class="docutils literal notranslate"><span class="pre">.imshow</span></code> and Python raises an error or the
+image looks strange (especially the colors), the first thing to check is
+whether the image has the right dimensions and color channels. You can usually
+fix any problems with the functions NumPy and Pillow provide to reshape arrays
+and convert between different color spaces.</p>
+</div>
+<p>The Axes method <code class="docutils literal notranslate"><span class="pre">.imshow</span></code> plots an image. As usual, use <code class="docutils literal notranslate"><span class="pre">plt.subplots</span></code> to set
+up a Figure and Axes before plotting:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.image.AxesImage at 0x7f5bceb8d750&gt;
+</pre></div>
+</div>
+<img alt="../_images/08387c4e4935b6c45070a50f310dfb6e3936340bdd3201049e687c8e2a425d68.png" src="../_images/08387c4e4935b6c45070a50f310dfb6e3936340bdd3201049e687c8e2a425d68.png" />
+</div>
+</div>
+<p>Now let’s add a red rectangle around the bison in the foreground. In Matplotlib
+terminology, a 2-dimensional geometric shape is a <code class="docutils literal notranslate"><span class="pre">Patch</span></code>, and a <code class="docutils literal notranslate"><span class="pre">Rectangle</span></code>
+is a specific kind of Patch. To create a rectangle, import <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code> and use
+the <code class="docutils literal notranslate"><span class="pre">patches.Rectangle</span></code> constructor function. The function’s first argument is
+a tuple with the top left coordinates of the rectangle. You can use separate
+arguments to specify the width and height. For the bison image, position the
+rectangle at <code class="docutils literal notranslate"><span class="pre">(120,</span> <span class="pre">200)</span></code>, make the width <code class="docutils literal notranslate"><span class="pre">140</span></code>, and make the height <code class="docutils literal notranslate"><span class="pre">160</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>
+
+<span class="n">rect</span> <span class="o">=</span> <span class="n">mpl</span><span class="o">.</span><span class="n">patches</span><span class="o">.</span><span class="n">Rectangle</span><span class="p">((</span><span class="mi">120</span><span class="p">,</span> <span class="mi">200</span><span class="p">),</span> <span class="n">width</span> <span class="o">=</span> <span class="mi">140</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="mi">160</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>To add a Patch to a plot, use the Axes method <code class="docutils literal notranslate"><span class="pre">.add_patch</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+<span class="c1"># Add rectangle.</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">rect</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.patches.Rectangle at 0x7f5bcf006390&gt;
+</pre></div>
+</div>
+<img alt="../_images/31cd0f8254d84765041d5176d50e0c2a82d0974b45dcf217dffeb2e85f0d6344.png" src="../_images/31cd0f8254d84765041d5176d50e0c2a82d0974b45dcf217dffeb2e85f0d6344.png" />
+</div>
+</div>
+<p>By default, patches are filled in blue, but you can change the fill and edge
+colors by setting the <code class="docutils literal notranslate"><span class="pre">facecolor</span></code> and <code class="docutils literal notranslate"><span class="pre">edgecolor</span></code> arguments when you create the
+Patch. The special color <code class="docutils literal notranslate"><span class="pre">&quot;none&quot;</span></code> is fully transparent. So to make the
+rectangle have transparent fill and red edges:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rect</span> <span class="o">=</span> <span class="n">mpl</span><span class="o">.</span><span class="n">patches</span><span class="o">.</span><span class="n">Rectangle</span><span class="p">(</span>
+    <span class="p">(</span><span class="mi">120</span><span class="p">,</span> <span class="mi">200</span><span class="p">),</span> <span class="n">width</span> <span class="o">=</span> <span class="mi">140</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="mi">160</span><span class="p">,</span> <span class="n">facecolor</span> <span class="o">=</span> <span class="s2">&quot;none&quot;</span><span class="p">,</span>
+    <span class="n">edgecolor</span> <span class="o">=</span> <span class="s2">&quot;#FF0000&quot;</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+<span class="c1"># Add rectangle.</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">rect</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.patches.Rectangle at 0x7f5bcebf9c50&gt;
+</pre></div>
+</div>
+<img alt="../_images/5cf35ee707c451a827ebf4a521d14361c8b5b4266e5368678502890173a8e416.png" src="../_images/5cf35ee707c451a827ebf4a521d14361c8b5b4266e5368678502890173a8e416.png" />
+</div>
+</div>
+<p>You can create and add as many patches as needed to a plot. If you need to add
+lots of patches, consider whether it’s possible to use a loop. Image
+annotations are especially useful for displaying results from image processing
+and machine learning algorithms.</p>
+</section>
+<section id="plotting-a-map">
+<h3><span class="section-number">5.4.6. </span>Plotting a Map<a class="headerlink" href="#plotting-a-map" title="Permalink to this headline">#</a></h3>
+<p>Geospatial data are often best visualized by making a map. When you make a map,
+visualization best practices still apply, but there are also many additional
+details to consider, such as what projection to use. The <a class="reference external" href="https://geopandas.org/en/stable/">GeoPandas</a> package
+provides functions to read and visualize geospatial data. Like many other
+packages, the GeoPandas visualization functions are built on Matplotlib, so you
+can use the customization strategies described in this reader. No case study is
+provided here because working with geospatial data requires specialized
+knowledge that goes beyond the focus of this chapter.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you work with geospatial data frequently or need to make publication-quality
+maps, it may be better to use dedicated geospatial software, such as <a class="reference external" href="https://qgis.org/en/site/">QGIS</a>.
+DataLab’s <a class="reference external" href="https://ucdavisdatalab.github.io/Intro-to-Desktop-GIS-with-QGIS/">Intro to Desktop GIS with QGIS</a> workshop provides an
+introduction.</p>
 </div>
 <!--
 ### Egg Prices
@@ -2234,10 +2796,12 @@ Low priority:
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualization-best-practices">5.3. Visualization Best Practices</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#case-studies">5.4. Case Studies</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting-a-distribution">5.4.1. Plotting a Distribution</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting-a-time-series">5.4.2. Plotting a Time Series</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting-a-function">5.4.3. Plotting a Function</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting-an-image">5.4.4. Plotting an Image</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting-a-categorical-distribution">5.4.1. Plotting a Categorical Distribution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting-a-continuous-distribution">5.4.2. Plotting a Continuous Distribution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting-a-time-series">5.4.3. Plotting a Time Series</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting-a-function">5.4.4. Plotting a Function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting-an-image">5.4.5. Plotting an Image</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting-a-map">5.4.6. Plotting a Map</a></li>
 </ul>
 </li>
 </ul>

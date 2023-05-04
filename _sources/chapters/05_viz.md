@@ -22,7 +22,18 @@ Next-level Data Visualization
 =============================
 
 :::{admonition} Learning Objectives
-* TODO
+* Describe Matplotlib
+* Describe and identify the components of a Matplotlib Figure
+* Describe a Matplotlib Axes
+* Explain the difference between Matplotlib's explicit and implicit interfaces
+* Create Matplotlib Figures and Axes
+* Modify Matplotlib plots with Figure and Axes methods
+* Describe Matplotlib's coding styles
+* Choose appropriate visualizations based on data type(s)
+* List the steps to making a well-designed visualization
+* Assess what aspects of a visualization need improvement
+* Use Matplotlib to customize visualizations made with other packages
+* Create well-designed data visualizations
 :::
 
 This chapter is about customizing data visualizations in Python. [Seaborn][],
@@ -55,9 +66,11 @@ To follow along, you'll need the following software versions (or newer)
 installed on your computer:
 
 * [Python][] 3.10
+* [Matplotlib][] 3.7
 * [NumPy][] 1.24
 * [Pandas][] 1.5
-* [Matplotlib][] 3.7
+* [Pillow][] 9.5
+* [PyArrow][] 11.0
 * [Seaborn][] 0.12
 
 One way to install all of these at once is to install the [Anaconda][] Python
@@ -67,6 +80,8 @@ additional details about Anaconda and the `conda` package manager.
 [Python]: https://www.python.org/
 [NumPy]: https://numpy.org/
 [Anaconda]: https://www.anaconda.com/
+[Pillow]: https://pillow.readthedocs.io/en/stable/
+[PyArrow]: https://arrow.apache.org/docs/python/
 
 
 Thinking in Matplotlib
@@ -133,7 +148,7 @@ A scatter plot from the [Palmer Penguins data set][penguins].
 After downloading the data set, use pandas to read it and display some summary
 information:
 
-[penguins-dl]: #
+[penguins-dl]: https://ucdavis.box.com/s/pjcr4l989v6k4ikxou7r4ws54t2qrbjs
 
 ```{code-cell}
 import pandas as pd
@@ -818,10 +833,14 @@ reminder of these skills. Bookmark or print out a copy and run through the
 checklist whenever you design a visualization. The case studies in the
 {numref}`case-studies` show how to fix some of the issues on the checklist.
 
+:::{note}
+Choosing colors is often one of the visualization details that trips people up.
+Matplotlib's [Choosing Colormaps Guide][mpl-colormaps] is a good source of
+information for what colormaps are available in Matplotlib and how to choose an
+appropriate one.
 
-<!--
-### Color Palettes
--->
+[mpl-colormaps]: https://matplotlib.org/stable/tutorials/colors/colormaps.html
+:::
 
 
 (case-studies)=
@@ -829,13 +848,313 @@ Case Studies
 ------------
 
 Now that you've learned a little bit about how to use Matplotlib, it's time to
-put it into practice. This section
+put it into practice. This section presents a variety of case studies in making
+visualizations, using a mix of Matplotlib and Seaborn.
+
+:::{note}
+Although the case studies use Seaborn, most of the strategies shown apply to
+any Matplotlib-based visualization package. Plotting functions in these
+packages often take an Axes as input or return an Axes as output. As long as
+you can get access to the Axes object, you can use Matplotlib methods to
+customize the plot.
+:::
+
+
+(plotting-a-categorical-distribution)=
+### Plotting a Categorical Distribution
+
+:::{note}
+This case study shows how to:
+
+* Use Seaborn to plot the distribution of one or more categorical features
+* Use Seaborn to create faceted plots
+:::
+
+When you start working with a new data set, the first thing you should do is
+explore (and clean) the features. Exploring the features means inspecting the
+distribution of each feature, as well as checking for relationships between
+features. For this case study, let's use Seaborn and Matplotlib to explore the
+categorical features in the Palmer Penguins data set from
+{numref}`mpl-introduction`.
+
+Consider the species of the penguins the data set. Are the three
+species---Adélie, Chinstrap, and Gentoo---equally represented? This question is
+asking how the categorical `species` feature is distributed. Tables, bar plots,
+and dot plots are all good tools for examining the distribution of a single
+categorical feature. Let's make a table and a bar plot.
+
+:::{tip}
+Inspecting data through multiple methods is a good way to verify that your code
+and interpretations are correct.
+:::
+
+You can use the Pandas `.value_counts` method to make a table:
+
+```{code-cell}
+penguins["species"].value_counts()
+```
+
+To make the bar plot, first import Seaborn. The conventional abbreviation for
+the package is `sns`:
 
 ```{code-cell}
 import seaborn as sns
 ```
 
-### Plotting a Distribution
+Seaborn provides two different functions for making bar plots:
+
+* The `sns.barplot` function requires two features: the category for each bar
+  and the length of each bar. It's best for data that's already been grouped
+  and aggregated. For example, you could compute the median flipper length of
+  each penguin species and then plot the means with `sns.barplot`.
+
+* The `sns.countplot` function only requires one feature: a categorical array.
+  The function automatically groups and aggregates the values by counting them.
+  It's best for visualizing the distribution of a categorical feature. Note
+  that this is purely a convenience function---you could just compute the
+  counts yourself and plot them with `sns.barplot`.
+
+Use the `sns.countplot` function to make a bar plot of the distribution of
+penguin species:
+
+```{code-cell}
+sns.countplot(penguins, x = "species")
+```
+
+The function returns a Matplotlib Axes. You can use this to customize the plot.
+For example, to capitalize the axis labels:
+
+```{code-cell}
+ax = sns.countplot(penguins, x = "species")
+ax.set_xlabel("Species")
+ax.set_ylabel("Count")
+```
+
+Most Seaborn plotting functions also have an `ax` parameter you can use to
+specify an Axes on which to plot. This makes it possible to add to existing
+Axes and to customize plots produced by plotting functions that don't return an
+Axes object. Using this approach, the equivalent of the previous example is:
+
+```{code-cell}
+fig, ax = plt.subplots()
+sns.countplot(penguins, x = "species", ax = ax)
+ax.set_xlabel("Species")
+ax.set_ylabel("Count")
+```
+
+Besides species, the Palmer Penguins data set also includes information about
+the island where each bird was observed and the biological sex of each bird.
+When a data set has multiple categorical features, it's important to check how
+the observations are grouped within them, since unbalanced groups can bias
+analyses. You can use color to represent a second categorical feature in a bar
+plot. Seaborn uses the `hue` parameter to link color to a feature. So to make
+the bar plot show both species and sex:
+
+```{code-cell}
+fig, ax = plt.subplots()
+sns.countplot(penguins, x = "species", hue = "sex", ax = ax)
+ax.set_xlabel("Species")
+ax.set_ylabel("Count")
+```
+
+The plot suggests the sexes are relatively well-balanced across the observed
+penguins, regardless of species. Of course, there's still the island feature to
+consider.
+
+A bar plot can really only summarize two features at once, and many other types
+of plots are also limited to just two or three features. One way to represent
+more categorical features is to use **facets**, side-by-side plots that each
+show data for a mutually exclusive category or combination of categories.
+
+Most plotting packages provide convenience functions for making faceted plots,
+and Seaborn is no exception. The [`sns.FacetGrid`][facet-grid] function creates
+a grid of plots based on one or two categorical features. You can use the
+returned FacetGrid's `.map_dataframe` method to call a plotting function for
+each facet with the appropriate subsets of the data. For example, to indicate
+sex by row, island by column, and use a separate bar for each species:
+
+```{code-cell}
+grid = sns.FacetGrid(penguins, row = "sex", col = "island")
+grid.map_dataframe(sns.countplot, x = "species")
+```
+
+[facet-grid]: https://seaborn.pydata.org/generated/seaborn.FacetGrid.html
+
+The `margin_titles` parameter of `sns.FacetGrid` controls whether the group
+titles are placed in the margins. The default is `False`, but setting the
+parameter to `True` makes the plot easier to read:
+
+```{code-cell}
+grid = sns.FacetGrid(
+    penguins, row = "sex", col = "island", margin_titles = True)
+grid.map_dataframe(sns.countplot, x = "species")
+```
+
+You can use the FacetGrid method `.set_titles` to set the titles of faceted
+plots. The title strings are treated as templates with some values replaced
+automatically. For instance, `{row_name}` is replaced by the row's category.
+Here's how to change the titles so that they only show the categories and not
+the feature names:
+
+```{code-cell}
+grid = sns.FacetGrid(
+    penguins, row = "sex", col = "island", margin_titles = True)
+grid.map_dataframe(sns.countplot, x = "species")
+grid.set_titles(row_template = "{row_name}", col_template = "{col_name}")
+```
+
+:::{tip}
+If you want to change the names of the categories in a feature, do that as a
+separate step before making visualizations. The [Pandas documentation about
+Categorical data][pd-cat] provides details about how to create categorical
+features and set category names.
+
+[pd-cat]: https://pandas.pydata.org/docs/user_guide/categorical.html
+:::
+
+Similarly, you can use the `.set_axis_labels` to set the axis labels:
+
+```{code-cell}
+grid = sns.FacetGrid(
+    penguins, row = "sex", col = "island", margin_titles = True)
+grid.map_dataframe(sns.countplot, x = "species")
+grid.set_titles(row_template = "{row_name}", col_template = "{col_name}")
+grid.set_axis_labels(x_var = "Species", y_var = "Count")
+```
+
+Seaborn's methods for creating and customizing faceted plots are convenient,
+and you can read more about them in the [FacetGrid documentation][facet-grid].
+Occasionally, you may need to work with the underlying Matplotlib Figure and
+Axes. Fortunately, FacetGrid objects provide access to these through the
+`.figure` and `.axes` attributes.
+
+:::{note}
+This case study focuses on categorical features and the next focuses on
+continuous features. So what should you do if you have a discrete feature?
+
+Discrete features share properties of categorical features (both are
+enumerable) and properties of continuous features (both are quantitative). This
+usually means you can choose whether to treat discrete features as categorical
+or continuous. Categorical methods tend to be more appropriate for discrete
+features that take relatively few distinct values, and continuous methods tend
+to be more appropriate for ones that don't.
+:::
+
+
+### Plotting a Continuous Distribution
+
+:::{note}
+This case study shows how to:
+
+* Use Seaborn to plot the distribution of one or more continuous features
+:::
+
+{numref}`plotting-a-categorical-distribution` shows how to visualize the
+distribution of a categorical feature. For this case study, let's examine one
+of the continuous features in the Palmer Penguins data set from
+{numref}`mpl-introduction`.
+
+There are many different ways to visualize continuous features, such as
+histograms, density plots, box plots, violin plots, and empirical cumulative
+distribution function plots. The Seaborn documentation provides a [detailed
+guide to visualizing distributions][seaborn-dist-viz].
+
+[seaborn-dist-viz]: https://seaborn.pydata.org/tutorial/distributions.html
+
+:::{warning}
+The `sns.displot` function can create many different kinds of distribution
+plots, but it operates at the Figure level and does not accept or return an
+Axes, making it difficult to customize the result. For this reason, we
+recommend against using `sns.displot`.
+
+If you decide to use `sns.displot` anyways, be careful not to confuse it with
+`sns.distplot` (with two "t"s). Both make distribution plots, but the former
+uses a new interface that's more consistent with other Seaborn functions. You
+should use the new interface (`sns.displot`) in any new code you write, as
+support for the old interface may eventually end.
+:::
+
+Let's visualize the distribution of the birds' body mass, which is recorded in
+the `body_mass_g` feature. Some of Seaborn's functions for plotting continuous
+distributions are:
+
+* `sns.histplot` to make a histogram
+* `sns.kdeplot` to make a density (or "kernel density estimator") plot
+* `sns.boxplot` to make a box plot
+* `sns.boxenplot` to make a boxen (or "letter value") plot
+* `sns.ecdfplot` to make an empirical cumulative distribution function plot
+* `sns.violinplot` to make a violin plot
+
+For example, to make a histogram:
+
+```{code-cell}
+sns.histplot(penguins, x = "body_mass_g")
+```
+
+And to make a density plot:
+
+```{code-cell}
+sns.kdeplot(penguins, x = "body_mass_g")
+```
+
+Like most other Seaborn plotting functions, these functions have an `ax`
+parameter for the Axes on which to plot, and also returns an Axes. So to make
+the x-axis label easier to read:
+
+```{code-cell}
+fig, ax = plt.subplots()
+sns.kdeplot(penguins, x = "body_mass_g", ax = ax)
+ax.set_xlabel("Body Mass (g)")
+```
+
+Density plots are convenient when you want to break down the distribution of a
+continuous feature across the categories of a categorical feature, because the
+plot can show a separate line for each category. For instance, to group body
+mass by species:
+
+```{code-cell}
+fig, ax = plt.subplots()
+sns.kdeplot(penguins, x = "body_mass_g", hue = "species", ax = ax)
+ax.set_xlabel("Body Mass (g)")
+```
+
+This makes it easy to see that Gentoo penguins typically have more mass than
+the other two species.
+
+As in {numref}`plotting-a-categorical-distribution`, you can incorporate more
+categorical features by faceting. To incorporate another continuous feature,
+it's necessary to change plot types.
+
+You can visualize the distributions of and relationship between two continuous
+features with a scatter plot (`sns.scatterplot`) or a smoothed scatter plot
+(again `sns.kdeplot`). The latter smooths out the points in a scatter plot to
+show their relative density, using a 2-dimensional generalization of the method
+used to estimate a density plot. For instance, to plot body weight against
+flipper length:
+
+```{code-cell}
+fig, ax = plt.subplots()
+sns.kdeplot(
+    penguins, x = "body_mass_g", y = "flipper_length_mm", hue = "species",
+    ax = ax)
+ax.set_xlabel("Body Mass (g)")
+ax.set_ylabel("Flipper Length (mm)")
+```
+
+In this plot it's possible to see how the distributions of body mass and
+flipper length differ across species, as well as how body mass and flipper mass
+are related.
+
+:::{tip}
+Visualizing more than two continuous features at once can be challenging. One
+way to get around this problem is to create a separate plot for each pair of
+features.
+
+If it really is necessary to visualize more than two at once, consider
+converting at least one of them into a categorical feature by **binning** or
+**discretizing** the values. Then you can use strategies for categorical
+features such as varying colors and faceting.
+:::
 
 
 ### Plotting a Time Series
@@ -862,8 +1181,10 @@ to find out why they died. The USDA compiles the information into a public
 [usda-birds]: https://www.aphis.usda.gov/aphis/ourfocus/animalhealth/animal-disease-information/avian/avian-influenza/
 
 :::{important}
-You can download the data HERE.
+You can download the Avian Influenza data [HERE][usda-birds-data].
 :::
+
+[usda-birds-data]: https://ucdavis.box.com/s/babz1b5ak0kh7q7cktg7k5gzrt2ve9gc
 
 You can use pandas' `pd.read_csv` function to read the data. Each row
 corresponds to one bird death. There are 8 columns with information about the
@@ -984,8 +1305,10 @@ available as the [FluServ-NET data set][fluserv].
 [fluserv]: https://gis.cdc.gov/GRASP/Fluview/FluHospRates.html
 
 :::{important}
-You can download the data HERE.
+You can download the FluServ-NET data [HERE][fluserv-data].
 :::
+
+[fluserv-data]: https://ucdavis.box.com/s/a4m4ermwm0lqes2sh1jckdf16h0rpdkc
 
 In the FluServ-NET data set, each row corresponds to a single combination of
 week, year, age, sex, and race. There are 10 columns, which are a mix of data
@@ -1243,6 +1566,141 @@ This case study shows how to:
 * Plot an image
 * Plot other shapes on top of an image, such as rectangles
 :::
+
+Image data sets are common in many disciplines. For example, a radiologist
+might have a collection of x-ray images. For these data sets, being able to
+display and annotate images is extremely helpful. In this case study, suppose
+you want to display the picture of American Bison in {numref}`bison` and add a
+box around each animal.
+
+:::{important}
+You can download the American Bison image by right-clicking on the image in
+{numref}`bison` and selecting `Save Image As...` from the context menu.
+:::
+
+:::{figure} ../img/bison.png
+---
+name: bison
+---
+American Bison
+:::
+
+The first step is to read the image into Python. The [Pillow][] package
+provides functions for reading, editing, and writing images. The package is a
+fork (an alternative version) of the older Python Imaging Library (PIL), and
+still uses the PIL name in Python code. Import the `Image` class from the
+package:
+
+
+```{code-cell}
+from PIL import Image
+```
+
+You can use the Image method `.open` to read the image:
+
+```{code-cell}
+img = Image.open("data/bison.png")
+```
+
+:::{note}
+In computing contexts, an image is typically represented by an array of color
+values. Grayscale images can be represented by a 2-dimensional matrix, but
+color images require an extra dimension for the red, green, and blue channels.
+
+The `.imshow` method expects an image with dimensions:
+
+$$
+\textrm{width} \times \textrm{height} \times \textrm{channel}
+$$
+
+The channel dimension should have 3 elements: red, green, and blue, in that
+order. The `.imshow` method also works with grayscale images that only have 2
+dimensions.
+
+If you try to plot an image with `.imshow` and Python raises an error or the
+image looks strange (especially the colors), the first thing to check is
+whether the image has the right dimensions and color channels. You can usually
+fix any problems with the functions NumPy and Pillow provide to reshape arrays
+and convert between different color spaces.
+:::
+
+The Axes method `.imshow` plots an image. As usual, use `plt.subplots` to set
+up a Figure and Axes before plotting:
+
+```{code-cell}
+fig, ax = plt.subplots()
+ax.imshow(img)
+```
+
+Now let's add a red rectangle around the bison in the foreground. In Matplotlib
+terminology, a 2-dimensional geometric shape is a `Patch`, and a `Rectangle`
+is a specific kind of Patch. To create a rectangle, import `matplotlib` and use
+the `patches.Rectangle` constructor function. The function's first argument is
+a tuple with the top left coordinates of the rectangle. You can use separate
+arguments to specify the width and height. For the bison image, position the
+rectangle at `(120, 200)`, make the width `140`, and make the height `160`:
+
+```{code-cell}
+import matplotlib as mpl
+
+rect = mpl.patches.Rectangle((120, 200), width = 140, height = 160)
+```
+
+To add a Patch to a plot, use the Axes method `.add_patch`:
+
+```{code-cell}
+fig, ax = plt.subplots()
+ax.imshow(img)
+# Add rectangle.
+ax.add_patch(rect)
+```
+
+By default, patches are filled in blue, but you can change the fill and edge
+colors by setting the `facecolor` and `edgecolor` arguments when you create the
+Patch. The special color `"none"` is fully transparent. So to make the
+rectangle have transparent fill and red edges:
+
+```{code-cell}
+rect = mpl.patches.Rectangle(
+    (120, 200), width = 140, height = 160, facecolor = "none",
+    edgecolor = "#FF0000")
+
+fig, ax = plt.subplots()
+ax.imshow(img)
+# Add rectangle.
+ax.add_patch(rect)
+```
+
+You can create and add as many patches as needed to a plot. If you need to add
+lots of patches, consider whether it's possible to use a loop. Image
+annotations are especially useful for displaying results from image processing
+and machine learning algorithms.
+
+
+### Plotting a Map
+
+Geospatial data are often best visualized by making a map. When you make a map,
+visualization best practices still apply, but there are also many additional
+details to consider, such as what projection to use. The [GeoPandas][] package
+provides functions to read and visualize geospatial data. Like many other
+packages, the GeoPandas visualization functions are built on Matplotlib, so you
+can use the customization strategies described in this reader. No case study is
+provided here because working with geospatial data requires specialized
+knowledge that goes beyond the focus of this chapter.
+
+[GeoPandas]: https://geopandas.org/en/stable/
+
+:::{note}
+If you work with geospatial data frequently or need to make publication-quality
+maps, it may be better to use dedicated geospatial software, such as [QGIS][].
+DataLab's [Intro to Desktop GIS with QGIS][DataLab-QGIS] workshop provides an
+introduction.
+:::
+
+[QGIS]: https://qgis.org/en/site/
+[DataLab-QGIS]: https://ucdavisdatalab.github.io/Intro-to-Desktop-GIS-with-QGIS/
+
+
 
 <!--
 ### Egg Prices
