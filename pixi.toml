@@ -1,0 +1,34 @@
+[project]
+authors = [
+  "Nick Ulle <naulle@ucdavis.edu>",
+]
+channels = ["conda-forge"]
+description = "Reader for the Intermediate Python workshop series."
+name = "intermediate-python"
+platforms = ["linux-64", "osx-64", "win-64"]
+version = "2025.winter.0"  # <year>.<quarter>.<revision #>
+
+[environments]
+dev = ["dev"]
+
+[tasks]
+build = { cmd = "jupyter-book build .", description = "Build the reader." }
+publish = { cmd = "ghp-import --no-jekyll --no-history --push _build/html", description = "Publish the reader to the `gh-pages` branch on GitHub." }
+clean = { cmd = "rm -rf _build/", description = "Remove the build directory." }
+rebuild = { depends-on = ["clean", "build"], description = "Remove the build directory and build the reader." }
+
+[dependencies]
+python = ">=3.13.2,<3.14"
+jupyter-book = ">=1.0.4.post1,<2"
+pandas = ">=2.2.3,<3"
+matplotlib = ">=3.10.1,<4"
+seaborn = ">=0.13.2,<0.14"
+numpy = ">=2.2.3,<3"
+pillow = ">=11.1.0,<12"
+scipy = ">=1.15.2,<2"
+ghp-import = ">=2.1.0,<3"
+polars = ">=1.24.0,<2"
+
+[feature.dev.dependencies]
+jupyter = "*"
+ipdb = "*"
