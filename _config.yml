@@ -1,6 +1,6 @@
 title: Intermediate Python
 author: Nick Ulle
-copyright: "2022"
+copyright: "2025"
 logo: img/datalab-logo-full-color-rgb-1.png
 exclude_patterns: [_build, .pixi]
 only_build_toc_files: true
