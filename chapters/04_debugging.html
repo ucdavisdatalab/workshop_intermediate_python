@@ -1,0 +1,1195 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>3. Squashing Bugs with Python’s Debugging Tools &#8212; Intermediate Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapters/04_debugging';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="4. Making Python Projects &amp; Environments Reproducible" href="02_reproducible.html" />
+    <link rel="prev" title="2. Iterator &amp; Generator Crash Course" href="03_iterators.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/datalab-logo-full-color-rgb-1.png" class="logo__image only-light" alt="Intermediate Python - Home"/>
+    <script>document.write(`<img src="../_static/datalab-logo-full-color-rgb-1.png" class="logo__image only-dark" alt="Intermediate Python - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="index.html">
+                    Overview
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Thinking in Python</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_pandas.html">1. Slicing &amp; Dicing Data with pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_iterators.html">2. Iterator &amp; Generator Crash Course</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">3. Squashing Bugs with Python’s Debugging Tools</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Writing Python Scripts</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="02_reproducible.html">4. Making Python Projects &amp; Environments Reproducible</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Other Workshops</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="05_viz.html">5. Next-level Data Visualization</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Afterword</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
+<li class="toctree-l1"><a class="reference internal" href="acknowledgements.html">Acknowledgements</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/ucdavisdatalab/workshop_intermediate_python" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/ucdavisdatalab/workshop_intermediate_python/issues/new?title=Issue%20on%20page%20%2Fchapters/04_debugging.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/chapters/04_debugging.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Squashing Bugs with Python’s Debugging Tools</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">3.1. Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#errors">3.2. Errors</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#handling-exceptions">3.2.1. Handling Exceptions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#raising-exceptions">3.2.2. Raising Exceptions</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#defensive-programming">3.3. Defensive Programming</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#logging">3.3.1. Logging</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#assertions">3.3.2. Assertions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tests">3.3.3. Tests</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#debugging">3.4. Debugging</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#in-ipython-jupyter">3.4.1. In IPython &amp; Jupyter</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#profiling">3.5. Profiling</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="squashing-bugs-with-python-s-debugging-tools">
+<span id="chapter-debugging"></span><h1><span class="section-number">3. </span>Squashing Bugs with Python’s Debugging Tools<a class="headerlink" href="#squashing-bugs-with-python-s-debugging-tools" title="Link to this heading">#</a></h1>
+<div class="admonition-learning-objectives admonition">
+<p class="admonition-title">Learning Objectives</p>
+<ul class="simple">
+<li><p>Explain the difference between syntax errors and exceptions</p></li>
+<li><p>Identify Python’s common built-in exceptions</p></li>
+<li><p>Explain and use a try-catch statement</p></li>
+<li><p>Raise exceptions in code</p></li>
+<li><p>Explain the principles of defensive programming</p></li>
+<li><p>Use Python’s built-in <code class="docutils literal notranslate"><span class="pre">logging</span></code> module to log output</p></li>
+<li><p>Explain what assertions are and how to use them</p></li>
+<li><p>Explain what unit tests are</p></li>
+<li><p>Explain what debugging is and what the <code class="docutils literal notranslate"><span class="pre">pdb</span></code> module is</p></li>
+<li><p>Use the <code class="docutils literal notranslate"><span class="pre">pdb</span></code> debugger to navigate through running code</p></li>
+<li><p>Explain what <code class="docutils literal notranslate"><span class="pre">ipdb</span></code> is and how to debug with IPython &amp; Jupyter</p></li>
+<li><p>Explain and use IPython magic commands</p></li>
+<li><p>Explain what profiling is</p></li>
+</ul>
+</div>
+<p>This chapter describes how to prevent, detect, and diagnose bugs in your Python
+code. This includes an introduction to Python’s exceptions system, a discussion
+of defensive programming best practices, and an introduction to Python’s
+debugging tools. The chapter also describes some of the tools you can use to
+measure and improve the performance of your code.</p>
+<section id="prerequisites">
+<h2><span class="section-number">3.1. </span>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">#</a></h2>
+<p>This chapter assumes you already have basic familiarity with Python. DataLab’s
+<a class="reference external" href="https://ucdavisdatalab.github.io/workshop_python_basics/">Python Basics Reader</a> and its accompanying workshop provide a
+suitable introduction.</p>
+<p>To follow along, you’ll need the following software versions (or newer)
+installed on your computer:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.python.org/">Python</a> 3.10</p></li>
+<li><p><a class="reference external" href="https://github.com/gotcha/ipdb">ipdb</a> 0.13.9</p></li>
+</ul>
+<p>One way to install these is to install the <a class="reference external" href="https://www.anaconda.com/">Anaconda</a> Python distribution.
+Chapter 2 provides more details about Anaconda and the <code class="docutils literal notranslate"><span class="pre">conda</span></code> package manager.</p>
+</section>
+<section id="errors">
+<h2><span class="section-number">3.2. </span>Errors<a class="headerlink" href="#errors" title="Link to this heading">#</a></h2>
+<p>When you write and run Python code, there are two different kinds of errors you
+might have to deal with: syntax errors and exceptions. A <strong>syntax error</strong> is a
+grammatical mistake in how you wrote the code, and prevents Python from running
+the code. For instance, this code to construct a list has a common syntax
+error—a comma <code class="docutils literal notranslate"><span class="pre">,</span></code> is missing:</p>
+<div class="cell tag_raises-exception docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span> <span class="mi">4</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span>  <span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span> <span class="mi">4</span><span class="p">]</span>
+               <span class="o">^</span>
+<span class="ne">SyntaxError</span>: invalid syntax. Perhaps you forgot a comma?
+</pre></div>
+</div>
+</div>
+</div>
+<p>Syntax errors are the simplest kind of error to resolve, because they’re
+usually caused by typos or a misunderstanding of the Python syntax (which you
+can clarify by reviewing the documentation). If you try to run code that
+contains a syntax error, Python will report the line and character where it
+first detects the error.</p>
+<p>In contrast, an <strong>exception</strong> is an error that occurs while your code is
+running. Exceptions are usually caused by something that violates the
+assumptions of the code—such as an argument with an inappropriate type or
+value, a file that’s in the wrong place, or an unreliable network connection.
+As an example, adding an integer and a string raises an exception:</p>
+<div class="cell tag_raises-exception docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="mi">3</span> <span class="o">+</span> <span class="s2">&quot;hello&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">TypeError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="mi">3</span> <span class="o">+</span> <span class="s2">&quot;hello&quot;</span>
+
+<span class="ne">TypeError</span>: unsupported operand type(s) for +: &#39;int&#39; and &#39;str&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p>Many different types of exceptions are built into Python, and you can also
+create your own. The code above raises a <code class="docutils literal notranslate"><span class="pre">TypeError</span></code>, an exception that means
+one or more arguments have an inappropriate type.</p>
+<p>Another kind of exception, a <code class="docutils literal notranslate"><span class="pre">NameError</span></code>, is raised if your code tries to
+access a variable that doesn’t exist:</p>
+<div class="cell tag_raises-exception docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">aggie</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">aggie</span>
+
+<span class="ne">NameError</span>: name &#39;aggie&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here are several common built-in exceptions:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Cause</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">AttributeError</span></code></p></td>
+<td><p>Attribute is not found or read-only</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">IndexError</span></code></p></td>
+<td><p>Index to sequence is out of range</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">KeyError</span></code></p></td>
+<td><p>Key to dictionary is not found</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">NameError</span></code></p></td>
+<td><p>Variable is not found</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">StopIteration</span></code></p></td>
+<td><p>Iterator or generator is out of items</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">TypeError</span></code></p></td>
+<td><p>Object has inappropriate type for an operation</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ValueError</span></code></p></td>
+<td><p>Object has inappropriate value for an operation</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>You can find a complete list in <a class="reference external" href="https://docs.python.org/3/library/exceptions.html">the Built-in Exceptions chapter</a>
+of the Python documentation.</p>
+<section id="handling-exceptions">
+<h3><span class="section-number">3.2.1. </span>Handling Exceptions<a class="headerlink" href="#handling-exceptions" title="Link to this heading">#</a></h3>
+<p>You can make your code more robust by handling exceptions that are likely to
+occur or have a straightforward solution. You can use a <strong>try-except
+statement</strong> to indicate that some code might raise an exception and specify
+what should happen if it does.</p>
+<p>As an example, consider this code to prompt the user for a number:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Specify a number: &quot;</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If the user provides an input that’s not a number, the call to <code class="docutils literal notranslate"><span class="pre">float</span></code> raises a
+<code class="docutils literal notranslate"><span class="pre">ValueError</span></code>:</p>
+<div class="cell tag_remove-input tag_raises-exception docutils container">
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">6</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">x</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="ne">ValueError</span>: could not convert string to float: &#39;hi&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p>Suppose instead you’d like to use 0.0 as a default if the input isn’t a number.
+One way you can do this is with a try-except statement:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Specify a number: &quot;</span><span class="p">)</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s2">&#39; is not a valid number, using 0 instead.&quot;</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<p>Put code that might raise an exception in the <code class="docutils literal notranslate"><span class="pre">try</span></code> block. Code in the <code class="docutils literal notranslate"><span class="pre">except</span></code>
+block only runs if an exception is actually raised.</p>
+<p>You can specify which types of exceptions an <code class="docutils literal notranslate"><span class="pre">except</span></code> block should catch by
+adding the type after the keyword:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Specify a number: &quot;</span><span class="p">)</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s2">&#39; is not a valid number, using 0 instead.&quot;</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<p>You can optionally give the exception a name as well, so that you can refer to
+it in the <code class="docutils literal notranslate"><span class="pre">except</span></code> block:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Specify a number: &quot;</span><span class="p">)</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s2">&#39; is not a valid number, using 0 instead.&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Original error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<p>Specifying the type of exception serves two purposes:</p>
+<ol class="arabic simple">
+<li><p>It ensures that your code only catches exceptions it can handle.</p></li>
+<li><p>It allows you to handle different types of exceptions in different ways.</p></li>
+</ol>
+<p>The second is possible because you can have more than one <code class="docutils literal notranslate"><span class="pre">except</span></code> block in a
+try-except statement.</p>
+<p>A try-except statement can also have an <code class="docutils literal notranslate"><span class="pre">else</span></code> block. Code in the <code class="docutils literal notranslate"><span class="pre">else</span></code> block
+only runs if an exception is <em>not</em> raised. So continuing the example, you could
+combine a try-except statement with a while-loop to prompt the user for a
+number until they enter a valid one:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Specify a number: &quot;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s2">&#39; is not a valid number.&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># No exception, so break out of the loop.</span>
+        <span class="k">break</span>
+</pre></div>
+</div>
+<p>Finally, you can use a <code class="docutils literal notranslate"><span class="pre">finally</span></code> block in a try-except statement to specify
+code that should <em>always</em> run, whether on not an exception is raised. This is
+mainly useful for cleanup operations, such as closing connections to files or
+network devices.</p>
+</section>
+<section id="raising-exceptions">
+<h3><span class="section-number">3.2.2. </span>Raising Exceptions<a class="headerlink" href="#raising-exceptions" title="Link to this heading">#</a></h3>
+<p>You can use the <code class="docutils literal notranslate"><span class="pre">raise</span></code> keyword to make your code raise an exception. For
+instance, suppose you define a function to trim a specified number of elements
+from each end of a sequence. The function should raise an error if the number
+of elements to trim is greater than the length of the sequence:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">trim_elements</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="o">*</span><span class="n">n</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Too many elements to trim.&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">x</span><span class="p">[</span><span class="n">n</span><span class="p">:</span><span class="o">-</span><span class="n">n</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>In this case, the function raises a <code class="docutils literal notranslate"><span class="pre">ValueError</span></code> because the value of <code class="docutils literal notranslate"><span class="pre">n</span></code> is
+the problem. The argument to the exception is the error message. You can use
+<code class="docutils literal notranslate"><span class="pre">raise</span></code> to raise any type of exception, including user-defined exceptions.</p>
+<p>You can find further examples of how to handle, raise, and define new types of
+exceptions in the <a class="reference external" href="https://docs.python.org/3/tutorial/errors.html">Errors and Exceptions chapter</a> of the
+Python documentation.</p>
+</section>
+</section>
+<section id="defensive-programming">
+<h2><span class="section-number">3.3. </span>Defensive Programming<a class="headerlink" href="#defensive-programming" title="Link to this heading">#</a></h2>
+<p><strong>Defensive programming</strong> means taking steps to prevent or quickly detect and
+fix bugs when writing code. Defensive programming techniques can help you
+minimize time spent debugging and the number of unexpected bugs at run-time.
+Some examples of how you can program defensively include:</p>
+<ul class="simple">
+<li><p>Format your code neatly. Use a consistent naming scheme and indentation
+style.</p></li>
+<li><p>Organize your code into logical steps or “paragraphs” with blank lines in
+between. This makes it convenient to review what happens in each step, and to
+convert steps into functions when appropriate.</p></li>
+<li><p>Add comments to your code:</p>
+<ul>
+<li><p>To create a big picture plan for what to write.</p></li>
+<li><p>To explain tricky code.</p></li>
+<li><p>To summarize the purpose of a “paragraph” of code.</p></li>
+</ul>
+</li>
+<li><p>Convert steps that you plan to use more than once into short functions.
+Think about what the expected inputs and outputs are for each function, and
+make a note of these in the docstring.</p></li>
+<li><p>Develop code to handle the simple cases first. Don’t try to handle more
+complicated cases until you’ve verified that the code works for the simple
+cases.</p></li>
+<li><p>Test code frequently as you write it. Alternate between writing code and
+running the code to confirm it works as expected. You should have a Python
+session running to test things out almost any time you’re writing code.</p></li>
+<li><p>Investigate unexpected behavior such as warning messages even if the code
+seems to produce correct results. Ideally, either fix the code so the
+unexpected behavior doesn’t occur, or document why the behavior occurs and
+why it doesn’t pose a problem.</p></li>
+<li><p>Follow reproducibility best practices, including those laid out in
+<a class="reference internal" href="02_reproducible.html#chapter-reproducible"><span class="std std-numref">Section 4</span></a>.</p></li>
+</ul>
+<section id="logging">
+<h3><span class="section-number">3.3.1. </span>Logging<a class="headerlink" href="#logging" title="Link to this heading">#</a></h3>
+<p><strong>Logging</strong> means saving the printed output of your code to a file. Logging
+makes it easier to detect bugs because you can record information about the
+state of your code as it runs, and because you can compare logs across
+different runs.</p>
+<p>Python’s built-in <code class="docutils literal notranslate"><span class="pre">logging</span></code> module provides basic logging functionality. To set
+up logging, import the module and call <code class="docutils literal notranslate"><span class="pre">logging.basicConfig</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;logs/my_script.log&quot;</span><span class="p">,</span> <span class="n">level</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+
+<span class="c1"># If you also want logged messages to print to the console:</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">StreamHandler</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">basicConfig</span></code> function has many keyword parameters that you can use to
+customize how messages are logged. You can find a complete list in <a class="reference external" href="https://docs.python.org/3/library/logging.html#logging.basicConfig">this
+section</a> of the Python documentation.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">filename</span></code> parameter makes the logger save log messages to a file. If you
+don’t set this parameter, they’ll be printed to the Python console instead.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">level</span></code> parameter controls what kinds of messages are logged. Messages
+below the specified level are not logged. The logging levels are, from highest
+to lowest:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">CRITICAL</span></code></p></td>
+<td><p>Messages about errors that prevent the code from running</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ERROR</span></code></p></td>
+<td><p>Messages about non-critical errors</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">WARNING</span></code></p></td>
+<td><p>Messages about unexpected events that don’t interfere with normal operation</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">INFO</span></code></p></td>
+<td><p>Informational messages</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">DEBUG</span></code></p></td>
+<td><p>All messages (this level is usually used only for debugging)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Once you’ve set up logging, you can write something to the log at a specific
+level using the <code class="docutils literal notranslate"><span class="pre">debug</span></code>, <code class="docutils literal notranslate"><span class="pre">info</span></code>, <code class="docutils literal notranslate"><span class="pre">warning</span></code>, <code class="docutils literal notranslate"><span class="pre">error</span></code>, <code class="docutils literal notranslate"><span class="pre">exception</span></code>, or <code class="docutils literal notranslate"><span class="pre">critical</span></code>
+functions in the <code class="docutils literal notranslate"><span class="pre">logging</span></code> module.</p>
+<p>For instance, to log a warning and an informational message:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;This is a warning.&quot;</span><span class="p">)</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;This is information.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>This is a warning.
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>This is information.
+</pre></div>
+</div>
+</div>
+</div>
+<p>You can use these logging functions as replacements for the <code class="docutils literal notranslate"><span class="pre">print</span></code> function.
+Use debug or messages to record detailed information about your code as it
+runs. When you’re sure the code works as intended, you can disable these
+messages by changing the level in the call to <code class="docutils literal notranslate"><span class="pre">basicConfig</span></code>.</p>
+<p>For a much more detailed introduction to the <code class="docutils literal notranslate"><span class="pre">logging</span></code> module, see the <a class="reference external" href="https://docs.python.org/3/howto/logging.html">Logging
+HOWTO</a> in the Python documentation.</p>
+<p>Also see <a class="reference external" href="https://github.com/Delgan/loguru">the <code class="docutils literal notranslate"><span class="pre">loguru</span></code> package</a>, which provides a variety of
+improvements and additional features compared to the <code class="docutils literal notranslate"><span class="pre">logging</span></code> module.</p>
+</section>
+<section id="assertions">
+<h3><span class="section-number">3.3.2. </span>Assertions<a class="headerlink" href="#assertions" title="Link to this heading">#</a></h3>
+<p>An <strong>assertion</strong> is an expression in code that checks whether some condition is
+true and raises an exception if it isn’t. In other words, an assertion asserts
+that some assumption must be satisfied for the code to continue running.</p>
+<p>You can use the <code class="docutils literal notranslate"><span class="pre">assert</span></code> keyword and a condition to create an assertion in
+Python:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="mf">1.1</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">2</span>
+<span class="k">assert</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>When an assertion fails, Python raises an <code class="docutils literal notranslate"><span class="pre">AssertionError</span></code>:</p>
+<div class="cell tag_raises-exception docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">assert</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">AssertionError</span><span class="g g-Whitespace">                            </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">11</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="k">assert</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">0</span>
+
+<span class="ne">AssertionError</span>: 
+</pre></div>
+</div>
+</div>
+</div>
+<p>Assertions provide one way to confirm that objects in your code are as you
+expect. If you suspect some code might not work correctly, but you’re
+completely not sure, adding an assertion is a good way to check your
+suspicions.</p>
+<p>The major advantage of using assertions rather than if-statements (and <code class="docutils literal notranslate"><span class="pre">print</span></code>
+or <code class="docutils literal notranslate"><span class="pre">raise</span></code>) to confirm assumptions is that once you’ve finished testing your
+code, you can run Python with the <code class="docutils literal notranslate"><span class="pre">-O</span></code> command line argument and it will ignore
+all assertions.</p>
+<p>As a consequence, you should think of assertions as a tool for testing code
+while it’s in development. If you want your code to check an assumption even
+after development is finished, use if-statements and <code class="docutils literal notranslate"><span class="pre">raise</span></code> exceptions
+instead. For example, if you create a package and want the functions in the
+package to validate their inputs, they should use if-statements and exceptions.</p>
+</section>
+<section id="tests">
+<h3><span class="section-number">3.3.3. </span>Tests<a class="headerlink" href="#tests" title="Link to this heading">#</a></h3>
+<p>As already mentioned, testing code is an important step in the development
+process, and one you should do early and often. When developing single-use
+scripts and notebooks (such as data analyses), it’s usually sufficient to adopt
+an ad-hoc testing strategy, where you test code by manually inspecting the
+outputs (and possibly some intermediate values).</p>
+<p>For projects where the code will be developed by many people, used by many
+people, or used many times, such as a package, it’s often a good idea to adopt
+a more formal and automated testing strategy.</p>
+<p><strong>Unit testing</strong> is a testing strategy where isolated components or “units” of
+code are tested. The units are typically functions or modules, and the tests
+are typically automated to report correct/incorrect results from each unit.
+Testing units in isolation makes it easier to assess where bugs originate.
+Using automated tests makes it convenient to run the tests every time a change
+is made to the code. Unit testing is a software development best practice, and
+some software developers even advocate <a class="reference external" href="https://en.wikipedia.org/wiki/Test-driven_development">using tests to motivate or “drive”
+development</a>.</p>
+<p>Python’s built-in <code class="docutils literal notranslate"><span class="pre">unittest</span></code> provides functions for creating and running unit
+tests. <a class="reference external" href="https://docs.pytest.org/">The <code class="docutils literal notranslate"><span class="pre">pytest</span></code> package</a> provides a simpler way to create unit
+tests based on <code class="docutils literal notranslate"><span class="pre">assert</span></code> statements. Many other unit testing packages are also
+available; the <a class="reference external" href="https://wiki.python.org/moin/PythonTestingToolsTaxonomy">Python Testing Tools Taxonomy</a> has an
+exhaustive list.</p>
+</section>
+</section>
+<section id="debugging">
+<h2><span class="section-number">3.4. </span>Debugging<a class="headerlink" href="#debugging" title="Link to this heading">#</a></h2>
+<p><strong>Debugging</strong> is the process of confirming, step-by-step, that what you believe
+the code does is what the code actually does, in order to identify the causes
+of bugs.</p>
+<p>The key idea is to examine the output from each step in the code. There are two
+ways to go about this:</p>
+<ol class="arabic simple">
+<li><p>Work forward through the code from the beginning.</p></li>
+<li><p>Work backward from the source of an error (if the bug causes an error).</p></li>
+</ol>
+<p>A <strong>debugger</strong> is an interactive tool that enables running code one expression
+at a time. In most debuggers, you can also inspect and change the values of
+objects. Some debuggers even allow evaluation of arbitrary code.</p>
+<p>Python’s built-in <code class="docutils literal notranslate"><span class="pre">pdb</span></code> module provides a debugger. You can launch the debugger
+from code by calling the <code class="docutils literal notranslate"><span class="pre">pdb.set_trace</span></code> function. Python 3.7 and newer also
+provide a <code class="docutils literal notranslate"><span class="pre">breakpoint</span></code> function to launch the debugger. Alternatively, you can
+run the debugger on a specific function by calling the <code class="docutils literal notranslate"><span class="pre">pdb.runcall</span></code> function.</p>
+<p>When you launch the debugger, you’ll be presented with a prompt similar to the
+Python prompt. Several special commands are available in the debugger. Here are
+some of the most useful ones:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Command</p></th>
+<th class="head"><p>Shortcut</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">help</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">h</span></code></p></td>
+<td><p>print help for debugger commands</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">quit</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">q</span></code></p></td>
+<td><p>halt execution and quit the debugger</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">where</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">w</span></code></p></td>
+<td><p>print a stack trace</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">p</span></code></p></td>
+<td><p>print an expression</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">pp</span></code></p></td>
+<td><p>pretty-print an expression</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">step</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">s</span></code></p></td>
+<td><p>continue execution until the next possible stopping point</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">next</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">n</span></code></p></td>
+<td><p>continue execution until the next line</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">until</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">unt</span></code></p></td>
+<td><p>continue execution until a given line</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">continue</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">c</span></code></p></td>
+<td><p>continue execution until the next breakpoint</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">break</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">b</span></code></p></td>
+<td><p>print or set breakpoints</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">up</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">u</span></code></p></td>
+<td><p>move up the stack trace</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">down</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">d</span></code></p></td>
+<td><p>move down the stack trace</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Several of Python’s built-in functions are also useful when debugging:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Function</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dir</span></code></p></td>
+<td><p>Get a list of all names in the current scope</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">locals</span></code></p></td>
+<td><p>Get a dictionary of all local variables in the current scope</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">globals</span></code></p></td>
+<td><p>Get a dictionary of all global variables in the current scope</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<section id="in-ipython-jupyter">
+<h3><span class="section-number">3.4.1. </span>In IPython &amp; Jupyter<a class="headerlink" href="#in-ipython-jupyter" title="Link to this heading">#</a></h3>
+<p>In IPython and Jupyter, the <code class="docutils literal notranslate"><span class="pre">pdb</span></code> module doesn’t always work correctly, and the
+<code class="docutils literal notranslate"><span class="pre">breakpoint</span></code> function is currently ignored (although <a class="reference external" href="https://github.com/ipython/ipykernel/issues/897">this will likely be fixed
+in a future version</a>).</p>
+<p>Instead, you can use the <code class="docutils literal notranslate"><span class="pre">ipdb</span></code> package as a drop-in replacement for the <code class="docutils literal notranslate"><span class="pre">pdb</span></code>
+module. It provides the <code class="docutils literal notranslate"><span class="pre">ipdb.set_trace</span></code> function, and the <code class="docutils literal notranslate"><span class="pre">ipdb</span></code> debugger uses
+the same set of commands as the <code class="docutils literal notranslate"><span class="pre">pdb</span></code> debugger. The <code class="docutils literal notranslate"><span class="pre">ipdb</span></code> debugger also has a
+few additional features familiar from IPython, such as syntax highlighting and
+tab completion.</p>
+<p>In IPython, a <strong>magic command</strong> is a command you can enter at the console
+that’s not part of the Python language. Magic commands usually begin with a
+percent <code class="docutils literal notranslate"><span class="pre">%</span></code> to distinguish them from ordinary code. Other Jupyter kernels (for
+languages other than Python) can also support magic commands, but this is up to
+the kernel developers. You can learn more about IPython magic commands in <a class="reference external" href="https://ipython.readthedocs.io/en/stable/interactive/magics.html">this
+chapter</a> of the IPython documentation.</p>
+<p>IPython provides a <code class="docutils literal notranslate"><span class="pre">%debug</span></code> magic command you can use to immediately run the
+debugger at the last line that caused an error. It also provides a <code class="docutils literal notranslate"><span class="pre">%pdb</span></code> magic
+command to make running <code class="docutils literal notranslate"><span class="pre">%debug</span></code> the default any time an exception is raised
+(just run <code class="docutils literal notranslate"><span class="pre">%pdb</span> <span class="pre">on</span></code> at the beginning of your session).</p>
+</section>
+</section>
+<section id="profiling">
+<h2><span class="section-number">3.5. </span>Profiling<a class="headerlink" href="#profiling" title="Link to this heading">#</a></h2>
+<p><strong>Profiling</strong> is the process of measuring how much CPU time or memory each
+expression in your code uses. Profiling is usually used to improve the
+performance of code rather than find bugs. It’s mentioned in this chapter
+because it’s another kind of diagnostic you can run on code.</p>
+<p>The simplest form of profiling is <strong>benchmarking</strong>, where you measure the time
+it takes for some code to run. You can use Python’s built-in <code class="docutils literal notranslate"><span class="pre">timeit</span></code> module to
+estimate how long an expression takes to run on average. For example, suppose
+you want to construct a list of numbers as strings. Here are two different ways
+to do it:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">)]</span>
+
+<span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">)))</span>
+</pre></div>
+</div>
+<p>It’s not obvious which is faster. If you want to find out, you can use the
+<code class="docutils literal notranslate"><span class="pre">timeit.timeit</span></code> function:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">timeit</span><span class="w"> </span><span class="kn">import</span> <span class="n">timeit</span>
+
+<span class="n">timeit</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">)],</span> <span class="n">number</span> <span class="o">=</span> <span class="mi">100</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.008289266988867894
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">timeit</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">))),</span> <span class="n">number</span> <span class="o">=</span> <span class="mi">100</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0072242570167873055
+</pre></div>
+</div>
+</div>
+</div>
+<p>The function returns the average time in seconds over <code class="docutils literal notranslate"><span class="pre">number</span></code> runs. In this
+case, the <code class="docutils literal notranslate"><span class="pre">map</span></code> function seems to be marginally faster (although to be thorough
+we should examine multiple list lengths).</p>
+<p>You might want more detailed profile information than just the benchmark for a
+single expression or function. For instance, you might want to know how long
+every expression in a script takes, to identify speed bottlenecks, or you might
+want information about memory usage instead of timing.</p>
+<p>Python has two built-in profilers: <code class="docutils literal notranslate"><span class="pre">cProfile</span></code> and <code class="docutils literal notranslate"><span class="pre">profile</span></code>. Unless you want to
+build new functionality into the profiler, generally <code class="docutils literal notranslate"><span class="pre">cProfile</span></code> is the better
+choice. You can learn more about how to use these profilers in <a class="reference external" href="https://docs.python.org/3/library/profile.html">the Python
+Profilers chapter</a> of the Python documentation.</p>
+<p>Other CPU time profilers for Python include:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/benfred/py-spy"><code class="docutils literal notranslate"><span class="pre">py-spy</span></code></a></p></li>
+<li><p><a class="reference external" href="https://github.com/joerick/pyinstrument"><code class="docutils literal notranslate"><span class="pre">pyinstrument</span></code></a></p></li>
+<li><p><a class="reference external" href="https://github.com/pyutils/line_profiler"><code class="docutils literal notranslate"><span class="pre">line_profiler</span></code></a></p></li>
+</ul>
+<p>There’s no built-in memory profiler for Python, but the community has developed
+several:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/pythonprofilers/memory_profiler"><code class="docutils literal notranslate"><span class="pre">memory_profiler</span></code></a></p></li>
+<li><p><a class="reference external" href="https://github.com/pympler/pympler"><code class="docutils literal notranslate"><span class="pre">pympler</span></code></a></p></li>
+<li><p><a class="reference external" href="https://github.com/mgedmin/objgraph"><code class="docutils literal notranslate"><span class="pre">objgraph</span></code></a></p></li>
+<li><p><a class="reference external" href="https://github.com/pythonspeed/filprofiler"><code class="docutils literal notranslate"><span class="pre">filprofiler</span></code></a></p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapters"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="03_iterators.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">2. </span>Iterator &amp; Generator Crash Course</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="02_reproducible.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">4. </span>Making Python Projects &amp; Environments Reproducible</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">3.1. Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#errors">3.2. Errors</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#handling-exceptions">3.2.1. Handling Exceptions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#raising-exceptions">3.2.2. Raising Exceptions</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#defensive-programming">3.3. Defensive Programming</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#logging">3.3.1. Logging</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#assertions">3.3.2. Assertions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tests">3.3.3. Tests</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#debugging">3.4. Debugging</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#in-ipython-jupyter">3.4.1. In IPython &amp; Jupyter</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#profiling">3.5. Profiling</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Nick Ulle
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

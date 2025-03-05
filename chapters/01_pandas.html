@@ -1,0 +1,3874 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>1. Slicing &amp; Dicing Data with pandas &#8212; Intermediate Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapters/01_pandas';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="2. Iterator &amp; Generator Crash Course" href="03_iterators.html" />
+    <link rel="prev" title="Overview" href="index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/datalab-logo-full-color-rgb-1.png" class="logo__image only-light" alt="Intermediate Python - Home"/>
+    <script>document.write(`<img src="../_static/datalab-logo-full-color-rgb-1.png" class="logo__image only-dark" alt="Intermediate Python - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="index.html">
+                    Overview
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Thinking in Python</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">1. Slicing &amp; Dicing Data with pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_iterators.html">2. Iterator &amp; Generator Crash Course</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_debugging.html">3. Squashing Bugs with Python’s Debugging Tools</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Writing Python Scripts</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="02_reproducible.html">4. Making Python Projects &amp; Environments Reproducible</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Other Workshops</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="05_viz.html">5. Next-level Data Visualization</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Afterword</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
+<li class="toctree-l1"><a class="reference internal" href="acknowledgements.html">Acknowledgements</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/ucdavisdatalab/workshop_intermediate_python" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/ucdavisdatalab/workshop_intermediate_python/issues/new?title=Issue%20on%20page%20%2Fchapters/01_pandas.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/chapters/01_pandas.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Slicing & Dicing Data with pandas</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">1.1. Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-s-an-index">1.2. What’s an Index?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#indexes-on-series">1.2.1. Indexes on Series</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#indexes-on-data-frames">1.2.2. Indexes on Data Frames</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#alignment">1.2.3. Alignment</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#indexing-operators">1.3. Indexing Operators</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#slices">1.3.1. Slices</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#by-position-with-iloc">1.3.2. By Position with <code class="docutils literal notranslate"><span class="pre">.iloc</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#by-label-with-loc">1.3.3. By Label with <code class="docutils literal notranslate"><span class="pre">.loc</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#by-a-condition">1.3.4. By a Condition</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#by-a-callable">1.3.5. By a Callable</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-frames">1.3.6. Data Frames</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#columns-as-indexes">1.4. Columns as Indexes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multiindexes">1.4.1. MultiIndexes</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-query-method">1.5. The <code class="docutils literal notranslate"><span class="pre">.query</span></code> Method</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="slicing-dicing-data-with-pandas">
+<span id="chapter-indexing"></span><h1><span class="section-number">1. </span>Slicing &amp; Dicing Data with pandas<a class="headerlink" href="#slicing-dicing-data-with-pandas" title="Link to this heading">#</a></h1>
+<div class="admonition-learning-objectives admonition">
+<p class="admonition-title">Learning Objectives</p>
+<ul class="simple">
+<li><p>Explain what pandas indexes are and how they’re used</p></li>
+<li><p>Get, modify, and set indexes on series and data frames</p></li>
+<li><p>Explain and use pandas’ index alignment</p></li>
+<li><p>Describe and use the 4 major modes of indexing in pandas</p></li>
+<li><p>Explain the difference between <code class="docutils literal notranslate"><span class="pre">.loc</span></code> and <code class="docutils literal notranslate"><span class="pre">.at</span></code></p></li>
+<li><p>Identify problems where using <code class="docutils literal notranslate"><span class="pre">.set_index</span></code> to make a column an index is
+helpful</p></li>
+<li><p>Explain and use pandas’ query mini-language</p></li>
+</ul>
+</div>
+<p>This chapter is a deep dive into how <strong>indexing</strong>—the process of getting
+or setting elements of a data structure—works in the <a class="reference external" href="https://pandas.pydata.org/">pandas</a> package.
+Indexing is sometimes also called <strong>subsetting</strong> or (element) extraction, and
+is a fundamental operation when using a programming language to solve problems
+in data science.</p>
+<section id="prerequisites">
+<h2><span class="section-number">1.1. </span>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">#</a></h2>
+<p>This chapter assumes you already have basic familiarity with Python and pandas.
+In particular, you should be comfortable indexing Python lists and dictionaries
+with the square bracket operator <code class="docutils literal notranslate"><span class="pre">[</span> <span class="pre">]</span></code>, and should be able to explain what a
+<code class="docutils literal notranslate"><span class="pre">Series</span></code> and <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code> are and how the they differ. DataLab’s <a class="reference external" href="https://ucdavisdatalab.github.io/workshop_python_basics/">Python Basics
+Reader</a> and its accompanying workshop provide a suitable
+introduction to these topics.</p>
+<p>To follow along, you’ll need the following software versions (or newer)
+installed on your computer:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.python.org/">Python</a> 3.10</p></li>
+<li><p><a class="reference external" href="https://numpy.org/">NumPy</a> 1.22</p></li>
+<li><p><a class="reference external" href="https://pandas.pydata.org/">pandas</a> 1.4</p></li>
+</ul>
+<p>One way to install these is to install the <a class="reference external" href="https://www.anaconda.com/">Anaconda</a> Python distribution.
+Chapter 2 provides more details about Anaconda and the <code class="docutils literal notranslate"><span class="pre">conda</span></code> package manager.</p>
+<p><a class="reference external" href="https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2022/2022-03-29/sports.csv">CLICK HERE</a> to get the data set used in the examples for this
+chapter. After clicking the link, you’ll need to right-click on the page and
+select “Save Page As…”. Make sure to save the page somewhere you can easily
+access from your Python session.</p>
+</section>
+<section id="what-s-an-index">
+<h2><span class="section-number">1.2. </span>What’s an Index?<a class="headerlink" href="#what-s-an-index" title="Link to this heading">#</a></h2>
+<p>In pandas, an <code class="docutils literal notranslate"><span class="pre">Index</span></code> is a Python object that stores a sequence of labels or
+names. The labels usually correspond to the elements of a data structure along
+a given dimension or <strong>axis</strong>. Indexes are a key feature that differentiates
+pandas from other software for programming with tabular data (such as R).</p>
+<p>According to the pandas documentation, indexes serve three important roles:</p>
+<ol class="arabic simple">
+<li><p>As metadata to provide additional context about a data set</p></li>
+<li><p>As a way to explicitly and automatically align data, avoiding bugs due to
+misalignment (see <a class="reference internal" href="#alignment"><span class="std std-numref">Section 1.2.3</span></a>)</p></li>
+<li><p>As a convenience for getting and setting subsets of the data (see
+<a class="reference internal" href="#column-indexes"><span class="std std-numref">Section 1.4</span></a>)</p></li>
+</ol>
+<section id="indexes-on-series">
+<h3><span class="section-number">1.2.1. </span>Indexes on Series<a class="headerlink" href="#indexes-on-series" title="Link to this heading">#</a></h3>
+<p>As an example of where pandas uses indexes, <code class="docutils literal notranslate"><span class="pre">Series</span></code> are 1-dimensional and
+always have exactly one index. You can see the index just to the left of the
+elements when you print out a series:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="n">x</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    4
+1    5
+2    3
+3    1
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<p>You can get or set the index on a series with the <code class="docutils literal notranslate"><span class="pre">.index</span></code> attribute:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="o">.</span><span class="n">index</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>RangeIndex(start=0, stop=4, step=1)
+</pre></div>
+</div>
+</div>
+</div>
+<p>The labels in an index can be numbers, strings, dates, or other values. Pandas
+provides subclasses of <code class="docutils literal notranslate"><span class="pre">Index</span></code> for specific purposes, including:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">RangeIndex</span></code>, where the labels are a monotonic sequence of integers with a
+fixed beginning, end, and step size</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CategoricalIndex</span></code>, where the labels are categories (and not necessarily
+unique)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">IntervalIndex</span></code>, where the labels are non-overlapping intervals of the real
+number line</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DateTimeIndex</span></code>, where the labels are dates and times</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PeriodIndex</span></code>, where each label is a date and time span</p></li>
+</ul>
+<p>You may also encounter <code class="docutils literal notranslate"><span class="pre">Int64Index</span></code>, <code class="docutils literal notranslate"><span class="pre">UInt64Index</span></code>, and <code class="docutils literal notranslate"><span class="pre">Float64Index</span></code>, which
+represent an arbitrary list of labels of the respective type. For example:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">]]</span><span class="o">.</span><span class="n">index</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Index([1, 3], dtype=&#39;int64&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Beginning in pandas 2.0, these three subclasses (but not subclasses in the
+bulleted list above) will be replaced with a generic <code class="docutils literal notranslate"><span class="pre">Index</span></code> class. See <a class="reference external" href="https://pandas.pydata.org/docs/user_guide/advanced.html#int64index-and-rangeindex">this
+warning</a> in the pandas documentation for details.</p>
+<p>You can access the labels in an index with standard Python indexing operations:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">idx</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">index</span>
+<span class="c1"># Get the 2nd label</span>
+<span class="n">idx</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1
+</pre></div>
+</div>
+</div>
+</div>
+<p>Indexes are <strong>immutable</strong>, which means the labels in an index can’t be changed.
+For instance:</p>
+<div class="cell tag_raises-exception docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">idx</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">5</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">TypeError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">6</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">idx</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">5</span>
+
+<span class="nn">File ~/mill/datalab/teaching/intermediate_python/.pixi/envs/default/lib/python3.13/site-packages/pandas/core/indexes/base.py:5371,</span> in <span class="ni">Index.__setitem__</span><span class="nt">(self, key, value)</span>
+<span class="g g-Whitespace">   </span><span class="mi">5369</span> <span class="nd">@final</span>
+<span class="g g-Whitespace">   </span><span class="mi">5370</span> <span class="k">def</span><span class="w"> </span><span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">5371</span>     <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Index does not support mutable operations&quot;</span><span class="p">)</span>
+
+<span class="ne">TypeError</span>: Index does not support mutable operations
+</pre></div>
+</div>
+</div>
+</div>
+<p>Although labels in an index can’t be changed, every index also has a name,
+which can be changed. Think of the name as a name for the dimension or axis to
+which the index corresponds. You can get or set the name of an index with the
+<code class="docutils literal notranslate"><span class="pre">.name</span></code> attribute (on the index itself):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">idx</span><span class="o">.</span><span class="n">name</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The default value of <code class="docutils literal notranslate"><span class="pre">.name</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code>, which means the index doesn’t have a
+name. When pandas prints a series or data frame, it will also print the names
+of any attached indexes. For example:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;labels&quot;</span>
+<span class="n">x</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>labels
+0    4
+1    5
+2    3
+3    1
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<p>Pandas automatically creates indexes whenever you create (or load) a series or
+data frame. Pandas also provides functions to construct indexes manually. These
+are usually named after the type of index. For instance, you can create an
+ordinary <code class="docutils literal notranslate"><span class="pre">Index</span></code> from a list or NumPy array:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">new_idx</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Index</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="s2">&quot;d&quot;</span><span class="p">])</span>
+<span class="n">new_idx</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Index([&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;], dtype=&#39;object&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<p>You can use assignment to replace the index on a series. For example:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">new_idx</span>
+<span class="n">x</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>a    4
+b    5
+c    3
+d    1
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<p>Note that the new index must have the same length as the index it replaces (and
+the series itself).</p>
+<div class="important admonition">
+<p class="admonition-title">Checkpoint Exercise</p>
+<p>Replace the index on <code class="docutils literal notranslate"><span class="pre">x</span></code> with one like the original (in variable <code class="docutils literal notranslate"><span class="pre">idx</span></code>), but
+where the first label is 5 instead of 0. Try to do this <em>without</em> typing out a
+list of all 4 labels.</p>
+<p>Hint: the Python <code class="docutils literal notranslate"><span class="pre">list</span></code> function can convert many types of objects into lists,
+including pandas indexes.</p>
+</div>
+</section>
+<section id="indexes-on-data-frames">
+<h3><span class="section-number">1.2.2. </span>Indexes on Data Frames<a class="headerlink" href="#indexes-on-data-frames" title="Link to this heading">#</a></h3>
+<p>Pandas <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code>s are 2-dimensional and always have exactly two indexes. The
+indexes correspond to the rows and the columns, respectively. To see this, use
+pandas to load the data from the <code class="docutils literal notranslate"><span class="pre">sports.csv</span></code> file:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dtype</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;classification_other&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">}</span>
+<span class="n">sports</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;data/sports.csv&quot;</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">dtype</span><span class="p">)</span>
+<span class="n">sports</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>year</th>
+      <th>unitid</th>
+      <th>institution_name</th>
+      <th>city_txt</th>
+      <th>state_cd</th>
+      <th>zip_text</th>
+      <th>classification_code</th>
+      <th>classification_name</th>
+      <th>classification_other</th>
+      <th>ef_male_count</th>
+      <th>...</th>
+      <th>partic_coed_women</th>
+      <th>sum_partic_men</th>
+      <th>sum_partic_women</th>
+      <th>rev_men</th>
+      <th>rev_women</th>
+      <th>total_rev_menwomen</th>
+      <th>exp_men</th>
+      <th>exp_women</th>
+      <th>total_exp_menwomen</th>
+      <th>sports</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2015</td>
+      <td>100654</td>
+      <td>Alabama A &amp; M University</td>
+      <td>Normal</td>
+      <td>AL</td>
+      <td>35762.0</td>
+      <td>2</td>
+      <td>NCAA Division I-FCS</td>
+      <td>NaN</td>
+      <td>1923</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>31</td>
+      <td>0</td>
+      <td>345592.0</td>
+      <td>NaN</td>
+      <td>345592.0</td>
+      <td>397818.0</td>
+      <td>NaN</td>
+      <td>397818.0</td>
+      <td>Baseball</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2015</td>
+      <td>100654</td>
+      <td>Alabama A &amp; M University</td>
+      <td>Normal</td>
+      <td>AL</td>
+      <td>35762.0</td>
+      <td>2</td>
+      <td>NCAA Division I-FCS</td>
+      <td>NaN</td>
+      <td>1923</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>19</td>
+      <td>16</td>
+      <td>1211095.0</td>
+      <td>748833.0</td>
+      <td>1959928.0</td>
+      <td>817868.0</td>
+      <td>742460.0</td>
+      <td>1560328.0</td>
+      <td>Basketball</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2015</td>
+      <td>100654</td>
+      <td>Alabama A &amp; M University</td>
+      <td>Normal</td>
+      <td>AL</td>
+      <td>35762.0</td>
+      <td>2</td>
+      <td>NCAA Division I-FCS</td>
+      <td>NaN</td>
+      <td>1923</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>61</td>
+      <td>46</td>
+      <td>183333.0</td>
+      <td>315574.0</td>
+      <td>498907.0</td>
+      <td>246949.0</td>
+      <td>251184.0</td>
+      <td>498133.0</td>
+      <td>All Track Combined</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2015</td>
+      <td>100654</td>
+      <td>Alabama A &amp; M University</td>
+      <td>Normal</td>
+      <td>AL</td>
+      <td>35762.0</td>
+      <td>2</td>
+      <td>NCAA Division I-FCS</td>
+      <td>NaN</td>
+      <td>1923</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>99</td>
+      <td>0</td>
+      <td>2808949.0</td>
+      <td>NaN</td>
+      <td>2808949.0</td>
+      <td>3059353.0</td>
+      <td>NaN</td>
+      <td>3059353.0</td>
+      <td>Football</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2015</td>
+      <td>100654</td>
+      <td>Alabama A &amp; M University</td>
+      <td>Normal</td>
+      <td>AL</td>
+      <td>35762.0</td>
+      <td>2</td>
+      <td>NCAA Division I-FCS</td>
+      <td>NaN</td>
+      <td>1923</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>9</td>
+      <td>0</td>
+      <td>78270.0</td>
+      <td>NaN</td>
+      <td>78270.0</td>
+      <td>83913.0</td>
+      <td>NaN</td>
+      <td>83913.0</td>
+      <td>Golf</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 28 columns</p>
+</div></div></div>
+</div>
+<p>This data set contains information about funding and staffing of athletics
+programs at U.S. universities from 2015 to 2019 (inclusive). The source for the
+data set is the U.S. Department of Education’s <a class="reference external" href="https://ope.ed.gov/athletics/#/datafile/list">Equity in Athletics Data
+Analysis project</a>, and the data was cleaned by the <a class="reference external" href="https://github.com/rfordatascience/tidytuesday/tree/master/data/2022/2022-03-29">Tidy Tuesday</a>
+community. <a class="reference external" href="https://usafacts.org/articles/coronavirus-college-football-profit-sec-acc-pac-12-big-ten-millions-fall-2020/">This article</a> describes some of the conclusions that can
+be drawn from the data set.</p>
+<p>On data frames, you can use the <code class="docutils literal notranslate"><span class="pre">.index</span></code> attribute to get and set the <em>row</em>
+index. For example:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sports</span><span class="o">.</span><span class="n">index</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>RangeIndex(start=0, stop=132327, step=1)
+</pre></div>
+</div>
+</div>
+</div>
+<p>The default index created by the <code class="docutils literal notranslate"><span class="pre">read_csv</span></code> function counts from 0 to the
+number of rows.</p>
+<p>The other index on data frames corresponds to the columns. You can use the
+<code class="docutils literal notranslate"><span class="pre">.columns</span></code> attribute to get and set the column index. For instance:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sports</span><span class="o">.</span><span class="n">columns</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Index([&#39;year&#39;, &#39;unitid&#39;, &#39;institution_name&#39;, &#39;city_txt&#39;, &#39;state_cd&#39;,
+       &#39;zip_text&#39;, &#39;classification_code&#39;, &#39;classification_name&#39;,
+       &#39;classification_other&#39;, &#39;ef_male_count&#39;, &#39;ef_female_count&#39;,
+       &#39;ef_total_count&#39;, &#39;sector_cd&#39;, &#39;sector_name&#39;, &#39;sportscode&#39;,
+       &#39;partic_men&#39;, &#39;partic_women&#39;, &#39;partic_coed_men&#39;, &#39;partic_coed_women&#39;,
+       &#39;sum_partic_men&#39;, &#39;sum_partic_women&#39;, &#39;rev_men&#39;, &#39;rev_women&#39;,
+       &#39;total_rev_menwomen&#39;, &#39;exp_men&#39;, &#39;exp_women&#39;, &#39;total_exp_menwomen&#39;,
+       &#39;sports&#39;],
+      dtype=&#39;object&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<p>The indexes stored in the <code class="docutils literal notranslate"><span class="pre">.index</span></code> and <code class="docutils literal notranslate"><span class="pre">.columns</span></code> attributes of a data frame
+have the same classes and basic properties as indexes on series.</p>
+</section>
+<section id="alignment">
+<span id="id1"></span><h3><span class="section-number">1.2.3. </span>Alignment<a class="headerlink" href="#alignment" title="Link to this heading">#</a></h3>
+<p>For arithmetic operations that involve more than one series or data frame,
+pandas automatically <strong>aligns</strong> the elements based on the indexes. As an
+example, consider these two series:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">u</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">])</span>
+<span class="n">v</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The elements of the series are identical, but the indexes differ. If you’re an
+experienced NumPy (or R) user, the result of adding these two series together
+might surprise you:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">u</span> <span class="o">+</span> <span class="n">v</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>a    4
+b    4
+c    4
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<p>This is the result because pandas aligns the elements, adding element <code class="docutils literal notranslate"><span class="pre">a</span></code> from
+<code class="docutils literal notranslate"><span class="pre">u</span></code> to element <code class="docutils literal notranslate"><span class="pre">a</span></code> from <code class="docutils literal notranslate"><span class="pre">v</span></code>, element <code class="docutils literal notranslate"><span class="pre">b</span></code> to element <code class="docutils literal notranslate"><span class="pre">b</span></code>, and so on.</p>
+<p>Sometimes you might want to do arithmetic on series or data frames without any
+alignment. The canonical solution in this case is to use the <code class="docutils literal notranslate"><span class="pre">.to_numpy</span></code> method
+to convert one or both of the objects into a NumPy array:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">u</span> <span class="o">+</span> <span class="n">v</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>a    2
+b    4
+c    6
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<p>Pandas tries to align elements and carry out arithmetic operations even for
+objects with mismatched shapes and labels. Pandas fills elements for which the
+result is unknown with missing values. For example:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">w</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;z&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">])</span>
+
+<span class="n">u</span> <span class="o">-</span> <span class="n">w</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>a    1.0
+b    NaN
+c    NaN
+z    NaN
+dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<p>In this example, only element <code class="docutils literal notranslate"><span class="pre">a</span></code> has two operands; for each other element, the
+result is a missing value because only one operand is known.</p>
+<div class="important admonition">
+<p class="admonition-title">Checkpoint Exercise</p>
+<p>What happens if you use an arithmetic operation on two series or data frames
+where one has repeated/duplicated labels in its index?</p>
+<p>Hint: construct an example and see what happens!</p>
+</div>
+<p>Pandas does <em>not</em> align series and data frames in comparison operations, and
+raises an error if they’re not already aligned:</p>
+<div class="cell tag_raises-exception docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">u</span> <span class="o">&gt;</span> <span class="n">v</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">18</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">u</span> <span class="o">&gt;</span> <span class="n">v</span>
+
+<span class="nn">File ~/mill/datalab/teaching/intermediate_python/.pixi/envs/default/lib/python3.13/site-packages/pandas/core/ops/common.py:76,</span> in <span class="ni">_unpack_zerodim_and_defer.&lt;locals&gt;.new_method</span><span class="nt">(self, other)</span>
+<span class="g g-Whitespace">     </span><span class="mi">72</span>             <span class="k">return</span> <span class="bp">NotImplemented</span>
+<span class="g g-Whitespace">     </span><span class="mi">74</span> <span class="n">other</span> <span class="o">=</span> <span class="n">item_from_zerodim</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+<span class="ne">---&gt; </span><span class="mi">76</span> <span class="k">return</span> <span class="n">method</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
+
+<span class="nn">File ~/mill/datalab/teaching/intermediate_python/.pixi/envs/default/lib/python3.13/site-packages/pandas/core/arraylike.py:56,</span> in <span class="ni">OpsMixin.__gt__</span><span class="nt">(self, other)</span>
+<span class="g g-Whitespace">     </span><span class="mi">54</span> <span class="nd">@unpack_zerodim_and_defer</span><span class="p">(</span><span class="s2">&quot;__gt__&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">55</span> <span class="k">def</span><span class="w"> </span><span class="fm">__gt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+<span class="ne">---&gt; </span><span class="mi">56</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cmp_method</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">operator</span><span class="o">.</span><span class="n">gt</span><span class="p">)</span>
+
+<span class="nn">File ~/mill/datalab/teaching/intermediate_python/.pixi/envs/default/lib/python3.13/site-packages/pandas/core/series.py:6114,</span> in <span class="ni">Series._cmp_method</span><span class="nt">(self, other, op)</span>
+<span class="g g-Whitespace">   </span><span class="mi">6111</span> <span class="n">res_name</span> <span class="o">=</span> <span class="n">ops</span><span class="o">.</span><span class="n">get_op_result_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">6113</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Series</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_indexed_same</span><span class="p">(</span><span class="n">other</span><span class="p">):</span>
+<span class="ne">-&gt; </span><span class="mi">6114</span>     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Can only compare identically-labeled Series objects&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">6116</span> <span class="n">lvalues</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span>
+<span class="g g-Whitespace">   </span><span class="mi">6117</span> <span class="n">rvalues</span> <span class="o">=</span> <span class="n">extract_array</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">extract_numpy</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">extract_range</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="ne">ValueError</span>: Can only compare identically-labeled Series objects
+</pre></div>
+</div>
+</div>
+</div>
+<p>See <a class="reference external" href="https://github.com/pandas-dev/pandas/issues/1134">this GitHub issue</a> for a developer discussion of whether
+this is a helpful feature for preventing bugs or a nuisance.</p>
+<p>Finally, the <code class="docutils literal notranslate"><span class="pre">align</span></code> method manually aligns two series or data frames. The
+method returns two objects of the same type, but with elements sorted so that
+the indexes match. For example:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">u</span><span class="o">.</span><span class="n">align</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(a    1
+ b    2
+ c    3
+ dtype: int64,
+ a    3
+ b    2
+ c    1
+ dtype: int64)
+</pre></div>
+</div>
+</div>
+</div>
+<p>For objects with mismatched shapes, the <code class="docutils literal notranslate"><span class="pre">align</span></code> method inserts missing values
+to make their shapes and indexes match:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">u</span><span class="o">.</span><span class="n">align</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(a    1.0
+ b    2.0
+ c    3.0
+ z    NaN
+ dtype: float64,
+ a     0.0
+ b     NaN
+ c     NaN
+ z   -10.0
+ dtype: float64)
+</pre></div>
+</div>
+</div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">align</span></code> method provides a way to align to objects so that they can be
+compared:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ua</span><span class="p">,</span> <span class="n">va</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">align</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+<span class="n">ua</span> <span class="o">&gt;</span> <span class="n">va</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>a    False
+b    False
+c     True
+dtype: bool
+</pre></div>
+</div>
+</div>
+</div>
+<p>Moreover, concatenating the two results from the <code class="docutils literal notranslate"><span class="pre">align</span></code> method is the same as
+performing a <a class="reference external" href="https://pandas.pydata.org/docs/user_guide/merging.html#database-style-dataframe-or-named-series-joining-merging">join</a>. The <code class="docutils literal notranslate"><span class="pre">align</span></code> method even provides a parameter <code class="docutils literal notranslate"><span class="pre">join</span></code> to
+select the type of join (<code class="docutils literal notranslate"><span class="pre">&quot;outer&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;left&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;right&quot;</span></code>, or <code class="docutils literal notranslate"><span class="pre">&quot;inner&quot;</span></code>). For
+relational series and data frames, you can break a join into smaller steps by
+using a combination of the <code class="docutils literal notranslate"><span class="pre">align</span></code> function , column indexing, and the pandas
+<code class="docutils literal notranslate"><span class="pre">concat</span></code> function.</p>
+</section>
+</section>
+<section id="indexing-operators">
+<h2><span class="section-number">1.3. </span>Indexing Operators<a class="headerlink" href="#indexing-operators" title="Link to this heading">#</a></h2>
+<p>Pandas provides several different operators for indexing series and data
+frames, as well as several different ways to use each. The primary indexing
+operator is the square bracket <code class="docutils literal notranslate"><span class="pre">[</span> <span class="pre">]</span></code>.</p>
+<p>For a <code class="docutils literal notranslate"><span class="pre">Series</span></code>, the square bracket operator <em>usually</em> selects elements by
+label. For instance, integer arguments are treated as labels, not positions, if
+the labels in the index are integers:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.int64(2)
+</pre></div>
+</div>
+</div>
+</div>
+<p>You can use a list to select multiple elements at once or repeat elements:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    2
+3    3
+0    2
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<p>You can also use the square bracket operator to select elements by label when
+the labels are strings:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">],</span> <span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">])</span>
+<span class="n">y</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.int64(10)
+</pre></div>
+</div>
+</div>
+</div>
+<p>In this case, passing an integer argument selects an element by position:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_380708/926962809.py:1: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  y[0]
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.int64(10)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Using the square bracket operator this way in non-interactive code is risky,
+because it can cause bugs if some of the series or data frames your code
+operates on unexpectedly have integer labels.</p>
+<p>The dot <code class="docutils literal notranslate"><span class="pre">.</span></code> serves as a secondary indexing operator for series and data frames
+with string indexes. For instance, to get the element <code class="docutils literal notranslate"><span class="pre">b</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y</span><span class="o">.</span><span class="n">b</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.int64(20)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Since the dot <code class="docutils literal notranslate"><span class="pre">.</span></code> is also used to access attributes and methods, it cannot be
+used to access elements with a label that’s the same as the name of an
+attribute or method. When in doubt, it’s safer to use <code class="docutils literal notranslate"><span class="pre">[</span> <span class="pre">]</span></code> to access elements
+by label.</p>
+<section id="slices">
+<h3><span class="section-number">1.3.1. </span>Slices<a class="headerlink" href="#slices" title="Link to this heading">#</a></h3>
+<p>A <strong>slice</strong> selects a range of elements. The syntax is <code class="docutils literal notranslate"><span class="pre">start:stop:step</span></code>, with
+the second colon <code class="docutils literal notranslate"><span class="pre">:</span></code> and arguments optional, the same as for Python’s built-in
+slicing. The default start value is the beginning of the series, the default
+stop value is one past the end, and the default step value is 1.</p>
+<p>Slices can be by position or by label. With <code class="docutils literal notranslate"><span class="pre">[</span> <span class="pre">]</span></code>, when the start or stop value
+is an integer, pandas assumes you want to slice by position:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    2
+3    3
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<p>In a slice by position, the element at the stop position is not included.</p>
+<p>Slicing with only the step can be useful in a variety of situations, such as
+getting every second element:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="p">[::</span><span class="mi">2</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1    1
+3    3
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<p>Negative values in a slice are counted backward from the end of the object. For
+example, this code gets the <em>last</em> two elements of the series:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    2
+3    3
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="important admonition">
+<p class="admonition-title">Checkpoint Exercise</p>
+<p>What happens if you use a negative step value in a slice?</p>
+</div>
+<p>When the start or stop value is a string, pandas slices by label:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y</span><span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">:]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>b    20
+c    30
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<p>Be aware that when you slice by label, the element at the stop position is
+always included:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y</span><span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">:</span><span class="s2">&quot;c&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>b    20
+c    30
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<p>This is a case where the pandas developers decided convenience outweighs
+consistency. See <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/user_guide/advanced.html#advanced-endpoints-are-inclusive">this section</a> of the pandas documentation for more
+details.</p>
+<div class="important admonition">
+<p class="admonition-title">Checkpoint Exercise</p>
+<p>What happens if you include an integer step value in a slice by label?</p>
+</div>
+</section>
+<section id="by-position-with-iloc">
+<h3><span class="section-number">1.3.2. </span>By Position with <code class="docutils literal notranslate"><span class="pre">.iloc</span></code><a class="headerlink" href="#by-position-with-iloc" title="Link to this heading">#</a></h3>
+<p>When you want to index a series or data frame by position, use <code class="docutils literal notranslate"><span class="pre">[</span> <span class="pre">]</span></code> on the
+<code class="docutils literal notranslate"><span class="pre">.iloc</span></code> attribute. Then any integer arguments are assumed to be positions,
+regardless of the type of index on the object.</p>
+<p>For example:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.int64(1)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="o">.</span><span class="n">iloc</span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    2
+1    1
+3    3
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">:]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1    1
+0    2
+3    3
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<p>You can use this attribute regardless of the index type:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">:]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>a    10
+b    20
+c    30
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<p>As a result, the <code class="docutils literal notranslate"><span class="pre">.iloc</span></code> attribute is a more reliable way to index by position
+than using <code class="docutils literal notranslate"><span class="pre">[</span> <span class="pre">]</span></code> alone.</p>
+<p>Pandas also provides an <code class="docutils literal notranslate"><span class="pre">.iat</span></code> attribute to get or set scalar values in a series
+or data frame by position:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="o">.</span><span class="n">iat</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.int64(1)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Compared to <code class="docutils literal notranslate"><span class="pre">.iloc</span></code>, the <code class="docutils literal notranslate"><span class="pre">.iat</span></code> attribute is typically much faster (in terms of
+CPU time), so it’s important to use <code class="docutils literal notranslate"><span class="pre">.iat</span></code> in performance-critical sections of
+code. In addition, <code class="docutils literal notranslate"><span class="pre">.iat</span></code> raises an error if your code attempts to get or set
+more than one value, which can potentially alert you to bugs that would go
+undetected with <code class="docutils literal notranslate"><span class="pre">.iloc</span></code>.</p>
+</section>
+<section id="by-label-with-loc">
+<h3><span class="section-number">1.3.3. </span>By Label with <code class="docutils literal notranslate"><span class="pre">.loc</span></code><a class="headerlink" href="#by-label-with-loc" title="Link to this heading">#</a></h3>
+<p>When you want to index a series or data frame by label, use <code class="docutils literal notranslate"><span class="pre">[</span> <span class="pre">]</span></code> on the
+<code class="docutils literal notranslate"><span class="pre">.loc</span></code> attribute. Then any integer arguments are assumed to be labels.</p>
+<p>For example:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.int64(2)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.int64(2)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="o">.</span><span class="n">loc</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    2
+1    1
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.int64(20)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y</span><span class="o">.</span><span class="n">loc</span><span class="p">[[</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>b    20
+a    10
+b    20
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<p>Pandas also provides an <code class="docutils literal notranslate"><span class="pre">.at</span></code> attribute to get or set scalar values in a series
+or data frame by label:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.int64(2)
+</pre></div>
+</div>
+</div>
+</div>
+<p>The advantages of <code class="docutils literal notranslate"><span class="pre">.at</span></code> compared to <code class="docutils literal notranslate"><span class="pre">.loc</span></code> are the same as <code class="docutils literal notranslate"><span class="pre">.iat</span></code> compared to
+<code class="docutils literal notranslate"><span class="pre">.iloc</span></code>: better run-time speed and stricter requirements on the argument.</p>
+<p>When setting elements by label with <code class="docutils literal notranslate"><span class="pre">[</span> <span class="pre">]</span></code>, <code class="docutils literal notranslate"><span class="pre">.loc</span></code>, or <code class="docutils literal notranslate"><span class="pre">.at</span></code>, if you use a
+label that’s not already in the series index, pandas will append the label and
+value. For instance:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+<span class="n">x</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1     1
+0     2
+3     3
+10   -1
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<p>This doesn’t work when setting elements by position.</p>
+</section>
+<section id="by-a-condition">
+<h3><span class="section-number">1.3.4. </span>By a Condition<a class="headerlink" href="#by-a-condition" title="Link to this heading">#</a></h3>
+<p>The square bracket operator <code class="docutils literal notranslate"><span class="pre">[</span> <span class="pre">]</span></code>, the <code class="docutils literal notranslate"><span class="pre">.iloc</span></code> attribute, and the <code class="docutils literal notranslate"><span class="pre">.loc</span></code>
+attribute all support indexing a series by a condition. The condition must be
+represented by a Boolean array with the same length as the series.</p>
+<p>You can use comparison operators to get a suitable Boolean array. For example:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">is_positive</span> <span class="o">=</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span>
+<span class="n">is_positive</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1      True
+0      True
+3      True
+10    False
+dtype: bool
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="p">[</span><span class="n">is_positive</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1    1
+0    2
+3    3
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">is_positive</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1    1
+0    2
+3    3
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<p>If the condition has an index, the square bracket operator and <code class="docutils literal notranslate"><span class="pre">.loc</span></code> operator
+will try to align the condition with the series being indexed:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">z</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">iloc</span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">]]</span>
+<span class="n">z</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0     2
+1     1
+10   -1
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">z</span><span class="p">[</span><span class="n">is_positive</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    2
+1    1
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">.iloc</span></code> operator raises an error if the Boolean array has an index:</p>
+<div class="cell tag_raises-exception docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">is_positive</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NotImplementedError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">49</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">x</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">is_positive</span><span class="p">]</span>
+
+<span class="nn">File ~/mill/datalab/teaching/intermediate_python/.pixi/envs/default/lib/python3.13/site-packages/pandas/core/indexing.py:1191,</span> in <span class="ni">_LocationIndexer.__getitem__</span><span class="nt">(self, key)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1189</span> <span class="n">maybe_callable</span> <span class="o">=</span> <span class="n">com</span><span class="o">.</span><span class="n">apply_if_callable</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1190</span> <span class="n">maybe_callable</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_deprecated_callable_usage</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">maybe_callable</span><span class="p">)</span>
+<span class="ne">-&gt; </span><span class="mi">1191</span> <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getitem_axis</span><span class="p">(</span><span class="n">maybe_callable</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
+
+<span class="nn">File ~/mill/datalab/teaching/intermediate_python/.pixi/envs/default/lib/python3.13/site-packages/pandas/core/indexing.py:1738,</span> in <span class="ni">_iLocIndexer._getitem_axis</span><span class="nt">(self, key, axis)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1735</span>     <span class="n">key</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1737</span> <span class="k">if</span> <span class="n">com</span><span class="o">.</span><span class="n">is_bool_indexer</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+<span class="ne">-&gt; </span><span class="mi">1738</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_validate_key</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1739</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getbool_axis</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1741</span> <span class="c1"># a list of integers</span>
+
+<span class="nn">File ~/mill/datalab/teaching/intermediate_python/.pixi/envs/default/lib/python3.13/site-packages/pandas/core/indexing.py:1578,</span> in <span class="ni">_iLocIndexer._validate_key</span><span class="nt">(self, key, axis)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1576</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s2">&quot;index&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">Index</span><span class="p">):</span>
+<span class="g g-Whitespace">   </span><span class="mi">1577</span>     <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">inferred_type</span> <span class="o">==</span> <span class="s2">&quot;integer&quot;</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">1578</span>         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">1579</span>             <span class="s2">&quot;iLocation based boolean &quot;</span>
+<span class="g g-Whitespace">   </span><span class="mi">1580</span>             <span class="s2">&quot;indexing on an integer type &quot;</span>
+<span class="g g-Whitespace">   </span><span class="mi">1581</span>             <span class="s2">&quot;is not available&quot;</span>
+<span class="g g-Whitespace">   </span><span class="mi">1582</span>         <span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1583</span>     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">1584</span>         <span class="s2">&quot;iLocation based boolean indexing cannot use &quot;</span>
+<span class="g g-Whitespace">   </span><span class="mi">1585</span>         <span class="s2">&quot;an indexable as a mask&quot;</span>
+<span class="g g-Whitespace">   </span><span class="mi">1586</span>     <span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1587</span> <span class="k">return</span>
+
+<span class="ne">NotImplementedError</span>: iLocation based boolean indexing on an integer type is not available
+</pre></div>
+</div>
+</div>
+</div>
+<p>As described in <a class="reference internal" href="#alignment"><span class="std std-numref">Section 1.2.3</span></a>, the canonical way to avoid index alignment
+is to use the <code class="docutils literal notranslate"><span class="pre">.to_numpy</span></code> method to convert to a NumPy array:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">is_positive</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1    1
+0    2
+3    3
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<p>The logic operators for inverting and combining conditions in pandas differ
+from Python’s usual logic operators:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">|</span></code> is logical or</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&amp;</span></code> is logical and</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">~</span></code> is logical not</p></li>
+</ul>
+<p>For example:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="p">[</span><span class="n">is_positive</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">x</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1    1
+3    3
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<p>In compound conditions, each sub-condition must be enclosed in parentheses
+<code class="docutils literal notranslate"><span class="pre">()</span></code>, because in Python’s <a class="reference external" href="https://docs.python.org/3/reference/expressions.html#operator-precedence">order of operations</a>, the <code class="docutils literal notranslate"><span class="pre">|</span></code>, <code class="docutils literal notranslate"><span class="pre">&amp;</span></code>, and <code class="docutils literal notranslate"><span class="pre">~</span></code>
+operators are evaluated before comparison operators such as <code class="docutils literal notranslate"><span class="pre">==</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, and <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>.</p>
+</section>
+<section id="by-a-callable">
+<h3><span class="section-number">1.3.5. </span>By a Callable<a class="headerlink" href="#by-a-callable" title="Link to this heading">#</a></h3>
+<p>The square bracket operator <code class="docutils literal notranslate"><span class="pre">[</span> <span class="pre">]</span></code>, the <code class="docutils literal notranslate"><span class="pre">.iloc</span></code> attribute, and the <code class="docutils literal notranslate"><span class="pre">.loc</span></code>
+attribute also all support indexing a series by a function (or <strong>callable</strong>
+object defined with <code class="docutils literal notranslate"><span class="pre">def</span></code> or <code class="docutils literal notranslate"><span class="pre">lambda</span></code>. The function must accept one argument:
+the series itself. The function must return a valid argument for the indexing
+operator (positions, labels, or a Boolean array).</p>
+<p>The primary use case for this form of indexing is chaining together multiple
+operations without defining intermediate variables. For example, this code adds
+each element at an even-numbered position to the next element, and then gets
+only the results greater than 2:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">iloc</span><span class="p">[::</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">x</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">())[</span><span class="k">lambda</span> <span class="n">a</span><span class="p">:</span> <span class="n">a</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1    3
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<p>As you can probably see, chaining operations makes code relatively difficult to
+understand. Whenever possible, it’s better to use simple indexing strategies
+rather than indexing by a callable.</p>
+<div class="important admonition">
+<p class="admonition-title">Checkpoint Exercise</p>
+<p>Use indexing by a callable to set the elements of <code class="docutils literal notranslate"><span class="pre">x</span></code> with even values (not
+positions) to twice their current value.</p>
+<p>What’s a simpler way to do this using other indexing modes?</p>
+</div>
+</section>
+<section id="data-frames">
+<h3><span class="section-number">1.3.6. </span>Data Frames<a class="headerlink" href="#data-frames" title="Link to this heading">#</a></h3>
+<p>The indexing operators <code class="docutils literal notranslate"><span class="pre">[</span> <span class="pre">]</span></code>, <code class="docutils literal notranslate"><span class="pre">.iloc</span></code>, and <code class="docutils literal notranslate"><span class="pre">.loc</span></code> can all be used with data
+frames in addition to series. Since data frames are 2-dimensional, you can pass
+the indexing operators a separate argument for each dimension. The rows come
+first.</p>
+<p>For instance, to get (1st row, 2nd and 3rd columns) of the athletics data frame
+the code is:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sports</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>unitid                                100654
+institution_name    Alabama A &amp; M University
+Name: 0, dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<p>When the result has a lower dimension than the object being indexed, pandas
+automatically converts to an appropriate data type. In this case, the result is
+converted to a series with the names of the two columns as its index.</p>
+<p>As another example, the code to get (rows labeled 10 and 11, column labeled
+<code class="docutils literal notranslate"><span class="pre">&quot;year&quot;</span></code>) is:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sports</span><span class="o">.</span><span class="n">loc</span><span class="p">[[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">],</span> <span class="s2">&quot;year&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>10    2015
+11    2015
+Name: year, dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<p>With <code class="docutils literal notranslate"><span class="pre">.iloc</span></code> and <code class="docutils literal notranslate"><span class="pre">.loc</span></code>, you can select all of the elements along a given
+dimension by passing a colon <code class="docutils literal notranslate"><span class="pre">:</span></code> as the argument for that dimension. For
+instance, this code gets all rows in the columns labeled <code class="docutils literal notranslate"><span class="pre">&quot;year&quot;</span></code> and
+<code class="docutils literal notranslate"><span class="pre">&quot;institution_name&quot;</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sports</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="s2">&quot;institution_name&quot;</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>year</th>
+      <th>institution_name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2015</td>
+      <td>Alabama A &amp; M University</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2015</td>
+      <td>Alabama A &amp; M University</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2015</td>
+      <td>Alabama A &amp; M University</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2015</td>
+      <td>Alabama A &amp; M University</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2015</td>
+      <td>Alabama A &amp; M University</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>132322</th>
+      <td>2019</td>
+      <td>Simon Fraser University</td>
+    </tr>
+    <tr>
+      <th>132323</th>
+      <td>2019</td>
+      <td>Simon Fraser University</td>
+    </tr>
+    <tr>
+      <th>132324</th>
+      <td>2019</td>
+      <td>Simon Fraser University</td>
+    </tr>
+    <tr>
+      <th>132325</th>
+      <td>2019</td>
+      <td>Simon Fraser University</td>
+    </tr>
+    <tr>
+      <th>132326</th>
+      <td>2019</td>
+      <td>Simon Fraser University</td>
+    </tr>
+  </tbody>
+</table>
+<p>132327 rows × 2 columns</p>
+</div></div></div>
+</div>
+<p>You can mix indexing by condition with indexing by position or label. The most
+common way to do this is to use a condition to select rows and labels to select
+columns. For example:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sports</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">sports</span><span class="o">.</span><span class="n">year</span> <span class="o">==</span> <span class="mi">2018</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="s2">&quot;institution_name&quot;</span><span class="p">,</span> <span class="s2">&quot;sports&quot;</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>year</th>
+      <th>institution_name</th>
+      <th>sports</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>52387</th>
+      <td>2018</td>
+      <td>Alabama A &amp; M University</td>
+      <td>Baseball</td>
+    </tr>
+    <tr>
+      <th>52388</th>
+      <td>2018</td>
+      <td>Alabama A &amp; M University</td>
+      <td>Basketball</td>
+    </tr>
+    <tr>
+      <th>52389</th>
+      <td>2018</td>
+      <td>Alabama A &amp; M University</td>
+      <td>Football</td>
+    </tr>
+    <tr>
+      <th>52390</th>
+      <td>2018</td>
+      <td>Alabama A &amp; M University</td>
+      <td>Golf</td>
+    </tr>
+    <tr>
+      <th>52391</th>
+      <td>2018</td>
+      <td>Alabama A &amp; M University</td>
+      <td>Softball</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>70154</th>
+      <td>2018</td>
+      <td>Simon Fraser University</td>
+      <td>Soccer</td>
+    </tr>
+    <tr>
+      <th>70155</th>
+      <td>2018</td>
+      <td>Simon Fraser University</td>
+      <td>Softball</td>
+    </tr>
+    <tr>
+      <th>70156</th>
+      <td>2018</td>
+      <td>Simon Fraser University</td>
+      <td>Swimming</td>
+    </tr>
+    <tr>
+      <th>70157</th>
+      <td>2018</td>
+      <td>Simon Fraser University</td>
+      <td>Volleyball</td>
+    </tr>
+    <tr>
+      <th>70158</th>
+      <td>2018</td>
+      <td>Simon Fraser University</td>
+      <td>Wrestling</td>
+    </tr>
+  </tbody>
+</table>
+<p>17772 rows × 3 columns</p>
+</div></div></div>
+</div>
+<div class="important admonition">
+<p class="admonition-title">Checkpoint Exercise</p>
+<p>Use indexing to get only the rows where <code class="docutils literal notranslate"><span class="pre">year</span></code> is <code class="docutils literal notranslate"><span class="pre">2016</span></code> and <code class="docutils literal notranslate"><span class="pre">institution_name</span></code>
+is <code class="docutils literal notranslate"><span class="pre">&quot;University</span> <span class="pre">of</span> <span class="pre">California-Davis&quot;</span></code>. Limit the columns to <code class="docutils literal notranslate"><span class="pre">year</span></code>,
+<code class="docutils literal notranslate"><span class="pre">institution_name</span></code>, <code class="docutils literal notranslate"><span class="pre">sports</span></code>, and <code class="docutils literal notranslate"><span class="pre">total_rev_menwomen</span></code> (the total revenue from
+the program in USD).</p>
+</div>
+<p>Indexing a data frame with only one argument generally accesses rows. For
+example:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sports</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>year                                        2015
+unitid                                    100654
+institution_name        Alabama A &amp; M University
+city_txt                                  Normal
+state_cd                                      AL
+zip_text                                 35762.0
+classification_code                            2
+classification_name          NCAA Division I-FCS
+classification_other                         NaN
+ef_male_count                               1923
+ef_female_count                             2300
+ef_total_count                              4223
+sector_cd                                      1
+sector_name              Public, 4-year or above
+sportscode                                     1
+partic_men                                  31.0
+partic_women                                 NaN
+partic_coed_men                              NaN
+partic_coed_women                            NaN
+sum_partic_men                                31
+sum_partic_women                               0
+rev_men                                 345592.0
+rev_women                                    NaN
+total_rev_menwomen                      345592.0
+exp_men                                 397818.0
+exp_women                                    NaN
+total_exp_menwomen                      397818.0
+sports                                  Baseball
+Name: 0, dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<p>As an exception, using the square bracket operator <code class="docutils literal notranslate"><span class="pre">[</span> <span class="pre">]</span></code> to index a data frame
+with a string argument (or list of strings) accesses columns:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sports</span><span class="p">[[</span><span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="s2">&quot;institution_name&quot;</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>year</th>
+      <th>institution_name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2015</td>
+      <td>Alabama A &amp; M University</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2015</td>
+      <td>Alabama A &amp; M University</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2015</td>
+      <td>Alabama A &amp; M University</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2015</td>
+      <td>Alabama A &amp; M University</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2015</td>
+      <td>Alabama A &amp; M University</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>132322</th>
+      <td>2019</td>
+      <td>Simon Fraser University</td>
+    </tr>
+    <tr>
+      <th>132323</th>
+      <td>2019</td>
+      <td>Simon Fraser University</td>
+    </tr>
+    <tr>
+      <th>132324</th>
+      <td>2019</td>
+      <td>Simon Fraser University</td>
+    </tr>
+    <tr>
+      <th>132325</th>
+      <td>2019</td>
+      <td>Simon Fraser University</td>
+    </tr>
+    <tr>
+      <th>132326</th>
+      <td>2019</td>
+      <td>Simon Fraser University</td>
+    </tr>
+  </tbody>
+</table>
+<p>132327 rows × 2 columns</p>
+</div></div></div>
+</div>
+</section>
+</section>
+<section id="columns-as-indexes">
+<span id="column-indexes"></span><h2><span class="section-number">1.4. </span>Columns as Indexes<a class="headerlink" href="#columns-as-indexes" title="Link to this heading">#</a></h2>
+<p>An important feature of pandas is that you can use arbitrary columns in a data
+frame as indexes. Generally the columns should contain identifiers for the rows
+or other categorical data. For example, in the <code class="docutils literal notranslate"><span class="pre">sports</span></code> data frame, the column
+<code class="docutils literal notranslate"><span class="pre">institution_name</span></code> is an identifier.</p>
+<p>You can use the <code class="docutils literal notranslate"><span class="pre">.set_index</span></code> method to set a column as an index:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sports</span> <span class="o">=</span> <span class="n">sports</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;institution_name&quot;</span><span class="p">)</span>
+<span class="n">sports</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>year</th>
+      <th>unitid</th>
+      <th>city_txt</th>
+      <th>state_cd</th>
+      <th>zip_text</th>
+      <th>classification_code</th>
+      <th>classification_name</th>
+      <th>classification_other</th>
+      <th>ef_male_count</th>
+      <th>ef_female_count</th>
+      <th>...</th>
+      <th>partic_coed_women</th>
+      <th>sum_partic_men</th>
+      <th>sum_partic_women</th>
+      <th>rev_men</th>
+      <th>rev_women</th>
+      <th>total_rev_menwomen</th>
+      <th>exp_men</th>
+      <th>exp_women</th>
+      <th>total_exp_menwomen</th>
+      <th>sports</th>
+    </tr>
+    <tr>
+      <th>institution_name</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Alabama A &amp; M University</th>
+      <td>2015</td>
+      <td>100654</td>
+      <td>Normal</td>
+      <td>AL</td>
+      <td>35762.0</td>
+      <td>2</td>
+      <td>NCAA Division I-FCS</td>
+      <td>NaN</td>
+      <td>1923</td>
+      <td>2300</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>31</td>
+      <td>0</td>
+      <td>345592.0</td>
+      <td>NaN</td>
+      <td>345592.0</td>
+      <td>397818.0</td>
+      <td>NaN</td>
+      <td>397818.0</td>
+      <td>Baseball</td>
+    </tr>
+    <tr>
+      <th>Alabama A &amp; M University</th>
+      <td>2015</td>
+      <td>100654</td>
+      <td>Normal</td>
+      <td>AL</td>
+      <td>35762.0</td>
+      <td>2</td>
+      <td>NCAA Division I-FCS</td>
+      <td>NaN</td>
+      <td>1923</td>
+      <td>2300</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>19</td>
+      <td>16</td>
+      <td>1211095.0</td>
+      <td>748833.0</td>
+      <td>1959928.0</td>
+      <td>817868.0</td>
+      <td>742460.0</td>
+      <td>1560328.0</td>
+      <td>Basketball</td>
+    </tr>
+    <tr>
+      <th>Alabama A &amp; M University</th>
+      <td>2015</td>
+      <td>100654</td>
+      <td>Normal</td>
+      <td>AL</td>
+      <td>35762.0</td>
+      <td>2</td>
+      <td>NCAA Division I-FCS</td>
+      <td>NaN</td>
+      <td>1923</td>
+      <td>2300</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>61</td>
+      <td>46</td>
+      <td>183333.0</td>
+      <td>315574.0</td>
+      <td>498907.0</td>
+      <td>246949.0</td>
+      <td>251184.0</td>
+      <td>498133.0</td>
+      <td>All Track Combined</td>
+    </tr>
+    <tr>
+      <th>Alabama A &amp; M University</th>
+      <td>2015</td>
+      <td>100654</td>
+      <td>Normal</td>
+      <td>AL</td>
+      <td>35762.0</td>
+      <td>2</td>
+      <td>NCAA Division I-FCS</td>
+      <td>NaN</td>
+      <td>1923</td>
+      <td>2300</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>99</td>
+      <td>0</td>
+      <td>2808949.0</td>
+      <td>NaN</td>
+      <td>2808949.0</td>
+      <td>3059353.0</td>
+      <td>NaN</td>
+      <td>3059353.0</td>
+      <td>Football</td>
+    </tr>
+    <tr>
+      <th>Alabama A &amp; M University</th>
+      <td>2015</td>
+      <td>100654</td>
+      <td>Normal</td>
+      <td>AL</td>
+      <td>35762.0</td>
+      <td>2</td>
+      <td>NCAA Division I-FCS</td>
+      <td>NaN</td>
+      <td>1923</td>
+      <td>2300</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>9</td>
+      <td>0</td>
+      <td>78270.0</td>
+      <td>NaN</td>
+      <td>78270.0</td>
+      <td>83913.0</td>
+      <td>NaN</td>
+      <td>83913.0</td>
+      <td>Golf</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 27 columns</p>
+</div></div></div>
+</div>
+<p>After setting a categorical column as an index, you can use indexing by label
+as a convenient way to get rows in specific categories:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sports</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;University of California-Davis&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>year</th>
+      <th>unitid</th>
+      <th>city_txt</th>
+      <th>state_cd</th>
+      <th>zip_text</th>
+      <th>classification_code</th>
+      <th>classification_name</th>
+      <th>classification_other</th>
+      <th>ef_male_count</th>
+      <th>ef_female_count</th>
+      <th>...</th>
+      <th>partic_coed_women</th>
+      <th>sum_partic_men</th>
+      <th>sum_partic_women</th>
+      <th>rev_men</th>
+      <th>rev_women</th>
+      <th>total_rev_menwomen</th>
+      <th>exp_men</th>
+      <th>exp_women</th>
+      <th>total_exp_menwomen</th>
+      <th>sports</th>
+    </tr>
+    <tr>
+      <th>institution_name</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>University of California-Davis</th>
+      <td>2015</td>
+      <td>110644</td>
+      <td>Davis</td>
+      <td>CA</td>
+      <td>956168678.0</td>
+      <td>2</td>
+      <td>NCAA Division I-FCS</td>
+      <td>NaN</td>
+      <td>11215</td>
+      <td>16223</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>36</td>
+      <td>0</td>
+      <td>884627.0</td>
+      <td>NaN</td>
+      <td>884627.0</td>
+      <td>884627.0</td>
+      <td>NaN</td>
+      <td>884627.0</td>
+      <td>Baseball</td>
+    </tr>
+    <tr>
+      <th>University of California-Davis</th>
+      <td>2015</td>
+      <td>110644</td>
+      <td>Davis</td>
+      <td>CA</td>
+      <td>956168678.0</td>
+      <td>2</td>
+      <td>NCAA Division I-FCS</td>
+      <td>NaN</td>
+      <td>11215</td>
+      <td>16223</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>15</td>
+      <td>19</td>
+      <td>1862783.0</td>
+      <td>1340541.0</td>
+      <td>3203324.0</td>
+      <td>1862783.0</td>
+      <td>1340541.0</td>
+      <td>3203324.0</td>
+      <td>Basketball</td>
+    </tr>
+    <tr>
+      <th>University of California-Davis</th>
+      <td>2015</td>
+      <td>110644</td>
+      <td>Davis</td>
+      <td>CA</td>
+      <td>956168678.0</td>
+      <td>2</td>
+      <td>NCAA Division I-FCS</td>
+      <td>NaN</td>
+      <td>11215</td>
+      <td>16223</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>62</td>
+      <td>94</td>
+      <td>571582.0</td>
+      <td>590416.0</td>
+      <td>1161998.0</td>
+      <td>571582.0</td>
+      <td>590416.0</td>
+      <td>1161998.0</td>
+      <td>All Track Combined</td>
+    </tr>
+    <tr>
+      <th>University of California-Davis</th>
+      <td>2015</td>
+      <td>110644</td>
+      <td>Davis</td>
+      <td>CA</td>
+      <td>956168678.0</td>
+      <td>2</td>
+      <td>NCAA Division I-FCS</td>
+      <td>NaN</td>
+      <td>11215</td>
+      <td>16223</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>0</td>
+      <td>25</td>
+      <td>NaN</td>
+      <td>659996.0</td>
+      <td>659996.0</td>
+      <td>NaN</td>
+      <td>659996.0</td>
+      <td>659996.0</td>
+      <td>Field Hockey</td>
+    </tr>
+    <tr>
+      <th>University of California-Davis</th>
+      <td>2015</td>
+      <td>110644</td>
+      <td>Davis</td>
+      <td>CA</td>
+      <td>956168678.0</td>
+      <td>2</td>
+      <td>NCAA Division I-FCS</td>
+      <td>NaN</td>
+      <td>11215</td>
+      <td>16223</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>105</td>
+      <td>0</td>
+      <td>4478087.0</td>
+      <td>NaN</td>
+      <td>4478087.0</td>
+      <td>4478087.0</td>
+      <td>NaN</td>
+      <td>4478087.0</td>
+      <td>Football</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>University of California-Davis</th>
+      <td>2019</td>
+      <td>110644</td>
+      <td>Davis</td>
+      <td>CA</td>
+      <td>95616.0</td>
+      <td>2</td>
+      <td>NCAA Division I-FCS</td>
+      <td>NaN</td>
+      <td>11780</td>
+      <td>18371</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>0</td>
+      <td>27</td>
+      <td>NaN</td>
+      <td>945919.0</td>
+      <td>945919.0</td>
+      <td>NaN</td>
+      <td>945919.0</td>
+      <td>945919.0</td>
+      <td>Equestrian</td>
+    </tr>
+    <tr>
+      <th>University of California-Davis</th>
+      <td>2019</td>
+      <td>110644</td>
+      <td>Davis</td>
+      <td>CA</td>
+      <td>95616.0</td>
+      <td>2</td>
+      <td>NCAA Division I-FCS</td>
+      <td>NaN</td>
+      <td>11780</td>
+      <td>18371</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>0</td>
+      <td>0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Rodeo</td>
+    </tr>
+    <tr>
+      <th>University of California-Davis</th>
+      <td>2019</td>
+      <td>110644</td>
+      <td>Davis</td>
+      <td>CA</td>
+      <td>95616.0</td>
+      <td>2</td>
+      <td>NCAA Division I-FCS</td>
+      <td>NaN</td>
+      <td>11780</td>
+      <td>18371</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>0</td>
+      <td>0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Sailing</td>
+    </tr>
+    <tr>
+      <th>University of California-Davis</th>
+      <td>2019</td>
+      <td>110644</td>
+      <td>Davis</td>
+      <td>CA</td>
+      <td>95616.0</td>
+      <td>2</td>
+      <td>NCAA Division I-FCS</td>
+      <td>NaN</td>
+      <td>11780</td>
+      <td>18371</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>0</td>
+      <td>0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Table Tennis</td>
+    </tr>
+    <tr>
+      <th>University of California-Davis</th>
+      <td>2019</td>
+      <td>110644</td>
+      <td>Davis</td>
+      <td>CA</td>
+      <td>95616.0</td>
+      <td>2</td>
+      <td>NCAA Division I-FCS</td>
+      <td>NaN</td>
+      <td>11780</td>
+      <td>18371</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>0</td>
+      <td>0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Weight Lifting</td>
+    </tr>
+  </tbody>
+</table>
+<p>96 rows × 27 columns</p>
+</div></div></div>
+</div>
+<p>You can use the <code class="docutils literal notranslate"><span class="pre">.reset_index</span></code> method to restore the <code class="docutils literal notranslate"><span class="pre">institution_name</span></code> column
+to the data frame and reset the index to a range:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sports</span> <span class="o">=</span> <span class="n">sports</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+<span class="n">sports</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>institution_name</th>
+      <th>year</th>
+      <th>unitid</th>
+      <th>city_txt</th>
+      <th>state_cd</th>
+      <th>zip_text</th>
+      <th>classification_code</th>
+      <th>classification_name</th>
+      <th>classification_other</th>
+      <th>ef_male_count</th>
+      <th>...</th>
+      <th>partic_coed_women</th>
+      <th>sum_partic_men</th>
+      <th>sum_partic_women</th>
+      <th>rev_men</th>
+      <th>rev_women</th>
+      <th>total_rev_menwomen</th>
+      <th>exp_men</th>
+      <th>exp_women</th>
+      <th>total_exp_menwomen</th>
+      <th>sports</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Alabama A &amp; M University</td>
+      <td>2015</td>
+      <td>100654</td>
+      <td>Normal</td>
+      <td>AL</td>
+      <td>35762.0</td>
+      <td>2</td>
+      <td>NCAA Division I-FCS</td>
+      <td>NaN</td>
+      <td>1923</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>31</td>
+      <td>0</td>
+      <td>345592.0</td>
+      <td>NaN</td>
+      <td>345592.0</td>
+      <td>397818.0</td>
+      <td>NaN</td>
+      <td>397818.0</td>
+      <td>Baseball</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Alabama A &amp; M University</td>
+      <td>2015</td>
+      <td>100654</td>
+      <td>Normal</td>
+      <td>AL</td>
+      <td>35762.0</td>
+      <td>2</td>
+      <td>NCAA Division I-FCS</td>
+      <td>NaN</td>
+      <td>1923</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>19</td>
+      <td>16</td>
+      <td>1211095.0</td>
+      <td>748833.0</td>
+      <td>1959928.0</td>
+      <td>817868.0</td>
+      <td>742460.0</td>
+      <td>1560328.0</td>
+      <td>Basketball</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Alabama A &amp; M University</td>
+      <td>2015</td>
+      <td>100654</td>
+      <td>Normal</td>
+      <td>AL</td>
+      <td>35762.0</td>
+      <td>2</td>
+      <td>NCAA Division I-FCS</td>
+      <td>NaN</td>
+      <td>1923</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>61</td>
+      <td>46</td>
+      <td>183333.0</td>
+      <td>315574.0</td>
+      <td>498907.0</td>
+      <td>246949.0</td>
+      <td>251184.0</td>
+      <td>498133.0</td>
+      <td>All Track Combined</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Alabama A &amp; M University</td>
+      <td>2015</td>
+      <td>100654</td>
+      <td>Normal</td>
+      <td>AL</td>
+      <td>35762.0</td>
+      <td>2</td>
+      <td>NCAA Division I-FCS</td>
+      <td>NaN</td>
+      <td>1923</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>99</td>
+      <td>0</td>
+      <td>2808949.0</td>
+      <td>NaN</td>
+      <td>2808949.0</td>
+      <td>3059353.0</td>
+      <td>NaN</td>
+      <td>3059353.0</td>
+      <td>Football</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Alabama A &amp; M University</td>
+      <td>2015</td>
+      <td>100654</td>
+      <td>Normal</td>
+      <td>AL</td>
+      <td>35762.0</td>
+      <td>2</td>
+      <td>NCAA Division I-FCS</td>
+      <td>NaN</td>
+      <td>1923</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>9</td>
+      <td>0</td>
+      <td>78270.0</td>
+      <td>NaN</td>
+      <td>78270.0</td>
+      <td>83913.0</td>
+      <td>NaN</td>
+      <td>83913.0</td>
+      <td>Golf</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 28 columns</p>
+</div></div></div>
+</div>
+<p>Setting indexes appropriately makes it much more convenient to filter the rows
+of a data frame.</p>
+<section id="multiindexes">
+<h3><span class="section-number">1.4.1. </span>MultiIndexes<a class="headerlink" href="#multiindexes" title="Link to this heading">#</a></h3>
+<p>One of pandas’ most powerful features is the ability to set multiple columns as
+the index at the same time. This creates a <code class="docutils literal notranslate"><span class="pre">MultiIndex</span></code>, a hierarchical index
+with multiple levels. For example, this code creates a MultiIndex from <code class="docutils literal notranslate"><span class="pre">year</span></code>,
+<code class="docutils literal notranslate"><span class="pre">institution_name</span></code> and <code class="docutils literal notranslate"><span class="pre">sports</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sports</span> <span class="o">=</span> <span class="n">sports</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="s2">&quot;institution_name&quot;</span><span class="p">,</span> <span class="s2">&quot;sports&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The MultiIndex makes it easy to get all of the information for a specific year,
+institution, and sport. When working with a MultiIndex, the corresponding
+argument to the indexing operator should be a tuple with one element for each
+level of the MultiIndex:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sports</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="mi">2015</span><span class="p">,</span> <span class="s2">&quot;Stanford University&quot;</span><span class="p">,</span> <span class="s2">&quot;Football&quot;</span><span class="p">)]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_380708/1887213640.py:1: PerformanceWarning: indexing past lexsort depth may impact performance.
+  sports.loc[(2015, &quot;Stanford University&quot;, &quot;Football&quot;)]
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th></th>
+      <th>unitid</th>
+      <th>city_txt</th>
+      <th>state_cd</th>
+      <th>zip_text</th>
+      <th>classification_code</th>
+      <th>classification_name</th>
+      <th>classification_other</th>
+      <th>ef_male_count</th>
+      <th>ef_female_count</th>
+      <th>ef_total_count</th>
+      <th>...</th>
+      <th>partic_coed_men</th>
+      <th>partic_coed_women</th>
+      <th>sum_partic_men</th>
+      <th>sum_partic_women</th>
+      <th>rev_men</th>
+      <th>rev_women</th>
+      <th>total_rev_menwomen</th>
+      <th>exp_men</th>
+      <th>exp_women</th>
+      <th>total_exp_menwomen</th>
+    </tr>
+    <tr>
+      <th>year</th>
+      <th>institution_name</th>
+      <th>sports</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2015</th>
+      <th>Stanford University</th>
+      <th>Football</th>
+      <td>243744</td>
+      <td>Stanford</td>
+      <td>CA</td>
+      <td>94305.0</td>
+      <td>1</td>
+      <td>NCAA Division I-FBS</td>
+      <td>NaN</td>
+      <td>3663</td>
+      <td>3331</td>
+      <td>6994</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>100</td>
+      <td>0</td>
+      <td>43744639.0</td>
+      <td>NaN</td>
+      <td>43744639.0</td>
+      <td>23724407.0</td>
+      <td>NaN</td>
+      <td>23724407.0</td>
+    </tr>
+  </tbody>
+</table>
+<p>1 rows × 25 columns</p>
+</div></div></div>
+</div>
+<p>You can use the <code class="docutils literal notranslate"><span class="pre">.xs</span></code> (read: “cross section”) method to select rows from only
+one particular level of a MultiIndex. For instance, to get all rows for Harvard
+university:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sports</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="s2">&quot;Harvard University&quot;</span><span class="p">,</span> <span class="n">level</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>unitid</th>
+      <th>city_txt</th>
+      <th>state_cd</th>
+      <th>zip_text</th>
+      <th>classification_code</th>
+      <th>classification_name</th>
+      <th>classification_other</th>
+      <th>ef_male_count</th>
+      <th>ef_female_count</th>
+      <th>ef_total_count</th>
+      <th>...</th>
+      <th>partic_coed_men</th>
+      <th>partic_coed_women</th>
+      <th>sum_partic_men</th>
+      <th>sum_partic_women</th>
+      <th>rev_men</th>
+      <th>rev_women</th>
+      <th>total_rev_menwomen</th>
+      <th>exp_men</th>
+      <th>exp_women</th>
+      <th>total_exp_menwomen</th>
+    </tr>
+    <tr>
+      <th>year</th>
+      <th>sports</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="5" valign="top">2015</th>
+      <th>Baseball</th>
+      <td>166027</td>
+      <td>Cambridge</td>
+      <td>MA</td>
+      <td>2138.0</td>
+      <td>2</td>
+      <td>NCAA Division I-FCS</td>
+      <td>NaN</td>
+      <td>3637</td>
+      <td>3256</td>
+      <td>6893</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>35</td>
+      <td>0</td>
+      <td>543855.0</td>
+      <td>NaN</td>
+      <td>543855.0</td>
+      <td>543855.0</td>
+      <td>NaN</td>
+      <td>543855.0</td>
+    </tr>
+    <tr>
+      <th>Basketball</th>
+      <td>166027</td>
+      <td>Cambridge</td>
+      <td>MA</td>
+      <td>2138.0</td>
+      <td>2</td>
+      <td>NCAA Division I-FCS</td>
+      <td>NaN</td>
+      <td>3637</td>
+      <td>3256</td>
+      <td>6893</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>16</td>
+      <td>19</td>
+      <td>1296186.0</td>
+      <td>743673.0</td>
+      <td>2039859.0</td>
+      <td>1296186.0</td>
+      <td>743673.0</td>
+      <td>2039859.0</td>
+    </tr>
+    <tr>
+      <th>All Track Combined</th>
+      <td>166027</td>
+      <td>Cambridge</td>
+      <td>MA</td>
+      <td>2138.0</td>
+      <td>2</td>
+      <td>NCAA Division I-FCS</td>
+      <td>NaN</td>
+      <td>3637</td>
+      <td>3256</td>
+      <td>6893</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>138</td>
+      <td>95</td>
+      <td>721675.0</td>
+      <td>721128.0</td>
+      <td>1442803.0</td>
+      <td>721675.0</td>
+      <td>721128.0</td>
+      <td>1442803.0</td>
+    </tr>
+    <tr>
+      <th>Fencing</th>
+      <td>166027</td>
+      <td>Cambridge</td>
+      <td>MA</td>
+      <td>2138.0</td>
+      <td>2</td>
+      <td>NCAA Division I-FCS</td>
+      <td>NaN</td>
+      <td>3637</td>
+      <td>3256</td>
+      <td>6893</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>13</td>
+      <td>12</td>
+      <td>151656.0</td>
+      <td>164450.0</td>
+      <td>316106.0</td>
+      <td>151656.0</td>
+      <td>164450.0</td>
+      <td>316106.0</td>
+    </tr>
+    <tr>
+      <th>Field Hockey</th>
+      <td>166027</td>
+      <td>Cambridge</td>
+      <td>MA</td>
+      <td>2138.0</td>
+      <td>2</td>
+      <td>NCAA Division I-FCS</td>
+      <td>NaN</td>
+      <td>3637</td>
+      <td>3256</td>
+      <td>6893</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0</td>
+      <td>24</td>
+      <td>NaN</td>
+      <td>363711.0</td>
+      <td>363711.0</td>
+      <td>NaN</td>
+      <td>363711.0</td>
+      <td>363711.0</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th rowspan="5" valign="top">2019</th>
+      <th>Equestrian</th>
+      <td>166027</td>
+      <td>Cambridge</td>
+      <td>MA</td>
+      <td>2138.0</td>
+      <td>2</td>
+      <td>NCAA Division I-FCS</td>
+      <td>NaN</td>
+      <td>3531</td>
+      <td>3454</td>
+      <td>6985</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0</td>
+      <td>0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>Rodeo</th>
+      <td>166027</td>
+      <td>Cambridge</td>
+      <td>MA</td>
+      <td>2138.0</td>
+      <td>2</td>
+      <td>NCAA Division I-FCS</td>
+      <td>NaN</td>
+      <td>3531</td>
+      <td>3454</td>
+      <td>6985</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0</td>
+      <td>0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>Sailing</th>
+      <td>166027</td>
+      <td>Cambridge</td>
+      <td>MA</td>
+      <td>2138.0</td>
+      <td>2</td>
+      <td>NCAA Division I-FCS</td>
+      <td>NaN</td>
+      <td>3531</td>
+      <td>3454</td>
+      <td>6985</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>14</td>
+      <td>23</td>
+      <td>108409.0</td>
+      <td>178101.0</td>
+      <td>286510.0</td>
+      <td>108409.0</td>
+      <td>178101.0</td>
+      <td>286510.0</td>
+    </tr>
+    <tr>
+      <th>Table Tennis</th>
+      <td>166027</td>
+      <td>Cambridge</td>
+      <td>MA</td>
+      <td>2138.0</td>
+      <td>2</td>
+      <td>NCAA Division I-FCS</td>
+      <td>NaN</td>
+      <td>3531</td>
+      <td>3454</td>
+      <td>6985</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0</td>
+      <td>0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>Weight Lifting</th>
+      <td>166027</td>
+      <td>Cambridge</td>
+      <td>MA</td>
+      <td>2138.0</td>
+      <td>2</td>
+      <td>NCAA Division I-FCS</td>
+      <td>NaN</td>
+      <td>3531</td>
+      <td>3454</td>
+      <td>6985</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0</td>
+      <td>0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+<p>122 rows × 25 columns</p>
+</div></div></div>
+</div>
+<p>The level argument is <code class="docutils literal notranslate"><span class="pre">1</span></code> because <code class="docutils literal notranslate"><span class="pre">institution_name</span></code> is the 2nd level of the
+MultiIndex, and indexing starts from 0. You can also use the name of the level
+instead:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sports</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="s2">&quot;Princeton University&quot;</span><span class="p">,</span> <span class="n">level</span> <span class="o">=</span> <span class="s2">&quot;institution_name&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>unitid</th>
+      <th>city_txt</th>
+      <th>state_cd</th>
+      <th>zip_text</th>
+      <th>classification_code</th>
+      <th>classification_name</th>
+      <th>classification_other</th>
+      <th>ef_male_count</th>
+      <th>ef_female_count</th>
+      <th>ef_total_count</th>
+      <th>...</th>
+      <th>partic_coed_men</th>
+      <th>partic_coed_women</th>
+      <th>sum_partic_men</th>
+      <th>sum_partic_women</th>
+      <th>rev_men</th>
+      <th>rev_women</th>
+      <th>total_rev_menwomen</th>
+      <th>exp_men</th>
+      <th>exp_women</th>
+      <th>total_exp_menwomen</th>
+    </tr>
+    <tr>
+      <th>year</th>
+      <th>sports</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="5" valign="top">2015</th>
+      <th>Baseball</th>
+      <td>186131</td>
+      <td>Princeton</td>
+      <td>NJ</td>
+      <td>85440070.0</td>
+      <td>2</td>
+      <td>NCAA Division I-FCS</td>
+      <td>NaN</td>
+      <td>2717</td>
+      <td>2543</td>
+      <td>5260</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>31</td>
+      <td>0</td>
+      <td>454767.0</td>
+      <td>NaN</td>
+      <td>454767.0</td>
+      <td>454767.0</td>
+      <td>NaN</td>
+      <td>454767.0</td>
+    </tr>
+    <tr>
+      <th>Basketball</th>
+      <td>186131</td>
+      <td>Princeton</td>
+      <td>NJ</td>
+      <td>85440070.0</td>
+      <td>2</td>
+      <td>NCAA Division I-FCS</td>
+      <td>NaN</td>
+      <td>2717</td>
+      <td>2543</td>
+      <td>5260</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>16</td>
+      <td>17</td>
+      <td>1117914.0</td>
+      <td>1170976.0</td>
+      <td>2288890.0</td>
+      <td>1117914.0</td>
+      <td>1170976.0</td>
+      <td>2288890.0</td>
+    </tr>
+    <tr>
+      <th>All Track Combined</th>
+      <td>186131</td>
+      <td>Princeton</td>
+      <td>NJ</td>
+      <td>85440070.0</td>
+      <td>2</td>
+      <td>NCAA Division I-FCS</td>
+      <td>NaN</td>
+      <td>2717</td>
+      <td>2543</td>
+      <td>5260</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>159</td>
+      <td>175</td>
+      <td>776687.0</td>
+      <td>665927.0</td>
+      <td>1442614.0</td>
+      <td>776687.0</td>
+      <td>665927.0</td>
+      <td>1442614.0</td>
+    </tr>
+    <tr>
+      <th>Fencing</th>
+      <td>186131</td>
+      <td>Princeton</td>
+      <td>NJ</td>
+      <td>85440070.0</td>
+      <td>2</td>
+      <td>NCAA Division I-FCS</td>
+      <td>NaN</td>
+      <td>2717</td>
+      <td>2543</td>
+      <td>5260</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>16</td>
+      <td>13</td>
+      <td>238594.0</td>
+      <td>219334.0</td>
+      <td>457928.0</td>
+      <td>238594.0</td>
+      <td>219334.0</td>
+      <td>457928.0</td>
+    </tr>
+    <tr>
+      <th>Field Hockey</th>
+      <td>186131</td>
+      <td>Princeton</td>
+      <td>NJ</td>
+      <td>85440070.0</td>
+      <td>2</td>
+      <td>NCAA Division I-FCS</td>
+      <td>NaN</td>
+      <td>2717</td>
+      <td>2543</td>
+      <td>5260</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0</td>
+      <td>23</td>
+      <td>NaN</td>
+      <td>500755.0</td>
+      <td>500755.0</td>
+      <td>NaN</td>
+      <td>500755.0</td>
+      <td>500755.0</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th rowspan="5" valign="top">2019</th>
+      <th>Swimming and Diving</th>
+      <td>186131</td>
+      <td>Princeton</td>
+      <td>NJ</td>
+      <td>8544.0</td>
+      <td>2</td>
+      <td>NCAA Division I-FCS</td>
+      <td>NaN</td>
+      <td>2670</td>
+      <td>2638</td>
+      <td>5308</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>38</td>
+      <td>37</td>
+      <td>685836.0</td>
+      <td>710247.0</td>
+      <td>1396083.0</td>
+      <td>685836.0</td>
+      <td>710247.0</td>
+      <td>1396083.0</td>
+    </tr>
+    <tr>
+      <th>Tennis</th>
+      <td>186131</td>
+      <td>Princeton</td>
+      <td>NJ</td>
+      <td>8544.0</td>
+      <td>2</td>
+      <td>NCAA Division I-FCS</td>
+      <td>NaN</td>
+      <td>2670</td>
+      <td>2638</td>
+      <td>5308</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>11</td>
+      <td>11</td>
+      <td>550389.0</td>
+      <td>472485.0</td>
+      <td>1022874.0</td>
+      <td>550389.0</td>
+      <td>472485.0</td>
+      <td>1022874.0</td>
+    </tr>
+    <tr>
+      <th>Volleyball</th>
+      <td>186131</td>
+      <td>Princeton</td>
+      <td>NJ</td>
+      <td>8544.0</td>
+      <td>2</td>
+      <td>NCAA Division I-FCS</td>
+      <td>NaN</td>
+      <td>2670</td>
+      <td>2638</td>
+      <td>5308</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>17</td>
+      <td>16</td>
+      <td>324540.0</td>
+      <td>423386.0</td>
+      <td>747926.0</td>
+      <td>324540.0</td>
+      <td>423386.0</td>
+      <td>747926.0</td>
+    </tr>
+    <tr>
+      <th>Water Polo</th>
+      <td>186131</td>
+      <td>Princeton</td>
+      <td>NJ</td>
+      <td>8544.0</td>
+      <td>2</td>
+      <td>NCAA Division I-FCS</td>
+      <td>NaN</td>
+      <td>2670</td>
+      <td>2638</td>
+      <td>5308</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>22</td>
+      <td>17</td>
+      <td>408972.0</td>
+      <td>335028.0</td>
+      <td>744000.0</td>
+      <td>408972.0</td>
+      <td>335028.0</td>
+      <td>744000.0</td>
+    </tr>
+    <tr>
+      <th>Wrestling</th>
+      <td>186131</td>
+      <td>Princeton</td>
+      <td>NJ</td>
+      <td>8544.0</td>
+      <td>2</td>
+      <td>NCAA Division I-FCS</td>
+      <td>NaN</td>
+      <td>2670</td>
+      <td>2638</td>
+      <td>5308</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>31</td>
+      <td>0</td>
+      <td>840184.0</td>
+      <td>NaN</td>
+      <td>840184.0</td>
+      <td>840184.0</td>
+      <td>NaN</td>
+      <td>840184.0</td>
+    </tr>
+  </tbody>
+</table>
+<p>91 rows × 25 columns</p>
+</div></div></div>
+</div>
+<p>The <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/user_guide/advanced.html">pandas documentation on MultiIndexes</a> describes a wide
+variety of ways MultiIndexes can be used to slice and dice data frames.</p>
+<div class="important admonition">
+<p class="admonition-title">Checkpoint Exercise</p>
+<p>Use a MultiIndex to get a series that lists the sports for which there were
+university athletics programs in Aberdeen, WA in 2018.</p>
+</div>
+</section>
+</section>
+<section id="the-query-method">
+<h2><span class="section-number">1.5. </span>The <code class="docutils literal notranslate"><span class="pre">.query</span></code> Method<a class="headerlink" href="#the-query-method" title="Link to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">.query</span></code> method is another powerful way to extract information from a data
+frame. The idea of <code class="docutils literal notranslate"><span class="pre">.query</span></code> is that you write a query string using a query
+mini-language to select a subset of the rows. This has several advantages over
+other ways of indexing:</p>
+<ul>
+<li><p>For large data sets, the <code class="docutils literal notranslate"><span class="pre">.query</span></code> method is <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#performance-of-query">slightly faster</a>
+than other ways of indexing</p></li>
+<li><p>You don’t have to repeat the name of the data frame every time you refer to a
+column in a condition</p></li>
+<li><p>You can reuse a single query across multiple data frames, provided they all
+have the queried columns</p></li>
+<li><p>Conditions are easier to read:</p>
+<ul class="simple">
+<li><p>You can use <code class="docutils literal notranslate"><span class="pre">not</span></code>, <code class="docutils literal notranslate"><span class="pre">or</span></code> and <code class="docutils literal notranslate"><span class="pre">and</span></code> to invert and combine conditions
+instead of <code class="docutils literal notranslate"><span class="pre">~</span></code>, <code class="docutils literal notranslate"><span class="pre">|</span></code>, and <code class="docutils literal notranslate"><span class="pre">&amp;</span></code></p></li>
+</ul>
+<ul class="simple">
+<li><p>You can use <code class="docutils literal notranslate"><span class="pre">in</span></code> and <code class="docutils literal notranslate"><span class="pre">not</span> <span class="pre">in</span></code> in conditions</p></li>
+<li><p>You can write <code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">&lt;</span> <span class="pre">b</span> <span class="pre">&lt;</span> <span class="pre">c</span></code> rather than <code class="docutils literal notranslate"><span class="pre">(a</span> <span class="pre">&lt;</span> <span class="pre">b)</span> <span class="pre">&amp;</span> <span class="pre">(b</span> <span class="pre">&lt;</span> <span class="pre">c)</span></code></p></li>
+</ul>
+<ul class="simple">
+<li><p>It’s not necessary to enclose sub-conditions in parentheses, since the
+query mini-language defines its own order of operations</p></li>
+</ul>
+</li>
+</ul>
+<p>Here’s an example of a query:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sports</span> <span class="o">=</span> <span class="n">sports</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+
+<span class="n">qs</span> <span class="o">=</span> <span class="s2">&quot;city_txt == &#39;Davis&#39; and state_cd == &#39;CA&#39; and sports == &#39;Basketball&#39;&quot;</span>
+<span class="n">ucd_bball</span> <span class="o">=</span> <span class="n">sports</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">qs</span><span class="p">)</span>
+<span class="n">ucd_bball</span><span class="p">[[</span><span class="s2">&quot;institution_name&quot;</span><span class="p">,</span> <span class="s2">&quot;sports&quot;</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="s2">&quot;total_rev_menwomen&quot;</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>institution_name</th>
+      <th>sports</th>
+      <th>year</th>
+      <th>total_rev_menwomen</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>913</th>
+      <td>University of California-Davis</td>
+      <td>Basketball</td>
+      <td>2015</td>
+      <td>3203324.0</td>
+    </tr>
+    <tr>
+      <th>18263</th>
+      <td>University of California-Davis</td>
+      <td>Basketball</td>
+      <td>2016</td>
+      <td>3817436.0</td>
+    </tr>
+    <tr>
+      <th>35698</th>
+      <td>University of California-Davis</td>
+      <td>Basketball</td>
+      <td>2017</td>
+      <td>4021500.0</td>
+    </tr>
+    <tr>
+      <th>53319</th>
+      <td>University of California-Davis</td>
+      <td>Basketball</td>
+      <td>2018</td>
+      <td>4240907.0</td>
+    </tr>
+    <tr>
+      <th>73947</th>
+      <td>University of California-Davis</td>
+      <td>Basketball</td>
+      <td>2019</td>
+      <td>4141401.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="important admonition">
+<p class="admonition-title">Checkpoint Exercise</p>
+<p>Use a query string to get a data frame that lists the sports for which there
+were university athletics programs in Aberdeen, WA in 2018.</p>
+</div>
+<p>The pandas documentation provides <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#the-query-method">further details about how to write query
+strings</a>.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapters"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Overview</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="03_iterators.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">2. </span>Iterator &amp; Generator Crash Course</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">1.1. Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-s-an-index">1.2. What’s an Index?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#indexes-on-series">1.2.1. Indexes on Series</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#indexes-on-data-frames">1.2.2. Indexes on Data Frames</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#alignment">1.2.3. Alignment</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#indexing-operators">1.3. Indexing Operators</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#slices">1.3.1. Slices</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#by-position-with-iloc">1.3.2. By Position with <code class="docutils literal notranslate"><span class="pre">.iloc</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#by-label-with-loc">1.3.3. By Label with <code class="docutils literal notranslate"><span class="pre">.loc</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#by-a-condition">1.3.4. By a Condition</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#by-a-callable">1.3.5. By a Callable</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-frames">1.3.6. Data Frames</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#columns-as-indexes">1.4. Columns as Indexes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multiindexes">1.4.1. MultiIndexes</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-query-method">1.5. The <code class="docutils literal notranslate"><span class="pre">.query</span></code> Method</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Nick Ulle
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

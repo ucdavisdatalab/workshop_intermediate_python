@@ -1,0 +1,1751 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>2. Iterator &amp; Generator Crash Course &#8212; Intermediate Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapters/03_iterators';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="3. Squashing Bugs with Python’s Debugging Tools" href="04_debugging.html" />
+    <link rel="prev" title="1. Slicing &amp; Dicing Data with pandas" href="01_pandas.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/datalab-logo-full-color-rgb-1.png" class="logo__image only-light" alt="Intermediate Python - Home"/>
+    <script>document.write(`<img src="../_static/datalab-logo-full-color-rgb-1.png" class="logo__image only-dark" alt="Intermediate Python - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="index.html">
+                    Overview
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Thinking in Python</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_pandas.html">1. Slicing &amp; Dicing Data with pandas</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">2. Iterator &amp; Generator Crash Course</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_debugging.html">3. Squashing Bugs with Python’s Debugging Tools</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Writing Python Scripts</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="02_reproducible.html">4. Making Python Projects &amp; Environments Reproducible</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Other Workshops</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="05_viz.html">5. Next-level Data Visualization</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Afterword</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
+<li class="toctree-l1"><a class="reference internal" href="acknowledgements.html">Acknowledgements</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/ucdavisdatalab/workshop_intermediate_python" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/ucdavisdatalab/workshop_intermediate_python/issues/new?title=Issue%20on%20page%20%2Fchapters/03_iterators.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/chapters/03_iterators.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Iterator & Generator Crash Course</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">2.1. Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#iteration-review">2.2. Iteration Review</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ranges">2.2.1. Ranges</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#comprehensions">2.2.2. Comprehensions</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-s-a-class">2.3. What’s a Class?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#methods">2.3.1. Methods</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#special-methods">2.3.2. Special Methods</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-s-an-iterator">2.4. What’s an Iterator?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#working-with-iterables">2.5. Working with Iterables</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-itertools-module">2.5.1. The <code class="docutils literal notranslate"><span class="pre">itertools</span></code> Module</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-s-a-generator">2.6. What’s a Generator?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generator-expressions">2.6.1. Generator Expressions</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-processing-pipelines">2.7. Data Processing Pipelines</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="iterator-generator-crash-course">
+<span id="chapter-iterators"></span><h1><span class="section-number">2. </span>Iterator &amp; Generator Crash Course<a class="headerlink" href="#iterator-generator-crash-course" title="Link to this heading">#</a></h1>
+<div class="admonition-learning-objectives admonition">
+<p class="admonition-title">Learning Objectives</p>
+<ul class="simple">
+<li><p>Explain and use for-loops and comprehensions</p></li>
+<li><p>Use the <code class="docutils literal notranslate"><span class="pre">sys.getsizeof</span></code> function to get the size of an object in memory</p></li>
+<li><p>Explain what classes are and how they’re typically used</p></li>
+<li><p>Create new classes</p></li>
+<li><p>Explain what methods and special methods are</p></li>
+<li><p>Identify some common special methods</p></li>
+<li><p>Define special methods for a class to customize behavior</p></li>
+<li><p>Explain what an iterator is, what an iterable is, and how they differ</p></li>
+<li><p>Use the <code class="docutils literal notranslate"><span class="pre">reversed</span></code>, <code class="docutils literal notranslate"><span class="pre">sorted</span></code>, <code class="docutils literal notranslate"><span class="pre">enumerate</span></code>, and <code class="docutils literal notranslate"><span class="pre">zip</span></code> functions</p></li>
+<li><p>Explain what the <code class="docutils literal notranslate"><span class="pre">itertools</span></code> module is</p></li>
+<li><p>Explain and use generator functions and generator expressions</p></li>
+<li><p>Explain the advantages and disadvantages of generators</p></li>
+</ul>
+</div>
+<p>This chapter will help you understand how Python objects and classes work at a
+lower level, particularly iterators and generators. Objects are the atoms of
+Python, and knowing how to iterate over data is a fundamental programming
+skill. Generators provide an elegant way to build complex data processing
+pipelines that can efficiently handle big data and streaming data. Along the
+way, the chapter also introduces a few of Python’s advanced features.</p>
+<section id="prerequisites">
+<span id="id1"></span><h2><span class="section-number">2.1. </span>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">#</a></h2>
+<p>This chapter assumes you already have basic familiarity with Python. DataLab’s
+<a class="reference external" href="https://ucdavisdatalab.github.io/workshop_python_basics/">Python Basics Reader</a> and its accompanying workshop provide a
+suitable introduction.</p>
+<p>To follow along, you’ll need the following software versions (or newer)
+installed on your computer:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.python.org/">Python</a> 3.10</p></li>
+</ul>
+<p>One way to install these is to install the <a class="reference external" href="https://www.anaconda.com/">Anaconda</a> Python distribution.
+Chapter 2 provides more details about Anaconda and the <code class="docutils literal notranslate"><span class="pre">conda</span></code> package manager.</p>
+<p><a class="reference external" href="https://spamassassin.apache.org/old/publiccorpus/20021010_easy_ham.tar.bz2">CLICK HERE</a> to get the data set used in the final example for
+this chapter. The data set is in a <code class="docutils literal notranslate"><span class="pre">.tar.bz2</span></code> archive, which you’ll need to
+decompress. If your computer doesn’t already have a program that can decompress
+<code class="docutils literal notranslate"><span class="pre">.tar.bz2</span></code> files, you can use <a class="reference external" href="https://www.7-zip.org/">7-Zip</a> on Windows or <a class="reference external" href="https://www.keka.io/en/">Keka</a> on Mac OS X.</p>
+</section>
+<section id="iteration-review">
+<span id="id2"></span><h2><span class="section-number">2.2. </span>Iteration Review<a class="headerlink" href="#iteration-review" title="Link to this heading">#</a></h2>
+<p>In the context of programming, <strong>iteration</strong> means running a block of code
+repeatedly. Each repetition is a single iteration. The inputs usually change
+from one iteration to the next, so that each iteration carries out a different
+computation. Thus it’s often useful to think about iteration in terms of
+iterating over a collection of inputs, with one iteration per input value.</p>
+<p>The primary way to iterate over a collection of values in Python is with a
+<strong>for-loop</strong>. If you haven’t used for-loops before or need more than a quick
+review, see <a class="reference external" href="https://ucdavisdatalab.github.io/workshop_python_basics/chapters/04_non-tabular-data.html#loops">this introduction to loops</a> in DataLab’s Python
+Basics Reader.</p>
+<p>You can use for-loops with many different types of objects. For example,
+for-loops iterate over the elements of a list:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>10
+20
+30
+</pre></div>
+</div>
+</div>
+</div>
+<p>For dictionaries, for-loops iterate over the keys:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">}</span>
+<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">x</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>a : 10
+b : 20
+c : 30
+</pre></div>
+</div>
+</div>
+</div>
+<p>For-loops iterate over the keys rather than the values in order to be
+consistent with Python’s syntax for checking whether a key is present in a
+dictionary:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;a&quot;</span> <span class="ow">in</span> <span class="n">x</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
+</pre></div>
+</div>
+</div>
+</div>
+<p>Every dictionary has a <code class="docutils literal notranslate"><span class="pre">.values</span></code> method to provide access to just the values,
+and a <code class="docutils literal notranslate"><span class="pre">.items</span></code> method to provide access to key-value pairs (as tuples).</p>
+<p>For-loops also iterate over the characters in a string:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="s2">&quot;python&quot;</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>p
+y
+t
+h
+o
+n
+</pre></div>
+</div>
+</div>
+</div>
+<p>These examples raise a question: how are for-loops able to iterate over so many
+different types of objects?</p>
+<section id="ranges">
+<h3><span class="section-number">2.2.1. </span>Ranges<a class="headerlink" href="#ranges" title="Link to this heading">#</a></h3>
+<p>You can also use for-loops to iterate over the numbers in a range:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0
+1
+2
+3
+4
+</pre></div>
+</div>
+</div>
+</div>
+<p>A <code class="docutils literal notranslate"><span class="pre">range</span></code> object keeps track of where the range starts and ends, but not the
+values in between:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>range(0, 5)
+</pre></div>
+</div>
+</div>
+</div>
+<p>You can be sure of this by checking how much memory Python uses to store a
+range compared to an equivalent list. The <code class="docutils literal notranslate"><span class="pre">sys.getsizeof</span></code> function returns the
+size of an object in bytes:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+
+<span class="n">sys</span><span class="o">.</span><span class="n">getsizeof</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>28
+</pre></div>
+</div>
+</div>
+</div>
+<p>In Python, an <code class="docutils literal notranslate"><span class="pre">int</span></code> is a fully-fledged object and uses at least 24 bytes to
+store its methods, in addition to however many bytes are needed to store its
+value.</p>
+<p>All ranges use approximately the same amount of memory regardless of where they
+start and end:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sys</span><span class="o">.</span><span class="n">getsizeof</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>48
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sys</span><span class="o">.</span><span class="n">getsizeof</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>48
+</pre></div>
+</div>
+</div>
+</div>
+<p>You can use the <code class="docutils literal notranslate"><span class="pre">list</span></code> function to convert a range into a list. A list stores
+all of its elements in memory. So for most ranges, the equivalent list uses far
+more memory:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sys</span><span class="o">.</span><span class="n">getsizeof</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>8056
+</pre></div>
+</div>
+</div>
+</div>
+<p>This raises another set of questions: What exactly is a range? When and how
+does Python compute the values in a range?</p>
+</section>
+<section id="comprehensions">
+<span id="id3"></span><h3><span class="section-number">2.2.2. </span>Comprehensions<a class="headerlink" href="#comprehensions" title="Link to this heading">#</a></h3>
+<p>A <strong>comprehension</strong> is an efficient and elegant way to write a loop that
+produces a value for each item over which it iterates.</p>
+<p>For example, suppose you want to get the length of each string in a list. You
+could use a for-loop:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">strings</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;this&quot;</span><span class="p">,</span> <span class="s2">&quot;is&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;python&quot;</span><span class="p">,</span> <span class="s2">&quot;workshop&quot;</span><span class="p">]</span>
+
+<span class="n">lens</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">strings</span><span class="p">:</span>
+  <span class="n">lens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
+
+<span class="n">lens</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[4, 2, 1, 6, 8]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Alternatively, you can do the same thing more concisely with a <strong>list
+comprehension</strong>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lens</span> <span class="o">=</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">strings</span><span class="p">]</span>
+<span class="n">lens</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[4, 2, 1, 6, 8]
+</pre></div>
+</div>
+</div>
+</div>
+<p>In some cases, the comprehension is also more efficient.</p>
+<p>Comprehensions can optionally include a condition. For example, suppose you
+want to skip words that start with <code class="docutils literal notranslate"><span class="pre">a</span></code> when counting lengths:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">strings</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">s</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">)]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[4, 2, 6, 8]
+</pre></div>
+</div>
+</div>
+</div>
+<p>In addition to list comprehensions, Python also supports <strong>dictionary
+comprehensions</strong>, which produce a dictionary, and <strong>set comprehensions</strong>, which
+produce a set.</p>
+<p>DataLab’s Python Basics Reader provides <a class="reference external" href="https://ucdavisdatalab.github.io/workshop_python_basics/chapters/04_non-tabular-data.html#comprehensions">another explanation of
+comprehensions</a>.</p>
+</section>
+</section>
+<section id="what-s-a-class">
+<h2><span class="section-number">2.3. </span>What’s a Class?<a class="headerlink" href="#what-s-a-class" title="Link to this heading">#</a></h2>
+<p>In order to understand how Python’s iteration works at a lower level, first you
+need to know more about classes and objects.</p>
+<p>A <strong>class</strong> is a description of the data stored and operations supported by
+objects of a specific type. You can think of classes as templates for different
+types of objects. Every object is an instance of the class that corresponds to
+its type.</p>
+<p>You can create your own classes (and thus types) with the <code class="docutils literal notranslate"><span class="pre">class</span></code> keyword. The
+keyword must be followed by a name for the class and a colon, which begins a
+new block of code. Any variables or functions defined in the block become
+<strong>attributes</strong> of objects of the class.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>This section explains how to create classes so that you can understand how
+Python works at a lower level. You generally won’t need to create classes just
+to analyze data or carry out other common data science tasks.</p>
+<p>Like functions, classes provide a way to organize and reuse code. The main
+difference is that classes define reusable data structures (or types) rather
+than reusable operations. For instance, <code class="docutils literal notranslate"><span class="pre">pandas.Series</span></code> and <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code>
+are both classes.</p>
+<p>Classes are fundamental to a programming paradigm called <strong>object-oriented
+programming</strong>, which is especially useful for developing large, complex
+programs. You can learn much more about creating classes and object-oriented
+programming by reading <a class="reference external" href="https://greenteapress.com/thinkpython2/html/thinkpython2016.html">this chapter</a> of Think Python 2e.</p>
+</div>
+<p>For example, this code creates a new class called <code class="docutils literal notranslate"><span class="pre">Temperature</span></code>, which
+represents a temperature measurement with some unit. The attributes are <code class="docutils literal notranslate"><span class="pre">value</span></code>
+and <code class="docutils literal notranslate"><span class="pre">unit</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Temperature</span><span class="p">:</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">unit</span> <span class="o">=</span> <span class="s2">&quot;celsius&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>You can <strong>construct</strong> or <strong>instantiate</strong> new objects of a specific class by
+calling the class:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">t</span> <span class="o">=</span> <span class="n">Temperature</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>You can get or set attributes of an object with the <code class="docutils literal notranslate"><span class="pre">.</span></code> operator:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">t</span><span class="o">.</span><span class="n">value</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">t</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">t</span><span class="o">.</span><span class="n">value</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>20
+</pre></div>
+</div>
+</div>
+</div>
+<section id="methods">
+<h3><span class="section-number">2.3.1. </span>Methods<a class="headerlink" href="#methods" title="Link to this heading">#</a></h3>
+<p>A <strong>method</strong> is a function attached to an object (as an attribute). When a
+method is called, the object itself is implicitly passed as the first argument.
+By convention, the parameter name for this argument is <code class="docutils literal notranslate"><span class="pre">self</span></code>.</p>
+<p>As an example, here’s a new definition of the <code class="docutils literal notranslate"><span class="pre">Temperature</span></code> class with a
+<code class="docutils literal notranslate"><span class="pre">print</span></code> method to neatly print out information about the object:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Temperature</span><span class="p">:</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">unit</span> <span class="o">=</span> <span class="s2">&quot;celsius&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">msg</span> <span class="o">=</span>  <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2"> degrees </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">unit</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>To test out the method, first you need to create a new <code class="docutils literal notranslate"><span class="pre">Temperature</span></code> object.
+Python will <em>not</em> automatically update <code class="docutils literal notranslate"><span class="pre">Temperature</span></code> objects you created before
+redefining the class. Then call the method with no arguments:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">t</span> <span class="o">=</span> <span class="n">Temperature</span><span class="p">()</span>
+<span class="n">t</span><span class="o">.</span><span class="n">print</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0 degrees celsius
+</pre></div>
+</div>
+</div>
+</div>
+<p>Python automatically and implicitly passes <code class="docutils literal notranslate"><span class="pre">t</span></code> as the first argument to the
+<code class="docutils literal notranslate"><span class="pre">path</span></code> method.</p>
+<p>Methods can have more than one parameter. Any parameters after the first are
+assigned values from the arguments in parentheses <code class="docutils literal notranslate"><span class="pre">(</span> <span class="pre">)</span></code> when the method is
+called, as in a regular Python function.</p>
+<p>Here’s a new version of the <code class="docutils literal notranslate"><span class="pre">Temperature</span></code> class with a <code class="docutils literal notranslate"><span class="pre">to_unit</span></code> method to
+convert the temperature between Celsius and Kelvin:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Temperature</span><span class="p">:</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">unit</span> <span class="o">=</span> <span class="s2">&quot;celsius&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">msg</span> <span class="o">=</span>  <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2"> degrees </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">unit</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_unit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_unit</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">new_unit</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;celsius&quot;</span><span class="p">,</span> <span class="s2">&quot;kelvin&quot;</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid unit.&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">new_unit</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">unit</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">elif</span> <span class="n">new_unit</span> <span class="o">==</span> <span class="s2">&quot;kelvin&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">+</span> <span class="mf">273.15</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">-</span> <span class="mf">273.15</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">new_unit</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Once again, you must first create a new <code class="docutils literal notranslate"><span class="pre">Temperature</span></code> object to test out the
+new method:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">t</span> <span class="o">=</span> <span class="n">Temperature</span><span class="p">()</span>
+<span class="n">t</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">t</span><span class="o">.</span><span class="n">print</span><span class="p">()</span>
+
+<span class="n">t</span><span class="o">.</span><span class="n">to_unit</span><span class="p">(</span><span class="s2">&quot;kelvin&quot;</span><span class="p">)</span>
+<span class="n">t</span><span class="o">.</span><span class="n">print</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>10 degrees celsius
+283.15 degrees kelvin
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="special-methods">
+<h3><span class="section-number">2.3.2. </span>Special Methods<a class="headerlink" href="#special-methods" title="Link to this heading">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">Temperature</span></code> class would better if Python called the <code class="docutils literal notranslate"><span class="pre">print</span></code> method any
+time it needed to print a <code class="docutils literal notranslate"><span class="pre">Temperature</span></code> object. Instead, Python prints the type
+and memory address of the object:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">t</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;__main__.Temperature at 0x787efad1acf0&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p>Fortunately, a class can customize operations such as printing by defining
+<strong>special methods</strong>. These methods have specific names which usually begin and
+end with two underscores <code class="docutils literal notranslate"><span class="pre">__</span></code>, so they are sometimes also called <strong>double
+underscore</strong> or <strong>dunder</strong> methods.</p>
+<p>For instance, Python prints an object at the console by calling the <code class="docutils literal notranslate"><span class="pre">__repr__</span></code>
+method and printing the string it returns. So here’s a new version of the
+<code class="docutils literal notranslate"><span class="pre">Temperature</span></code> class where the <code class="docutils literal notranslate"><span class="pre">print</span></code> method is replaced by a <code class="docutils literal notranslate"><span class="pre">__repr__</span></code>
+method:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Temperature</span><span class="p">:</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">unit</span> <span class="o">=</span> <span class="s2">&quot;celsius&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2"> degrees </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">unit</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="n">msg</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_unit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_unit</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">new_unit</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;celsius&quot;</span><span class="p">,</span> <span class="s2">&quot;kelvin&quot;</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid unit.&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">new_unit</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">unit</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">elif</span> <span class="n">new_unit</span> <span class="o">==</span> <span class="s2">&quot;kelvin&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">+</span> <span class="mf">273.15</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">-</span> <span class="mf">273.15</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">new_unit</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now <code class="docutils literal notranslate"><span class="pre">Temperature</span></code> objects print neatly:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">t</span> <span class="o">=</span> <span class="n">Temperature</span><span class="p">()</span>
+<span class="n">t</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0 degrees celsius
+</pre></div>
+</div>
+</div>
+</div>
+<p>Python also provides the built-in function <code class="docutils literal notranslate"><span class="pre">repr</span></code> as a standard way to call an
+object’s <code class="docutils literal notranslate"><span class="pre">__repr__</span></code> method directly:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">repr</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;0 degrees celsius&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p>A wide variety of behaviors can be customized by defining special methods. A
+few examples are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">__init__</span></code> for object construction, as in <code class="docutils literal notranslate"><span class="pre">Temperature()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">__repr__</span></code> for display as a string, as in <code class="docutils literal notranslate"><span class="pre">repr(t)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">__str__</span></code> for conversion to a string, as in <code class="docutils literal notranslate"><span class="pre">str(t)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">__lt__</span></code>, <code class="docutils literal notranslate"><span class="pre">__gt__</span></code>, <code class="docutils literal notranslate"><span class="pre">__eq__</span></code>, and more for comparisons, as in <code class="docutils literal notranslate"><span class="pre">t</span> <span class="pre">&lt;</span> <span class="pre">u</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">__add__</span></code>, <code class="docutils literal notranslate"><span class="pre">__mul__</span></code>, and more for arithmetic, as in <code class="docutils literal notranslate"><span class="pre">t</span> <span class="pre">+</span> <span class="pre">u</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">__getitem__</span></code> for indexing, as in <code class="docutils literal notranslate"><span class="pre">t[i]</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">__call__</span></code> for calls, as in <code class="docutils literal notranslate"><span class="pre">t()</span></code></p></li>
+</ul>
+<p>You can find a complete list of special methods in <a class="reference external" href="https://docs.python.org/3/reference/datamodel.html">this chapter</a>
+of the Python Language Reference. In the next section, you’ll learn about the
+<code class="docutils literal notranslate"><span class="pre">__iter__</span></code> and <code class="docutils literal notranslate"><span class="pre">__next__</span></code> special methods, which are fundamental to how
+iteration works in Python.</p>
+</section>
+</section>
+<section id="what-s-an-iterator">
+<span id="whats-an-iterator"></span><h2><span class="section-number">2.4. </span>What’s an Iterator?<a class="headerlink" href="#what-s-an-iterator" title="Link to this heading">#</a></h2>
+<p>An <strong>iterator</strong> is any object which has a <code class="docutils literal notranslate"><span class="pre">__next__</span></code> method. For-loops iterate
+over an iterators by calling this method at the beginning of each iteration to
+get the next input. Iteration stops when the method raises a <code class="docutils literal notranslate"><span class="pre">StopIteration</span></code>
+exception rather than returning a value.</p>
+<p>None of the objects from the examples in <a class="reference internal" href="#iteration-review"><span class="std std-numref">Section 2.2</span></a> are
+iterators. To check, note that you can use Python’s built-in <code class="docutils literal notranslate"><span class="pre">dir</span></code> function to
+get a list of an object’s attributes. For example, here’s code to check for a
+<code class="docutils literal notranslate"><span class="pre">__next__</span></code> method on a string:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;__next__&quot;</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="s2">&quot;python&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>False
+</pre></div>
+</div>
+</div>
+</div>
+<p>Since <code class="docutils literal notranslate"><span class="pre">__next__</span></code> is not present, strings are not iterators. The same is true
+for lists, dictionaries, and ranges.</p>
+<p>Instead, all of these objects are <strong>iterable</strong>, which means they have an
+<code class="docutils literal notranslate"><span class="pre">__iter__</span></code> method. When called, the <code class="docutils literal notranslate"><span class="pre">__iter__</span></code> method returns an iterator over
+the object to which it’s attached. Thus for-loops call <code class="docutils literal notranslate"><span class="pre">__iter__</span></code> before the
+first iteration to get an iterator, and then call <code class="docutils literal notranslate"><span class="pre">__next__</span></code> at the beginning
+of each iteration as described above.</p>
+<p>Python provides the built-in functions <code class="docutils literal notranslate"><span class="pre">next</span></code> and <code class="docutils literal notranslate"><span class="pre">iter</span></code> to call the <code class="docutils literal notranslate"><span class="pre">__next__</span></code>
+and <code class="docutils literal notranslate"><span class="pre">__iter__</span></code> methods manually. For instance, here’s the code to manually
+iterate over and print the first three items in a list:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">]</span>
+<span class="n">xiter</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">i</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">xiter</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="n">i</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">xiter</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="n">i</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">xiter</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>10
+20
+30
+</pre></div>
+</div>
+</div>
+</div>
+<p>Calling <code class="docutils literal notranslate"><span class="pre">next</span></code> one more time raises a <code class="docutils literal notranslate"><span class="pre">StopIteration</span></code> exception, which
+indicates the iterator has no more values to produce:</p>
+<div class="cell tag_raises-exception docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">next</span><span class="p">(</span><span class="n">xiter</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">StopIteration</span><span class="g g-Whitespace">                             </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">29</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="nb">next</span><span class="p">(</span><span class="n">xiter</span><span class="p">)</span>
+
+<span class="ne">StopIteration</span>: 
+</pre></div>
+</div>
+</div>
+</div>
+<p>The code above is effectively the same as this code:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>10
+20
+30
+</pre></div>
+</div>
+</div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">next</span></code> and <code class="docutils literal notranslate"><span class="pre">iter</span></code> function are often useful when writing, testing, or
+debugging code. For example, they provide an easy way to peek at the first few
+elements of objects that don’t support indexing (such as TensorFlow data sets).</p>
+<p>One way to create a custom iterator is to create a class. For example, here’s
+an iterator (which is also iterable) that produces the specified number of
+elements from an object, cycling back to the beginning if the object is not
+long enough:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Cycle</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">word</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">word</span> <span class="o">=</span> <span class="n">word</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">n</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__next__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">StopIteration</span><span class="p">()</span>
+
+        <span class="n">char</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">word</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">i</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">i</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">word</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">char</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>And here’s an example of how it can be used:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">Cycle</span><span class="p">(</span><span class="s2">&quot;cat&quot;</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;catcatc&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p>This example also demonstrates that for-loops are not the only way to use
+iterable objects. Many functions for aggregation (such as <code class="docutils literal notranslate"><span class="pre">sum</span></code> and <code class="docutils literal notranslate"><span class="pre">max</span></code>) or
+instantiating data structures (such as <code class="docutils literal notranslate"><span class="pre">list</span></code> and <code class="docutils literal notranslate"><span class="pre">dict</span></code>) also accept iterable
+objects as input.</p>
+</section>
+<section id="working-with-iterables">
+<h2><span class="section-number">2.5. </span>Working with Iterables<a class="headerlink" href="#working-with-iterables" title="Link to this heading">#</a></h2>
+<p>Python provides several built-in functions to make it easier to work with
+iterable objects.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">reversed</span></code> function reverses an iterable object. For instance:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="s2">&quot;python&quot;</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>n
+o
+h
+t
+y
+p
+</pre></div>
+</div>
+</div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">sorted</span></code> function sorts the elements of an iterable object. Here’s an
+example:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="s2">&quot;python&quot;</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>h
+n
+o
+p
+t
+y
+</pre></div>
+</div>
+</div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">enumerate</span></code> function produces tuples by combining each element of an
+iterable with a 0-based index indicating its position. The index is the first
+element of each tuple:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">]):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="s2">&quot;at position&quot;</span><span class="p">,</span> <span class="n">index</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>10 at position 0
+20 at position 1
+30 at position 2
+</pre></div>
+</div>
+</div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">enumerate</span></code> function is especially useful when you need to iterate over the
+elements of an object but also need the positions of the elements. An example
+application is iterating over a list of data sets and saving them in
+sequentially numbered files.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">zip</span></code> function produces tuples by combining two or more iterables. For
+instance, suppose you have a list of names and a list of ages (or two data
+frame columns):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">age</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">([</span><span class="s2">&quot;kim&quot;</span><span class="p">,</span> <span class="s2">&quot;taylor&quot;</span><span class="p">],</span> <span class="p">[</span><span class="mi">33</span><span class="p">,</span> <span class="mi">45</span><span class="p">]):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;is&quot;</span><span class="p">,</span> <span class="n">age</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>kim is 33
+taylor is 45
+</pre></div>
+</div>
+</div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">zip</span></code> function is useful when you need to iterate over two or more
+iterables at once. If the iterables have different lengths, the <code class="docutils literal notranslate"><span class="pre">zip</span></code> function
+discards all elements beyond the end of the shortest iterable.</p>
+<p>The <strong>splat operator</strong> <code class="docutils literal notranslate"><span class="pre">*</span></code>, which converts the elements of a container into
+separate arguments, provides a way to invert the <code class="docutils literal notranslate"><span class="pre">zip</span></code> function:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">zipped</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">])</span>
+<span class="n">zipped</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">zipped</span><span class="p">)</span>
+<span class="n">zipped</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[(1, 10), (2, 20), (3, 30)]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">unzipped</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">zipped</span><span class="p">)</span>
+<span class="nb">list</span><span class="p">(</span><span class="n">unzipped</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[(1, 2, 3), (10, 20, 30)]
+</pre></div>
+</div>
+</div>
+</div>
+<p>That is, use <code class="docutils literal notranslate"><span class="pre">zip(*zipped)</span></code> to invert a zip. One application of this pattern is
+separating the elements of several identical dictionaries (or records) into
+tuples (or lists or columns):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">records</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;doris&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">13</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;steve&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">81</span><span class="p">}]</span>
+<span class="n">pairs</span> <span class="o">=</span> <span class="p">[</span><span class="n">r</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">records</span><span class="p">]</span>
+<span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">pairs</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[(&#39;doris&#39;, &#39;steve&#39;), (13, 81)]
+</pre></div>
+</div>
+</div>
+</div>
+<section id="the-itertools-module">
+<span id="id4"></span><h3><span class="section-number">2.5.1. </span>The <code class="docutils literal notranslate"><span class="pre">itertools</span></code> Module<a class="headerlink" href="#the-itertools-module" title="Link to this heading">#</a></h3>
+<p>Python’s built-in <code class="docutils literal notranslate"><span class="pre">itertools</span></code> module provides even more functions for working
+with iterables. There are functions to combine, repeat, filter, group, and
+more.</p>
+<p>As an example, recall the <code class="docutils literal notranslate"><span class="pre">Cycle</span></code> class defined in <a class="reference internal" href="#whats-an-iterator"><span class="std std-numref">Section 2.4</span></a>,
+which produces a given number the elements from an object, cycling back to the
+beginning as necessary. You can get the same effect by combining the
+<code class="docutils literal notranslate"><span class="pre">itertools</span></code> functions <code class="docutils literal notranslate"><span class="pre">cycle</span></code>, which cycles through the elements of an iterable
+endlessly, and <code class="docutils literal notranslate"><span class="pre">islice</span></code>, which slices an iterable. Here’s the code:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># With Cycle class</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">Cycle</span><span class="p">(</span><span class="s2">&quot;cat&quot;</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
+<span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;catcatc&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># With itertools</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">it</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">it</span><span class="o">.</span><span class="n">islice</span><span class="p">(</span><span class="n">it</span><span class="o">.</span><span class="n">cycle</span><span class="p">(</span><span class="s2">&quot;cat&quot;</span><span class="p">),</span> <span class="mi">7</span><span class="p">)</span>
+<span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;catcatc&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p>You can find a complete list of <code class="docutils literal notranslate"><span class="pre">itertools</span></code> functions in <a class="reference external" href="https://docs.python.org/3/library/itertools.html">the module’s
+documentation</a>.</p>
+</section>
+</section>
+<section id="what-s-a-generator">
+<h2><span class="section-number">2.6. </span>What’s a Generator?<a class="headerlink" href="#what-s-a-generator" title="Link to this heading">#</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This section and the next section were informed by David Beazley’s fantastic
+presentation <a class="reference external" href="https://www.dabeaz.com/generators/">Generator Tricks for Systems Programmers, v3.0</a>. If you
+want to learn even more about generators, check out his slides and videos.</p>
+</div>
+<p>A <strong>generator function</strong> (or <strong>generator</strong>) is a function which contains the
+<code class="docutils literal notranslate"><span class="pre">yield</span></code> keyword and therefore produces or <em>generates</em> a sequence of values. You
+can think of generators as a concise way to create custom iterators. Moreover,
+generators are <strong>lazy</strong>, which means values in the sequence are only computed
+as needed. These properties make generators ideal for creating pipelines that
+process big data.</p>
+<p>Python evaluates generator functions differently from regular functions. When
+you call a generator function, Python returns a <strong>generator iterator</strong> (or
+<strong>generator</strong>), but doesn’t evaluate the code in the function. When you call
+the iterator’s <code class="docutils literal notranslate"><span class="pre">__next__</span></code> method, Python evaluates the function up to the first
+<code class="docutils literal notranslate"><span class="pre">yield</span></code> and then pauses. The next time you call the <code class="docutils literal notranslate"><span class="pre">__next__</span></code> method,
+evaluation resumes and then pauses at the next yield.</p>
+<p>As an example, here’s a generator which counts down from <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">-</span> <span class="pre">1</span></code> to 0:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">countdown</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">while</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="k">yield</span> <span class="n">n</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Calling the function returns a generator iterator:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ct</span> <span class="o">=</span> <span class="n">countdown</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">ct</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;generator object countdown at 0x787efafaa800&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">next</span><span class="p">(</span><span class="n">ct</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">next</span><span class="p">(</span><span class="n">ct</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">next</span><span class="p">(</span><span class="n">ct</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0
+</pre></div>
+</div>
+</div>
+</div>
+<p>Just like an iterator, when the generator runs out of values, it raises a
+<code class="docutils literal notranslate"><span class="pre">StopIteration</span></code> exception:</p>
+<div class="cell tag_raises-exception docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">next</span><span class="p">(</span><span class="n">ct</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">StopIteration</span><span class="g g-Whitespace">                             </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">47</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="nb">next</span><span class="p">(</span><span class="n">ct</span><span class="p">)</span>
+
+<span class="ne">StopIteration</span>: 
+</pre></div>
+</div>
+</div>
+</div>
+<p>As another example, generators provide a third way to create an iterator which
+produces a given number the elements from an object, cycling back to the
+beginning as necessary. <a class="reference internal" href="#whats-an-iterator"><span class="std std-numref">Section 2.4</span></a> showed how to create this
+iterator as a class, and <a class="reference internal" href="#the-itertools-module"><span class="std std-numref">Section 2.5.1</span></a> showed how to create
+this iterator using functions from the <code class="docutils literal notranslate"><span class="pre">itertools</span></code> module. Here’s the code to
+create it as a generator:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">cycle</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">word</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">cycle</span><span class="p">(</span><span class="s2">&quot;cat&quot;</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
+<span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;catcatc&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p>Generators generate values one at a time and only on demand. As a result,
+generators typically use less CPU time and far less memory than doing
+equivalent computations with a list. The drawback is that a generator is a
+one-time operation. If you want to iterate over the generated values more than
+once, you must either store them as they’re produced the first time, or
+recompute them by calling the generator function (and iterating) again.</p>
+<p>You can use the <code class="docutils literal notranslate"><span class="pre">yield</span> <span class="pre">from</span></code> keyword to create a generator from another
+generator (or iterator). For instance, here’s a generator that counts down from
+<code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">-</span> <span class="pre">1</span></code> to 0 twice:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">double_countdown</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">yield from</span> <span class="n">countdown</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="k">yield from</span> <span class="n">countdown</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>And here’s what the output from this generator looks like:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">double_countdown</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1
+0
+1
+0
+</pre></div>
+</div>
+</div>
+</div>
+<section id="generator-expressions">
+<h3><span class="section-number">2.6.1. </span>Generator Expressions<a class="headerlink" href="#generator-expressions" title="Link to this heading">#</a></h3>
+<p>Another way to create generators is by writing <strong>generator expressions</strong>. The
+syntax for a generator expression is almost the same as for a list
+comprehension, but enclosed in parentheses <code class="docutils literal notranslate"><span class="pre">(</span> <span class="pre">)</span></code> instead of square brackets <code class="docutils literal notranslate"><span class="pre">[</span> <span class="pre">]</span></code>.</p>
+<p>For example, here’s a generator expression version of the list comprehension
+from <a class="reference internal" href="#comprehensions"><span class="std std-numref">Section 2.2.2</span></a>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">strings</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;this&quot;</span><span class="p">,</span> <span class="s2">&quot;is&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;python&quot;</span><span class="p">,</span> <span class="s2">&quot;workshop&quot;</span><span class="p">]</span>
+
+<span class="n">lens</span> <span class="o">=</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">strings</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">s</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">))</span>
+<span class="n">lens</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;generator object &lt;genexpr&gt; at 0x787efa0d4c70&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p>Generator expressions have all of the same properties as generators, but are
+more concise. So in the example, the lengths are not computed until they are
+explicitly requested:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">list</span><span class="p">(</span><span class="n">lens</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[4, 2, 6, 8]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="data-processing-pipelines">
+<h2><span class="section-number">2.7. </span>Data Processing Pipelines<a class="headerlink" href="#data-processing-pipelines" title="Link to this heading">#</a></h2>
+<p>This section provides a concrete example of how you can use generators to solve
+a data processing problem. You’ll need the Easy Ham Emails data set linked in
+<a class="reference internal" href="#prerequisites"><span class="std std-numref">Section 2.1</span></a>. The data set contains a collection of email messages,
+each stored in a separate file. The data processing goal is to create a
+pipeline to extract all email addresses from the emails.</p>
+<p>The first step is to define a generator to open and yield the files:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">gen_open</span><span class="p">(</span><span class="n">paths</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">paths</span><span class="p">:</span>
+      <span class="k">yield</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;rt&quot;</span><span class="p">,</span> <span class="n">encoding</span> <span class="o">=</span> <span class="s2">&quot;latin-1&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">open</span></code> function returns a generator over the lines in the opened file. All
+of the lines in all of the files need to be processed the same way, so the next
+step is define a generator that combines the lines from all of the files into a
+single sequence:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">gen_cat</span><span class="p">(</span><span class="n">files</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+        <span class="k">yield from</span> <span class="n">f</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The last step is to actually extract the emails from each line. One way to do
+this is to split each line into terms, and then filter out any terms that don’t
+contain <code class="docutils literal notranslate"><span class="pre">&#64;</span></code> somewhere in the middle (since these can’t be email addresses):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">gen_emails</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">term</span> <span class="ow">in</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;[^a-zA-Z@.]&quot;</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+            <span class="k">if</span> <span class="s2">&quot;@&quot;</span> <span class="ow">in</span> <span class="n">term</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;@&quot;</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">term</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now that the generators are defined, putting together the pipeline is just a
+sequence of calls:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+
+<span class="n">paths</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;data/easy_ham&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">)</span>
+<span class="n">paths</span> <span class="o">=</span> <span class="p">(</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">paths</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">p</span><span class="o">.</span><span class="n">is_dir</span><span class="p">())</span>
+<span class="n">files</span> <span class="o">=</span> <span class="n">gen_open</span><span class="p">(</span><span class="n">paths</span><span class="p">)</span>
+<span class="n">lines</span> <span class="o">=</span> <span class="n">gen_cat</span><span class="p">(</span><span class="n">files</span><span class="p">)</span>
+<span class="n">at_lines</span> <span class="o">=</span> <span class="p">(</span><span class="n">l</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">lines</span> <span class="k">if</span> <span class="s2">&quot;@&quot;</span> <span class="ow">in</span> <span class="n">l</span><span class="p">)</span>
+<span class="n">emails</span> <span class="o">=</span> <span class="n">gen_emails</span><span class="p">(</span><span class="n">at_lines</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The email addresses are only computed on request. One way to request all of
+them is to generate a list:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">emails</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">emails</span><span class="p">)</span>
+<span class="n">emails</span><span class="p">[:</span><span class="mi">20</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;rssfeeds@jmason.org&#39;,
+ &#39;rssfeeds@example.com&#39;,
+ &#39;yyyy@localhost.example.com&#39;,
+ &#39;jm@localhost&#39;,
+ &#39;jm@localhost&#39;,
+ &#39;jm@jmason.org&#39;,
+ &#39;yyyy@example.com&#39;,
+ &#39;rssfeeds@example.com&#39;,
+ &#39;rssfeeds@jmason.org&#39;,
+ &#39;rssfeeds@example.com&#39;,
+ &#39;yyyy@localhost.example.com&#39;,
+ &#39;jm@localhost&#39;,
+ &#39;jm@localhost&#39;,
+ &#39;jm@jmason.org&#39;,
+ &#39;yyyy@example.com&#39;,
+ &#39;rssfeeds@example.com&#39;,
+ &#39;pudge@perl.org&#39;,
+ &#39;pudge@perl.org&#39;,
+ &#39;yyyy@localhost.netnoteinc.com&#39;,
+ &#39;jm@localhost&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>You can convert the list to a set to get the total number of unique email
+addresses:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">emails</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1470
+</pre></div>
+</div>
+</div>
+</div>
+<p>The advantage of this approach is that it scales to any number of email
+messages. Moreover, it’s easy to swap out or reuse the components of the
+pipeline. For instance, the <code class="docutils literal notranslate"><span class="pre">gen_open</span></code> and <code class="docutils literal notranslate"><span class="pre">gen_cat</span></code> generator functions are
+essentially the same ones David Beazley uses for different tasks in his
+presentation [Generator Tricks for Systems Programmers, v3.0][beazley]. The
+<code class="docutils literal notranslate"><span class="pre">gen_emails</span></code> generator function could easily be replaced with a different
+function to extract other information, such as phone numbers. Moreover,
+additional generator functions could be added to the pipeline to further
+process the results, such as extracting domain names.</p>
+<p>The disadvantages of this approach are that it can be difficult to understand
+if you’re not used to programming with generators, and it can be slightly
+harder to debug problems in the pipeline than it would be to debug a loop.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapters"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="01_pandas.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">1. </span>Slicing &amp; Dicing Data with pandas</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="04_debugging.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">3. </span>Squashing Bugs with Python’s Debugging Tools</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">2.1. Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#iteration-review">2.2. Iteration Review</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ranges">2.2.1. Ranges</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#comprehensions">2.2.2. Comprehensions</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-s-a-class">2.3. What’s a Class?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#methods">2.3.1. Methods</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#special-methods">2.3.2. Special Methods</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-s-an-iterator">2.4. What’s an Iterator?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#working-with-iterables">2.5. Working with Iterables</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-itertools-module">2.5.1. The <code class="docutils literal notranslate"><span class="pre">itertools</span></code> Module</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-s-a-generator">2.6. What’s a Generator?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generator-expressions">2.6.1. Generator Expressions</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-processing-pipelines">2.7. Data Processing Pipelines</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Nick Ulle
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
