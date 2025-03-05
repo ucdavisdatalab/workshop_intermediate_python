@@ -5,23 +5,29 @@ format: jb-book
 root: chapters/index
 
 parts:
-  - caption: Thinking in Python
+  - caption: Cleaning & Reshaping Data
     numbered: true
     chapters:
-      - file: chapters/01_pandas
-      - file: chapters/03_iterators
+      - file: chapters/01_string-date-processing
+      - file: chapters/02_tidy-relational-data
+  - caption: Writing & Debugging Code
+    numbered: true
+    chapters:
+      - file: chapters/03_best-practices-for-python-projects
       - file: chapters/04_debugging
-        #  - caption: Cleaning Data
-        #    chapters:
-  - caption: Writing Python Scripts
-    numbered: true
-    chapters:
-      - file: chapters/02_reproducible
-  - caption: Other Workshops
+  - caption: Data Visualization & Analysis
     numbered: true
     chapters:
       - file: chapters/05_viz
-  - caption: Afterword
+  - caption: Thinking in Python
+    numbered: true
+    chapters:
+      - file: chapters/06_iterators
+  - caption: Retired Workshops
+    chapters:
+      - file: chapters/retired/pandas
+      - file: chapters/retired/reproducible
+  - caption: Back Matter
     chapters:
       - file: chapters/references
       - file: chapters/acknowledgements

@@ -14,7 +14,7 @@ kernelspec:
 :tags: [remove-cell]
 import os
 
-os.chdir("..")
+os.chdir("../..")
 ```
 
 (chapter-indexing)=
