@@ -1,42 +1,34 @@
-# Book settings
-# Learn more at https://jupyterbook.org/customize/config.html
-
 title: Intermediate Python
 author: Nick Ulle
 copyright: "2022"
 logo: img/datalab-logo-full-color-rgb-1.png
+exclude_patterns: [_build, .pixi]
 only_build_toc_files: true
 
-# Force re-execution of notebooks on each build.
-# See https://jupyterbook.org/content/execute.html
+repository:
+  url: https://github.com/ucdavisdatalab/workshop_intermediate_python
+
+parse:
+  myst_enable_extensions:
+    # - amsmath
+    - colon_fence
+    # - deflist
+    - dollarmath
+    # - html_admonition
+    - html_image
+    - linkify
+    # - replacements
+    # - smartquotes
+    - substitution
+
 execute:
-  execute_notebooks: force
+  execute_notebooks: auto
+
+html:
+  use_issues_button: true
+  use_repository_button: true
 
 # Define the name of the latex output file for PDF builds
 latex:
   latex_documents:
     targetname: book.tex
-
-# Add a bibtex file so that we can create citations
-bibtex_bibfiles:
-  - references.bib
-
-# Information about where the book exists on the web
-repository:
-  url: https://github.com/ucdavisdatalab/workshop_intermediate_python
-  path_to_book: docs
-  branch: master
-
-# Add GitHub buttons to your book
-# See https://jupyterbook.org/customize/config.html#add-a-link-to-your-repository
-html:
-  use_issues_button: true
-  use_repository_button: true
-
-parse:
-  myst_enable_extensions:
-    - colon_fence
-    - dollarmath
-    - html_image
-    - linkify
-    - substitution
