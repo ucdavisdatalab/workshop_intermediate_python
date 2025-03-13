@@ -18,3 +18,7 @@ os.chdir("..")
 ```
 
 # Best Practices for Python Projects
+
+:::{important}
+This chapter is planned for a future iteration of the workshop.
+:::
