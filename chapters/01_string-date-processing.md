@@ -917,6 +917,186 @@ to extract data from strings.
 This section is intended as a reference and is not taught in the workshop.
 :::
 
-See [the equivalent section in Intermediate R][int-r-regex].
+This section provides examples of several different regular expression
+metacharacters and other features. Most of the examples use the
+`.str.extract_all` method, which extracts all matches to a pattern.
 
-[int-r-regex]: https://ucdavisdatalab.github.io/workshop_intermediate_r/string-date-processing.html#regular-expression-examples
+The [RegExr][] website is also helpful for testing regular expressions; it
+provides an interactive interface where you can write regular expressions and
+see where they match a string.
+
+[RegExr]: https://regexr.com/
+
+
+### The Wildcard
+
+The regex **wildcard** character is `.` and matches any single character. For
+example:
+
+```{code-cell}
+x = pl.Series(["dog"])
+x.str.extract_all("d.g")
+```
+
+By default, regex searches from left to right:
+
+```{code-cell}
+x.str.extract_all(".")
+```
+
+
+### Escape Sequences
+
+Like Python, regular expressions can contain escape sequences that begin with a
+backslash. These are computed separately and after Python escape sequences. The
+main use for escape sequences in regex is to turn a metacharacter into a
+literal character.
+
+For example, suppose you want to match a literal dot `.`. The regex for a
+literal dot is `\.`. Since backslashes in Python strings have to be escaped,
+the Python string for this regex is `"\\.`. For example:
+
+```{code-cell}
+pl.Series(["this.string"]).str.extract_all("\\.")
+```
+
+The double backslash can be confusing, and it gets worse if you want to match a
+literal backslash. You have to escape the backslash in the regex (because
+backslash is the regex escape character) and then also have to escape the
+backslashes in Python (because backslash is also the Python escape character).
+So to match a single literal backslash, the code is:
+
+```{code-cell}
+pl.Series(["this\\that"]).str.extract_all("\\\\")
+```
+
+Raw strings (see {numref}`raw-strings`) make regular expressions easier to
+read, because they make backslashes literal (but they still mark the beginning
+of an escape sequence in regex). You can use a raw string to write the above
+as:
+
+```{code-cell}
+pl.Series([r"this\that"]).str.extract_all(r"\\")
+```
+
+### Anchors
+
+By default, a regex will match anywhere in the string. If you want to force a
+match at specific place, use an **anchor**.
+
+The beginning of string anchor is `^`. It marks the beginning of the string,
+but doesn't count as a character in the pattern.
+
+For example, suppose you want to match an `a` at the beginning of the string:
+
+```{code-cell}
+x = pl.Series(["abc", "cab"])
+
+x.str.extract_all("a")
+```
+
+```{code-cell}
+x.str.extract_all("^a")
+```
+
+It doesn't make sense to put characters before `^`, since no characters can
+come before the beginning of the string.
+
+Likewise, the end of string anchor is `$`. It marks the end of the string, but
+doesn't count as a character in the pattern.
+
+
+### Character Classes
+
+In regex, square brackets `[ ]` denote a **character class**. A character class
+matches exactly one character, but that character can be any of the characters
+inside of the square brackets. The square brackets themselves don't count as
+characters in the pattern.
+
+For example, suppose you want to match `c` followed by either `a` or `t`:
+
+```{code-cell}
+x = pl.Series(["ca", "ct", "cat", "cta"])
+
+x.str.extract_all("c[ta]")
+```
+
+You can use a dash `-` in a character class to create a **range**. For example,
+to match letters `p` through `z`:
+
+```{code-cell}
+x.str.extract_all("c[p-z]")
+```
+
+Ranges also work with numbers and capital letters. To match a literal dash,
+place the dash at the end of the character class (instead of between two other
+characters), as in `[abc-]`.
+
+Most metacharacters are literal when inside a character class. For example,
+`[.]` matches a literal dot.
+
+A hat `^` at the beginning of the character class negates the class. So for
+example, `[^abc]` matches any one character _except_ for `a`, `b`, or `c`:
+
+```{code-cell}
+pl.Series(["abcdef"]).str.extract_all("[^abc]")
+```
+
+
+### Quantifiers
+
+**Quantifiers** are metacharacters that affect how many times the preceding
+character must appear in a match. The quantifier itself doesn't count as a
+character in the match.
+
+For example, the question mark `?` quantifier means the preceding character can
+appear 0 or 1 times. In other words, `?` makes the preceding character
+optional. For example:
+
+```{code-cell}
+x = pl.Series(["abc", "ab", "ac", "abbc"])
+
+x.str.extract_all("ab?c")
+```
+
+The star `*` quantifier means the preceding character can appear 0 or more
+times. In other words, `*` means the preceding character can appear any number
+of times or not at all. For instance:
+
+```{code-cell}
+x.str.extract_all("ab*c")
+```
+
+The plus `+` quantifier means the preceding character must appear 1 or more
+times.
+
+Quantifiers are **greedy**, meaning they always match as many characters as
+possible. In this example, notice that the pattern matches the entire string,
+even though it could also match just `abba`:
+
+```{code-cell}
+pl.Series(["abbabbba"]).str.extract_all(".+a")
+```
+
+You can add a question mark `?` after another quantifier to make it non-greedy:
+
+```{code-cell}
+pl.Series(["abbabbba"]).str.extract_all(".+?a")
+```
+
+
+### Groups
+
+In regex, parentheses `( )` denote a **group**. The parentheses themselves
+don't count as characters in the pattern. Groups are useful for repeating or
+extracting specific parts of a pattern (see Section \@ref(extracting-matches)).
+
+Quantifiers can act on groups in addition to individual characters. For
+example, suppose you want to make the entire substring `", dogs,"` optional in
+a pattern, so that both of the test strings in this example match:
+
+```{code-cell}
+x = pl.Series(["cats, dogs, and frogs", "cats and frogs"])
+
+x.str.extract_all("cats(, dogs,)? and frogs")
+```
