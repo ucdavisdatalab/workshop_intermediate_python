@@ -220,10 +220,10 @@ dates + dt.timedelta(days = 30)
 What if we want to add 1 month to the dates instead of 30 days? The length of a
 month varies, so we can't use a `timedelta`. Polars provides a solution: the
 `.dt.offset_by` method. The method takes a string argument that specifies the
-period of time by which to offset. The string for 1 month is `"1m"`, so:
+period of time by which to offset. The string for 1 month is `"1mo"`, so:
 
 ```{code-cell}
-dates.dt.offset_by("1m")
+dates.dt.offset_by("1mo")
 ```
 
 This increments each date by exactly 1 month, regardless of how many days that
