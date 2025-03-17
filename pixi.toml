@@ -4,7 +4,7 @@ authors = [
 ]
 channels = ["conda-forge"]
 description = "Reader for the Intermediate Python workshop series."
-name = "intermediate-python"
+name = "intermediate_python"
 platforms = ["linux-64", "osx-64", "win-64"]
 version = "2025.winter.0"  # <year>.<quarter>.<revision #>
 
@@ -30,6 +30,7 @@ ghp-import = ">=2.1.0,<3"
 polars = ">=1.24.0,<2"
 fastexcel = ">=0.13.0,<0.14"
 pypdf = ">=5.3.1,<6"
+altair = ">=5.5.0,<6"
 
 [feature.dev.dependencies]
 jupyter = "*"

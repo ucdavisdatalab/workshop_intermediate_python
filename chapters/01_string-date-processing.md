@@ -20,6 +20,7 @@ os.chdir("..")
 # Date & String Processing
 
 :::{admonition} Learning Goals
+:class: note
 After this lesson, you should be able to:
 
 * Explain why we use special data structures for dates & times
@@ -164,9 +165,10 @@ The module also provides `dt.date` and `dt.time` functions to create dates and
 times.
 
 :::{caution}
-The similarly-named Polars functions `pl.date`, `pl.time`, and `pl.datetime` do
-not create dates and times. Make sure to use the functions from the `datetime`
-module!
+The similarly-named Polars functions `pl.date`, `pl.time`, and `pl.datetime`
+only create dates and times in calls to `.select` or `.with_columns`. If you
+aren't calling `.select` or .`with_columns`, make sure to use the functions
+from the `datetime` module!
 :::
 
 ### Extracting Components
@@ -585,8 +587,7 @@ built-in `str` data type and `re` module are also an excellent option. Polars
 is slightly more convenient and concise for handling many strings at once (in a
 data frame or series). It is also more efficient in some cases.
 
-:::{admonition} See Also
-:class: note
+:::{seealso}
 The Polars user guide has [a section about strings][pl-str].
 
 [pl-str]: https://docs.pola.rs/user-guide/expressions/strings/
@@ -684,8 +685,7 @@ This table lists some of the most useful metacharacters:
 metacharacters work.
 
 
-:::{admonition} See Also
-:class: note
+:::{seealso}
 You can find even more examples and a complete listing of regex metacharacters
 in [the documentation for the `re` module][re] and [the documentation for
 Rust's regex crate][regex]. The former is more approachable if you're not
@@ -916,3 +916,7 @@ to extract data from strings.
 :::{important}
 This section is intended as a reference and is not taught in the workshop.
 :::
+
+See [the equivalent section in Intermediate R][int-r-regex].
+
+[int-r-regex]: https://ucdavisdatalab.github.io/workshop_intermediate_r/string-date-processing.html#regular-expression-examples
