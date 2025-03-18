@@ -18,8 +18,7 @@ os.chdir("..")
 ```
 
 (chapter-debugging)=
-Squashing Bugs with Python's Debugging Tools
-============================================
+# Squashing Bugs with Python's Debugging Tools
 
 :::{admonition} Learning Objectives
 * Explain the difference between syntax errors and exceptions
@@ -37,6 +36,22 @@ Squashing Bugs with Python's Debugging Tools
 * Explain what profiling is
 :::
 
+:::{admonition} Prerequisites
+:class: important
+
+To follow along, you'll need the following software versions (or newer)
+installed on your computer:
+
+* Python 3.10
+* [ipdb][] 0.13.9
+
+DataLab's [Installing Software with Pixi workshop reader][dl-install] explains
+one way to install these.
+
+[ipdb]: https://github.com/gotcha/ipdb
+[dl-install]: https://ucdavisdatalab.github.io/workshop_installing_software/
+:::
+
 This chapter describes how to prevent, detect, and diagnose bugs in your Python
 code. This includes an introduction to Python's exceptions system, a discussion
 of defensive programming best practices, and an introduction to Python's
@@ -44,31 +59,7 @@ debugging tools. The chapter also describes some of the tools you can use to
 measure and improve the performance of your code.
 
 
-Prerequisites
--------------
-
-This chapter assumes you already have basic familiarity with Python. DataLab's
-[Python Basics Reader][py-basics] and its accompanying workshop provide a
-suitable introduction.
-
-[py-basics]: https://ucdavisdatalab.github.io/workshop_python_basics/
-
-To follow along, you'll need the following software versions (or newer)
-installed on your computer:
-
-* [Python][] 3.10
-* [ipdb][] 0.13.9
-
-One way to install these is to install the [Anaconda][] Python distribution.
-Chapter 2 provides more details about Anaconda and the `conda` package manager.
-
-[Python]: https://www.python.org/
-[Anaconda]: https://www.anaconda.com/
-[ipdb]: https://github.com/gotcha/ipdb
-
-
-Errors
-------
+## Errors
 
 When you write and run Python code, there are two different kinds of errors you
 might have to deal with: syntax errors and exceptions. A **syntax error** is a
@@ -225,6 +216,11 @@ code that should *always* run, whether on not an exception is raised. This is
 mainly useful for cleanup operations, such as closing connections to files or
 network devices.
 
+:::{tip}
+Don't catch an error with a try-except block if you can't do something
+meaningful to recover from the error. It's better to let the person using your
+code see and handle it.
+:::
 
 
 ### Raising Exceptions
@@ -245,15 +241,16 @@ In this case, the function raises a `ValueError` because the value of `n` is
 the problem. The argument to the exception is the error message. You can use
 `raise` to raise any type of exception, including user-defined exceptions.
 
+:::{seealso}
 You can find further examples of how to handle, raise, and define new types of
 exceptions in the [Errors and Exceptions chapter][errors-and-exceptions] of the
 Python documentation.
 
 [errors-and-exceptions]: https://docs.python.org/3/tutorial/errors.html
+:::
 
 
-Defensive Programming
----------------------
+## Defensive Programming
 
 **Defensive programming** means taking steps to prevent or quickly detect and
 fix bugs when writing code. Defensive programming techniques can help you
@@ -289,8 +286,10 @@ Some examples of how you can program defensively include:
   unexpected behavior doesn't occur, or document why the behavior occurs and
   why it doesn't pose a problem.
 
-* Follow reproducibility best practices, including those laid out in
-  {numref}`chapter-reproducible`.
+* Follow reproducibility best practices, including those laid out in DataLab's
+  [Reproducibility Principles & Practices workshop reader][dl-reproducible].
+
+[dl-reproducible]: https://ucdavisdatalab.github.io/workshop_reproducible_research/
 
 
 ### Logging
@@ -348,15 +347,17 @@ Use debug or messages to record detailed information about your code as it
 runs. When you're sure the code works as intended, you can disable these
 messages by changing the level in the call to `basicConfig`.
 
+:::{seealso}
 For a much more detailed introduction to the `logging` module, see the [Logging
 HOWTO][logging-howto] in the Python documentation.
 
 [logging-howto]: https://docs.python.org/3/howto/logging.html
 
-Also see [the `loguru` package][loguru], which provides a variety of
-improvements and additional features compared to the `logging` module.
+Also see [the Loguru package][loguru], which provides a variety of improvements
+and additional features compared to the `logging` module.
 
 [loguru]: https://github.com/Delgan/loguru
+:::
 
 
 ### Assertions
