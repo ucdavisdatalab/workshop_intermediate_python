@@ -1,0 +1,2238 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>1. Date &amp; String Processing &#8212; Intermediate Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapters/01_string-date-processing';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="2. Untidy &amp; Relational Data" href="02_tidy-relational-data.html" />
+    <link rel="prev" title="Overview" href="index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/datalab-logo-full-color-rgb-1.png" class="logo__image only-light" alt="Intermediate Python - Home"/>
+    <script>document.write(`<img src="../_static/datalab-logo-full-color-rgb-1.png" class="logo__image only-dark" alt="Intermediate Python - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="index.html">
+                    Overview
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Cleaning &amp; Reshaping Data</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">1. Date &amp; String Processing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_tidy-relational-data.html">2. Untidy &amp; Relational Data</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Writing &amp; Debugging Code</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="03_best-practices-for-python-projects.html">3. Best Practices for Python Projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_debugging.html">4. Squashing Bugs with Python’s Debugging Tools</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Data Visualization &amp; Analysis</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="05_viz.html">5. Next-level Data Visualization</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Thinking in Python</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="06_iterators.html">6. Iterator &amp; Generator Crash Course</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Retired Workshops</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="retired/pandas.html">Slicing &amp; Dicing Data with pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="retired/reproducible.html">Making Python Projects &amp; Environments Reproducible</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Back Matter</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
+<li class="toctree-l1"><a class="reference internal" href="acknowledgements.html">Acknowledgements</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/ucdavisdatalab/workshop_intermediate_python" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/ucdavisdatalab/workshop_intermediate_python/issues/new?title=Issue%20on%20page%20%2Fchapters/01_string-date-processing.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/chapters/01_string-date-processing.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Date & String Processing</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parsing-dates-times">1.1. Parsing Dates &amp; Times</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#extracting-components">1.1.1. Extracting Components</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#durations">1.1.2. Durations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#case-study-ca-parks-recreation-fleet">1.1.3. Case Study: CA Parks &amp; Recreation Fleet</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#string-fundamentals">1.2. String Fundamentals</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#escape-sequences">1.2.1. Escape Sequences</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#character-encodings">1.2.2. Character Encodings</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#processing-strings">1.3. Processing Strings</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#strings-in-polars">1.3.1. Strings in Polars</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#regular-expressions">1.3.2. Regular Expressions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#replacing-parts-of-strings">1.3.3. Replacing Parts of Strings</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#splitting-strings">1.3.4. Splitting Strings</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#extracting-matches">1.3.5. Extracting Matches</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#regular-expression-examples">1.4. Regular Expression Examples</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-wildcard">1.4.1. The Wildcard</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">1.4.2. Escape Sequences</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#anchors">1.4.3. Anchors</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#character-classes">1.4.4. Character Classes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quantifiers">1.4.5. Quantifiers</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#groups">1.4.6. Groups</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="date-string-processing">
+<h1><span class="section-number">1. </span>Date &amp; String Processing<a class="headerlink" href="#date-string-processing" title="Link to this heading">#</a></h1>
+<div class="note admonition">
+<p class="admonition-title">Learning Goals</p>
+<p>After this lesson, you should be able to:</p>
+<ul class="simple">
+<li><p>Explain why we use special data structures for dates &amp; times</p></li>
+<li><p>Identify the correct data structure for a given date/time</p></li>
+<li><p>Use Polars and the <code class="docutils literal notranslate"><span class="pre">datetime</span></code> module to parse dates</p></li>
+<li><p>Use the date format string mini-language</p></li>
+<li><p>Use escape codes in strings to represent non-keyboard characters</p></li>
+<li><p>Explain what a text encoding is</p></li>
+<li><p>Use Polars  to detect, extract, and change patterns in strings</p></li>
+<li><p>Use the regular expressions mini-language</p></li>
+</ul>
+</div>
+<p>This chapter is part 1 (of 2) of <em>Cleaning &amp; Reshaping Data</em>, a workshop series
+about how to prepare data for analysis. The major topics of this chapter are
+how to convert dates and times into appropriate data types and how to extract
+and clean up data from strings (including numbers with non-numeric characters
+such as <code class="docutils literal notranslate"><span class="pre">$</span></code>, <code class="docutils literal notranslate"><span class="pre">%</span></code>, and <code class="docutils literal notranslate"><span class="pre">,</span></code>).</p>
+<section id="parsing-dates-times">
+<h2><span class="section-number">1.1. </span>Parsing Dates &amp; Times<a class="headerlink" href="#parsing-dates-times" title="Link to this heading">#</a></h2>
+<p>Given a data set with dates or times, you might want to:</p>
+<ul class="simple">
+<li><p>Sort the observations chronologically</p></li>
+<li><p>Compute the times between observations</p></li>
+<li><p>Add or subtract a time offset</p></li>
+<li><p>Get just the month, year, hour, etc. of each observation</p></li>
+</ul>
+<p>You can do all of these things and more with Polars, but only if your dates and
+times are represented by appropriate data types. Many popular file formats for
+data, such as CSV, <em>do not</em> store metadata about which values are dates and
+times, so these values get typed as strings. Dates and times extracted from
+text are also naturally strings.</p>
+<p>The first step to working with dates and times typed as strings is to <strong>parse</strong>
+them: break them down into their components and cast them to more suitable data
+types. To demonstrate parsing dates, consider a series of date strings:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">polars</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>
+
+<span class="n">date_strings</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;Jan 10, 2021&quot;</span><span class="p">,</span> <span class="s2">&quot;Sep 3, 2018&quot;</span><span class="p">,</span> <span class="s2">&quot;Feb 28, 1982&quot;</span><span class="p">])</span>
+<span class="n">date_strings</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (3,)</small><table border="1" class="dataframe"><thead><tr><th></th></tr><tr><td>str</td></tr></thead><tbody><tr><td>&quot;Jan 10, 2021&quot;</td></tr><tr><td>&quot;Sep 3, 2018&quot;</td></tr><tr><td>&quot;Feb 28, 1982&quot;</td></tr></tbody></table></div></div></div>
+</div>
+<p>We can use Polars to parse the strings into dates. For series (including
+columns), string methods are listed under the <code class="docutils literal notranslate"><span class="pre">.str</span></code> namespace, and the
+<code class="docutils literal notranslate"><span class="pre">.str.to_date</span></code> method parses strings as dates. In some cases, the method can
+infer the format of the dates automatically, but that’s not the case for our
+dates:</p>
+<div class="cell tag_raises-exception docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">date_strings</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">to_date</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ComputeError</span><span class="g g-Whitespace">                              </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">date_strings</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">to_date</span><span class="p">()</span>
+
+<span class="nn">File ~/mill/datalab/teaching/intermediate_python/.pixi/envs/default/lib/python3.13/site-packages/polars/series/utils.py:106,</span> in <span class="ni">call_expr.&lt;locals&gt;.wrapper</span><span class="nt">(self, *args, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">104</span>     <span class="n">expr</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">expr</span><span class="p">,</span> <span class="n">namespace</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">105</span> <span class="n">f</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">expr</span><span class="p">,</span> <span class="n">func</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">106</span> <span class="k">return</span> <span class="n">s</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span><span class="o">.</span><span class="n">select_seq</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span><span class="o">.</span><span class="n">to_series</span><span class="p">()</span>
+
+<span class="nn">File ~/mill/datalab/teaching/intermediate_python/.pixi/envs/default/lib/python3.13/site-packages/polars/dataframe/frame.py:9657,</span> in <span class="ni">DataFrame.select_seq</span><span class="nt">(self, *exprs, **named_exprs)</span>
+<span class="g g-Whitespace">   </span><span class="mi">9634</span> <span class="k">def</span><span class="w"> </span><span class="nf">select_seq</span><span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">9635</span>     <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">exprs</span><span class="p">:</span> <span class="n">IntoExpr</span> <span class="o">|</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">IntoExpr</span><span class="p">],</span> <span class="o">**</span><span class="n">named_exprs</span><span class="p">:</span> <span class="n">IntoExpr</span>
+<span class="g g-Whitespace">   </span><span class="mi">9636</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataFrame</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">9637</span><span class="w">     </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="g g-Whitespace">   </span><span class="mi">9638</span><span class="sd">     Select columns from this DataFrame.</span>
+<span class="g g-Whitespace">   </span><span class="mi">9639</span><span class="sd"> </span>
+<span class="sd">   (...)   9655     select</span>
+<span class="g g-Whitespace">   </span><span class="mi">9656</span><span class="sd">     &quot;&quot;&quot;</span>
+<span class="ne">-&gt; </span><span class="mi">9657</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">lazy</span><span class="p">()</span><span class="o">.</span><span class="n">select_seq</span><span class="p">(</span><span class="o">*</span><span class="n">exprs</span><span class="p">,</span> <span class="o">**</span><span class="n">named_exprs</span><span class="p">)</span><span class="o">.</span><span class="n">collect</span><span class="p">(</span><span class="n">_eager</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="nn">File ~/mill/datalab/teaching/intermediate_python/.pixi/envs/default/lib/python3.13/site-packages/polars/lazyframe/frame.py:2065,</span> in <span class="ni">LazyFrame.collect</span><span class="nt">(self, type_coercion, _type_check, predicate_pushdown, projection_pushdown, simplify_expression, slice_pushdown, comm_subplan_elim, comm_subexpr_elim, cluster_with_columns, collapse_joins, no_optimization, streaming, engine, background, _check_order, _eager, **_kwargs)</span>
+<span class="g g-Whitespace">   </span><span class="mi">2063</span> <span class="c1"># Only for testing purposes</span>
+<span class="g g-Whitespace">   </span><span class="mi">2064</span> <span class="n">callback</span> <span class="o">=</span> <span class="n">_kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;post_opt_callback&quot;</span><span class="p">,</span> <span class="n">callback</span><span class="p">)</span>
+<span class="ne">-&gt; </span><span class="mi">2065</span> <span class="k">return</span> <span class="n">wrap_df</span><span class="p">(</span><span class="n">ldf</span><span class="o">.</span><span class="n">collect</span><span class="p">(</span><span class="n">callback</span><span class="p">))</span>
+
+<span class="ne">ComputeError</span>: could not find an appropriate format to parse dates, please define a format
+</pre></div>
+</div>
+</div>
+</div>
+<p>We need to supply the method with a <strong>format string</strong> that describes the format
+of the dates. In a format string, a percent sign <code class="docutils literal notranslate"><span class="pre">%</span></code> followed by a character is
+called a specifier and represents a component of a date or time. Here are some
+useful specifiers:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Specifier</p></th>
+<th class="head text-left"><p>Description</p></th>
+<th class="head text-left"><p>2015-01-29 21:32:55</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">%Y</span></code></p></td>
+<td class="text-left"><p>4-digit year</p></td>
+<td class="text-left"><p>2015</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">%m</span></code></p></td>
+<td class="text-left"><p>2-digit month</p></td>
+<td class="text-left"><p>01</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">%d</span></code></p></td>
+<td class="text-left"><p>2-digit day</p></td>
+<td class="text-left"><p>29</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">%H</span></code></p></td>
+<td class="text-left"><p>2-digit hour</p></td>
+<td class="text-left"><p>21</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">%M</span></code></p></td>
+<td class="text-left"><p>2-digit minute</p></td>
+<td class="text-left"><p>32</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">%S</span></code></p></td>
+<td class="text-left"><p>2-digit second</p></td>
+<td class="text-left"><p>55</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">%%</span></code></p></td>
+<td class="text-left"><p>literal %</p></td>
+<td class="text-left"><p>%</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">%y</span></code></p></td>
+<td class="text-left"><p>2-digit year</p></td>
+<td class="text-left"><p>15</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">%B</span></code></p></td>
+<td class="text-left"><p>full month name</p></td>
+<td class="text-left"><p>January</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">%b</span></code></p></td>
+<td class="text-left"><p>short month name</p></td>
+<td class="text-left"><p>Jan</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Most programming languages use format strings to parse and format dates and
+times. There isn’t a standard, but the idea seems to have originated with the
+<code class="docutils literal notranslate"><span class="pre">strptime</span></code> and <code class="docutils literal notranslate"><span class="pre">strftime</span></code> functions in the C programming language. Polars uses
+<a class="reference external" href="https://docs.rs/chrono/latest/chrono/format/strftime/index.html">the same specifiers as Rust’s <code class="docutils literal notranslate"><span class="pre">chrono</span></code> crate</a>.</p>
+</div>
+<p>Our date strings have a short month name (<code class="docutils literal notranslate"><span class="pre">%b</span></code>), a 2-digit day (<code class="docutils literal notranslate"><span class="pre">%d</span></code>), and a
+4-digit year (<code class="docutils literal notranslate"><span class="pre">%Y</span></code>). The format string must match the format of the dates
+exactly, so we also need to include whitespace and punctuation. Thus the format
+string is <code class="docutils literal notranslate"><span class="pre">%b</span> <span class="pre">%d,</span> <span class="pre">%Y</span></code>. Use this to parse the dates:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dates</span> <span class="o">=</span> <span class="n">date_strings</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">to_date</span><span class="p">(</span><span class="s2">&quot;%b </span><span class="si">%d</span><span class="s2">, %Y&quot;</span><span class="p">)</span>
+<span class="n">dates</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (3,)</small><table border="1" class="dataframe"><thead><tr><th></th></tr><tr><td>date</td></tr></thead><tbody><tr><td>2021-01-10</td></tr><tr><td>2018-09-03</td></tr><tr><td>1982-02-28</td></tr></tbody></table></div></div></div>
+</div>
+<p>Polars represents dates with the <code class="docutils literal notranslate"><span class="pre">Date</span></code> type, which you can see by inspecting
+the series’ <code class="docutils literal notranslate"><span class="pre">.dtype</span></code> attribute:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dates</span><span class="o">.</span><span class="n">dtype</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Date
+</pre></div>
+</div>
+</div>
+</div>
+<p>Polars can also parse times and datetimes (which combine a date and a time).
+The respective methods are <code class="docutils literal notranslate"><span class="pre">.str.to_time</span></code> and <code class="docutils literal notranslate"><span class="pre">.str.to_datetime</span></code>. Let’s try
+parsing an unusual time format:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">time_string</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;6 minutes, 32 seconds after 10 o&#39;clock&quot;</span><span class="p">])</span>
+<span class="n">time</span> <span class="o">=</span> <span class="n">time_string</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">to_time</span><span class="p">(</span><span class="s2">&quot;%M minutes, %S seconds after %H o&#39;clock&quot;</span><span class="p">)</span>
+<span class="n">time</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (1,)</small><table border="1" class="dataframe"><thead><tr><th></th></tr><tr><td>time</td></tr></thead><tbody><tr><td>10:06:32</td></tr></tbody></table></div></div></div>
+</div>
+<p>Since this is a time, the data type is <code class="docutils literal notranslate"><span class="pre">Time</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">time</span><span class="o">.</span><span class="n">dtype</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Time
+</pre></div>
+</div>
+</div>
+</div>
+<p>Polars is compatible with Python’s built-in <code class="docutils literal notranslate"><span class="pre">datetime</span></code> module, which provides
+similar data types and functions for working with dates and times. The
+equivalents of Polars’ <code class="docutils literal notranslate"><span class="pre">Date</span></code>, <code class="docutils literal notranslate"><span class="pre">Time</span></code>, and <code class="docutils literal notranslate"><span class="pre">Datetime</span></code> types are Python’s
+<code class="docutils literal notranslate"><span class="pre">date</span></code>, <code class="docutils literal notranslate"><span class="pre">time</span></code>, and <code class="docutils literal notranslate"><span class="pre">datetime</span></code> types. In fact, Polars returns these types if
+you access the elements of a series individually. For example:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">type</span><span class="p">(</span><span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>datetime.time
+</pre></div>
+</div>
+</div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">datetime</span></code> module is also the recommended way to create literal date and
+time values for Polars. For instance, you can use the <code class="docutils literal notranslate"><span class="pre">dt.datetime</span></code> function to
+explicitly create datetimes for a series:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">dt</span>
+
+<span class="n">events</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span>
+    <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="n">year</span> <span class="o">=</span> <span class="mi">2023</span><span class="p">,</span> <span class="n">month</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">day</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">hour</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span> <span class="n">minute</span> <span class="o">=</span> <span class="mi">3</span><span class="p">),</span>
+    <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2002</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">59</span><span class="p">)</span>
+<span class="p">])</span>
+<span class="n">events</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (2,)</small><table border="1" class="dataframe"><thead><tr><th></th></tr><tr><td>datetime[μs]</td></tr></thead><tbody><tr><td>2023-01-10 08:03:00</td></tr><tr><td>2002-08-16 14:59:00</td></tr></tbody></table></div></div></div>
+</div>
+<p>The module also provides <code class="docutils literal notranslate"><span class="pre">dt.date</span></code> and <code class="docutils literal notranslate"><span class="pre">dt.time</span></code> functions to create dates and
+times.</p>
+<div class="admonition caution">
+<p class="admonition-title">Caution</p>
+<p>The similarly-named Polars functions <code class="docutils literal notranslate"><span class="pre">pl.date</span></code>, <code class="docutils literal notranslate"><span class="pre">pl.time</span></code>, and <code class="docutils literal notranslate"><span class="pre">pl.datetime</span></code>
+only create dates and times in calls to <code class="docutils literal notranslate"><span class="pre">.select</span></code> or <code class="docutils literal notranslate"><span class="pre">.with_columns</span></code>. If you
+aren’t calling <code class="docutils literal notranslate"><span class="pre">.select</span></code> or .<code class="docutils literal notranslate"><span class="pre">with_columns</span></code>, make sure to use the functions
+from the <code class="docutils literal notranslate"><span class="pre">datetime</span></code> module!</p>
+</div>
+<section id="extracting-components">
+<h3><span class="section-number">1.1.1. </span>Extracting Components<a class="headerlink" href="#extracting-components" title="Link to this heading">#</a></h3>
+<p>Once you have dates or times, you might want to extract components from them.
+For instance, suppose we want to get the years from the dates we parsed
+earlier. For series (including columns), date and time methods are listed under
+the <code class="docutils literal notranslate"><span class="pre">.dt</span></code> namespace. There are methods for a variety of different date and time
+components. For instance, the <code class="docutils literal notranslate"><span class="pre">.dt.year</span></code> method gets the year:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dates</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (3,)</small><table border="1" class="dataframe"><thead><tr><th></th></tr><tr><td>i32</td></tr></thead><tbody><tr><td>2021</td></tr><tr><td>2018</td></tr><tr><td>1982</td></tr></tbody></table></div></div></div>
+</div>
+<p>Similarly, the <code class="docutils literal notranslate"><span class="pre">.dt.month</span></code> method gets the month:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dates</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">month</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (3,)</small><table border="1" class="dataframe"><thead><tr><th></th></tr><tr><td>i8</td></tr></thead><tbody><tr><td>1</td></tr><tr><td>9</td></tr><tr><td>2</td></tr></tbody></table></div></div></div>
+</div>
+<p>The Polars documentation provides <a class="reference external" href="https://docs.pola.rs/api/python/stable/reference/series/temporal.html">a complete list</a> of <code class="docutils literal notranslate"><span class="pre">.dt</span></code> methods.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Python’s date and time types (from the <code class="docutils literal notranslate"><span class="pre">datetime</span></code> module) expose their
+components as attributes rather than methods, and don’t use the <code class="docutils literal notranslate"><span class="pre">.dt</span></code> prefix.</p>
+<p>For example, you can get the year of a <code class="docutils literal notranslate"><span class="pre">date</span></code> called <code class="docutils literal notranslate"><span class="pre">x</span></code> with <code class="docutils literal notranslate"><span class="pre">x.year</span></code>. No
+parentheses <code class="docutils literal notranslate"><span class="pre">()</span></code> are necessary, since <code class="docutils literal notranslate"><span class="pre">.year</span></code> is an attribute.</p>
+<p>See <a class="reference external" href="https://docs.python.org/3/library/datetime.html">the documentation for the <code class="docutils literal notranslate"><span class="pre">datetime</span></code> module</a> for more details.</p>
+</div>
+</section>
+<section id="durations">
+<h3><span class="section-number">1.1.2. </span>Durations<a class="headerlink" href="#durations" title="Link to this heading">#</a></h3>
+<p>Occasionally, you might need to adjust dates or times by adding an offset. For
+example, suppose we want to add 30 days to the dates from earlier. The
+<code class="docutils literal notranslate"><span class="pre">dt.timedelta</span></code> function creates a <code class="docutils literal notranslate"><span class="pre">timedelta</span></code> object, which represents a fixed
+period of time. So to add 30 days:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dates</span> <span class="o">+</span> <span class="n">dt</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span> <span class="o">=</span> <span class="mi">30</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (3,)</small><table border="1" class="dataframe"><thead><tr><th></th></tr><tr><td>date</td></tr></thead><tbody><tr><td>2021-02-09</td></tr><tr><td>2018-10-03</td></tr><tr><td>1982-03-30</td></tr></tbody></table></div></div></div>
+</div>
+<p>What if we want to add 1 month to the dates instead of 30 days? The length of a
+month varies, so we can’t use a <code class="docutils literal notranslate"><span class="pre">timedelta</span></code>. Polars provides a solution: the
+<code class="docutils literal notranslate"><span class="pre">.dt.offset_by</span></code> method. The method takes a string argument that specifies the
+period of time by which to offset. The string for 1 month is <code class="docutils literal notranslate"><span class="pre">&quot;1mo&quot;</span></code>, so:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dates</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">offset_by</span><span class="p">(</span><span class="s2">&quot;1mo&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (3,)</small><table border="1" class="dataframe"><thead><tr><th></th></tr><tr><td>date</td></tr></thead><tbody><tr><td>2021-02-10</td></tr><tr><td>2018-10-03</td></tr><tr><td>1982-03-28</td></tr></tbody></table></div></div></div>
+</div>
+<p>This increments each date by exactly 1 month, regardless of how many days that
+is. The documentation for <code class="docutils literal notranslate"><span class="pre">.dt.offset_by</span></code> describes <a class="reference external" href="https://docs.pola.rs/api/python/stable/reference/series/api/polars.Series.dt.offset_by.html">how to specify other
+periods of time</a>.</p>
+</section>
+<section id="case-study-ca-parks-recreation-fleet">
+<h3><span class="section-number">1.1.3. </span>Case Study: CA Parks &amp; Recreation Fleet<a class="headerlink" href="#case-study-ca-parks-recreation-fleet" title="Link to this heading">#</a></h3>
+<p>The government of California publishes data about its fleet of vehicles on the
+<a class="reference external" href="https://data.ca.gov/">California Open Data portal</a>. As of March 2025, the data set
+includes all non-confidential vehicles owned by agencies from 2015-2023. We’ll
+use a subset of this data to compute how many vehicles the CA Department of
+Parks and Recreation purchased each year from 2019 to 2023. The data set is
+published as a messy CSV, so we’ll need to do some cleaning and parse the dates
+in order to use it.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p><a class="reference external" href="https://ucdavis.box.com/s/6j40xd44miz7x6qlvgga9eieu7ya6xo3">Click here</a> to download the CA Parks &amp; Recreation
+Fleet data set.</p>
+<p>If you haven’t already, we recommend you create a directory for this workshop.
+In your workshop directory, create a <code class="docutils literal notranslate"><span class="pre">data/</span></code> subdirectory. Download and save
+the data set in the <code class="docutils literal notranslate"><span class="pre">data/</span></code> subdirectory.</p>
+</div>
+<div class="note dropdown admonition">
+<p class="admonition-title">Documentation for the CA Parks &amp; Recreation Fleet Data Set</p>
+<p>Each row in the data set contains measurements from one vehicle-year
+combination.</p>
+<p><a class="reference external" href="https://ucdavis.box.com/s/v6agya4830tz1lkgq8toej5q1b9j5ntf">Click here</a> to download the documentation for the columns.</p>
+<p>This data set is a subset of the much larger <a class="reference external" href="https://data.ca.gov/dataset/california-state-fleet">CA State Fleet data
+set</a>.</p>
+</div>
+<p>To get started, read the data set from wherever you saved it:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fleet</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;data/2015-2023_ca_parks_fleet.csv&quot;</span><span class="p">)</span>
+<span class="n">fleet</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (5, 34)</small><table border="1" class="dataframe"><thead><tr><th>agency</th><th>report_year</th><th>disposed</th><th>equipment_number</th><th>asset_category</th><th>model_year</th><th>make_model</th><th>postal_code</th><th>asset_type</th><th>weight_class</th><th>passenger_vehicle</th><th>payload_rating</th><th>shipping_weight</th><th>wheel_type</th><th>tire_size</th><th>fuel_type</th><th>engine_configuration</th><th>emissions_type_code</th><th>primary_application</th><th>secondary_application</th><th>acquisition_delivery_date</th><th>suv_justification</th><th>pickup_4_by_4_justification</th><th>acquisition_method</th><th>purchase_price</th><th>annual_lease_rate</th><th>acquisition_mileage</th><th>disposition_date</th><th>transferred_to</th><th>disposition_method</th><th>disposition_reason</th><th>disposition_mileage</th><th>disposition_sold_amount</th><th>total_miles</th></tr><tr><td>str</td><td>i64</td><td>str</td><td>str</td><td>str</td><td>i64</td><td>str</td><td>i64</td><td>str</td><td>str</td><td>str</td><td>str</td><td>str</td><td>str</td><td>str</td><td>str</td><td>str</td><td>str</td><td>str</td><td>str</td><td>str</td><td>str</td><td>str</td><td>str</td><td>i64</td><td>str</td><td>str</td><td>str</td><td>str</td><td>str</td><td>str</td><td>i64</td><td>i64</td><td>str</td></tr></thead><tbody><tr><td>&quot;Parks and Recreation, Departme…</td><td>2015</td><td>&quot;No&quot;</td><td>&quot;93462&quot;</td><td>&quot;Ground&quot;</td><td>1976</td><td>&quot;TUCKER 1643&quot;</td><td>96142</td><td>&quot;Construction Equipment&quot;</td><td>null</td><td>&quot;No&quot;</td><td>null</td><td>null</td><td>null</td><td>null</td><td>&quot;Diesel&quot;</td><td>&quot;Dedicated&quot;</td><td>null</td><td>&quot;Maintenance of public faciliti…</td><td>null</td><td>&quot;1/1/2001&quot;</td><td>null</td><td>null</td><td>&quot;Purchase&quot;</td><td>2000</td><td>null</td><td>&quot;Null &quot;</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td></tr><tr><td>&quot;Parks and Recreation, Departme…</td><td>2015</td><td>&quot;No&quot;</td><td>&quot;100380&quot;</td><td>&quot;Ground&quot;</td><td>1979</td><td>&quot;FLEETWOOD HOMETTE&quot;</td><td>94954</td><td>&quot;Non-Self Propelled&quot;</td><td>null</td><td>&quot;Yes&quot;</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>&quot;Maintenance of public faciliti…</td><td>null</td><td>&quot;1/1/1979&quot;</td><td>null</td><td>null</td><td>&quot;Purchase&quot;</td><td>11483</td><td>null</td><td>&quot;Null &quot;</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td></tr><tr><td>&quot;Parks and Recreation, Departme…</td><td>2015</td><td>&quot;Yes&quot;</td><td>&quot;117844&quot;</td><td>&quot;Ground&quot;</td><td>2001</td><td>&quot;MACHETE CHIPPER&quot;</td><td>91302</td><td>&quot;Non-Self Propelled&quot;</td><td>null</td><td>&quot;Yes&quot;</td><td>null</td><td>null</td><td>null</td><td>null</td><td>&quot;Gasoline&quot;</td><td>&quot;Dedicated&quot;</td><td>null</td><td>&quot;Maintenance of public faciliti…</td><td>null</td><td>&quot;1/31/2001&quot;</td><td>null</td><td>null</td><td>&quot;Purchase&quot;</td><td>26870</td><td>null</td><td>&quot;Null &quot;</td><td>&quot;6/7/2018&quot;</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td></tr><tr><td>&quot;Parks and Recreation, Departme…</td><td>2015</td><td>&quot;No&quot;</td><td>&quot;115503&quot;</td><td>&quot;Ground&quot;</td><td>1987</td><td>&quot;KIT OFFICE TRAILER&quot;</td><td>95430</td><td>&quot;Non-Self Propelled&quot;</td><td>null</td><td>&quot;Yes&quot;</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>&quot;Maintenance of public faciliti…</td><td>null</td><td>&quot;1/1/2001&quot;</td><td>null</td><td>null</td><td>&quot;Purchase&quot;</td><td>10197</td><td>null</td><td>&quot;Null &quot;</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td></tr><tr><td>&quot;Parks and Recreation, Departme…</td><td>2015</td><td>&quot;No&quot;</td><td>&quot;3554&quot;</td><td>&quot;Ground&quot;</td><td>1960</td><td>&quot;MAVERICK MFG CORP WELDER&quot;</td><td>95430</td><td>&quot;Non-Self Propelled&quot;</td><td>&quot;Light Duty&quot;</td><td>&quot;Yes&quot;</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>&quot;Maintenance of public faciliti…</td><td>null</td><td>&quot;1/1/2001&quot;</td><td>null</td><td>null</td><td>&quot;Purchase&quot;</td><td>500</td><td>null</td><td>&quot;Null &quot;</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td></tr></tbody></table></div></div></div>
+</div>
+<p>Since we want to compute the number of acquisitions each year, we’ll focus on
+two columns: <code class="docutils literal notranslate"><span class="pre">acquisition_method</span></code> and <code class="docutils literal notranslate"><span class="pre">acquisition_delivery_date</span></code>. The
+<code class="docutils literal notranslate"><span class="pre">acquisition_method</span></code> column indicates whether the vehicle was purchased,
+donated, transferred from a different agency, or something else. We’re only
+interested in purchases, so we can filter the others out:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fleet</span> <span class="o">=</span> <span class="n">fleet</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;acquisition_method&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;Purchase&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>In order to determine how many vehicles were purchased each year, we need to
+extract the year from <code class="docutils literal notranslate"><span class="pre">acquisition_delivery_date</span></code>. Let’s take a look at this
+column:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fleet</span><span class="p">[</span><span class="s2">&quot;acquisition_delivery_date&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (10,)</small><table border="1" class="dataframe"><thead><tr><th>acquisition_delivery_date</th></tr><tr><td>str</td></tr></thead><tbody><tr><td>&quot;1/1/2001&quot;</td></tr><tr><td>&quot;1/1/1979&quot;</td></tr><tr><td>&quot;1/31/2001&quot;</td></tr><tr><td>&quot;1/1/2001&quot;</td></tr><tr><td>&quot;1/1/2001&quot;</td></tr><tr><td>&quot;1/1/1991&quot;</td></tr><tr><td>&quot;1/1/2003&quot;</td></tr><tr><td>&quot;1/1/1998&quot;</td></tr><tr><td>&quot;1/1/1990&quot;</td></tr><tr><td>&quot;1/1/1997&quot;</td></tr></tbody></table></div></div></div>
+</div>
+<p>It looks like the dates are in month-day-year format. The format string for
+this is <code class="docutils literal notranslate"><span class="pre">&quot;%m/%d/%Y&quot;</span></code>, so:</p>
+<div class="cell tag_raises-exception docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fleet</span><span class="o">.</span><span class="n">select</span><span class="p">(</span>
+    <span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;acquisition_delivery_date&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">to_date</span><span class="p">(</span><span class="s2">&quot;%m/</span><span class="si">%d</span><span class="s2">/%Y&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">InvalidOperationError</span><span class="g g-Whitespace">                     </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">17</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">fleet</span><span class="o">.</span><span class="n">select</span><span class="p">(</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span>     <span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;acquisition_delivery_date&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">to_date</span><span class="p">(</span><span class="s2">&quot;%m/</span><span class="si">%d</span><span class="s2">/%Y&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="p">)</span>
+
+<span class="nn">File ~/mill/datalab/teaching/intermediate_python/.pixi/envs/default/lib/python3.13/site-packages/polars/dataframe/frame.py:9632,</span> in <span class="ni">DataFrame.select</span><span class="nt">(self, *exprs, **named_exprs)</span>
+<span class="g g-Whitespace">   </span><span class="mi">9532</span> <span class="k">def</span><span class="w"> </span><span class="nf">select</span><span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">9533</span>     <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">exprs</span><span class="p">:</span> <span class="n">IntoExpr</span> <span class="o">|</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">IntoExpr</span><span class="p">],</span> <span class="o">**</span><span class="n">named_exprs</span><span class="p">:</span> <span class="n">IntoExpr</span>
+<span class="g g-Whitespace">   </span><span class="mi">9534</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataFrame</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">9535</span><span class="w">     </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="g g-Whitespace">   </span><span class="mi">9536</span><span class="sd">     Select columns from this DataFrame.</span>
+<span class="g g-Whitespace">   </span><span class="mi">9537</span><span class="sd"> </span>
+<span class="sd">   (...)   9630     └──────────────┘</span>
+<span class="g g-Whitespace">   </span><span class="mi">9631</span><span class="sd">     &quot;&quot;&quot;</span>
+<span class="ne">-&gt; </span><span class="mi">9632</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">lazy</span><span class="p">()</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="o">*</span><span class="n">exprs</span><span class="p">,</span> <span class="o">**</span><span class="n">named_exprs</span><span class="p">)</span><span class="o">.</span><span class="n">collect</span><span class="p">(</span><span class="n">_eager</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="nn">File ~/mill/datalab/teaching/intermediate_python/.pixi/envs/default/lib/python3.13/site-packages/polars/lazyframe/frame.py:2065,</span> in <span class="ni">LazyFrame.collect</span><span class="nt">(self, type_coercion, _type_check, predicate_pushdown, projection_pushdown, simplify_expression, slice_pushdown, comm_subplan_elim, comm_subexpr_elim, cluster_with_columns, collapse_joins, no_optimization, streaming, engine, background, _check_order, _eager, **_kwargs)</span>
+<span class="g g-Whitespace">   </span><span class="mi">2063</span> <span class="c1"># Only for testing purposes</span>
+<span class="g g-Whitespace">   </span><span class="mi">2064</span> <span class="n">callback</span> <span class="o">=</span> <span class="n">_kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;post_opt_callback&quot;</span><span class="p">,</span> <span class="n">callback</span><span class="p">)</span>
+<span class="ne">-&gt; </span><span class="mi">2065</span> <span class="k">return</span> <span class="n">wrap_df</span><span class="p">(</span><span class="n">ldf</span><span class="o">.</span><span class="n">collect</span><span class="p">(</span><span class="n">callback</span><span class="p">))</span>
+
+<span class="ne">InvalidOperationError</span>: conversion from `str` to `date` failed in column &#39;acquisition_delivery_date&#39; for 365 out of 627 values: [&quot;44832&quot;, &quot;44462&quot;, … &quot;42628&quot;]
+
+<span class="n">You</span> <span class="n">might</span> <span class="n">want</span> <span class="n">to</span> <span class="k">try</span><span class="p">:</span>
+<span class="o">-</span> <span class="n">setting</span> <span class="err">`</span><span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="err">`</span> <span class="n">to</span> <span class="nb">set</span> <span class="n">values</span> <span class="n">that</span> <span class="n">cannot</span> <span class="n">be</span> <span class="n">converted</span> <span class="n">to</span> <span class="err">`</span><span class="n">null</span><span class="err">`</span>
+<span class="o">-</span> <span class="n">using</span> <span class="err">`</span><span class="nb">str</span><span class="o">.</span><span class="n">strptime</span><span class="err">`</span><span class="p">,</span> <span class="err">`</span><span class="nb">str</span><span class="o">.</span><span class="n">to_date</span><span class="err">`</span><span class="p">,</span> <span class="ow">or</span> <span class="err">`</span><span class="nb">str</span><span class="o">.</span><span class="n">to_datetime</span><span class="err">`</span> <span class="ow">and</span> <span class="n">providing</span> <span class="n">a</span> <span class="nb">format</span> <span class="n">string</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Uh-oh. According to the error message from Polars, some of the date values
+don’t follow the month-day-year format. Instead, they’re numbers like <code class="docutils literal notranslate"><span class="pre">44832</span></code>,
+<code class="docutils literal notranslate"><span class="pre">44462</span></code>, and <code class="docutils literal notranslate"><span class="pre">43451</span></code>. These numbers probably seem inscrutable, but there is an
+explanation for them: Microsoft Excel, perhaps the most popular tool for
+working with tabular data, stores dates by counting days from 31 December 1899.
+So 1 is 1 January 1900, 32 is 1 February 1900, and so on. Unfortunately, the
+Excel developers incorrectly assumed 1900 was a leap year, so all of the counts
+were off by 1 after 28 February 1900. Most modern Excel-compatible spreadsheet
+programs fix this by counting from 30 December 1899 rather than 31 December, so
+that only dates before 28 February have different numbers. We can convert the
+numbers in the <code class="docutils literal notranslate"><span class="pre">acquisition_delivery_date</span></code> column into dates by treating them
+as offsets to 30 December 1899.</p>
+<p>Transforming a series in two different ways at once is not (yet) an easy task
+with Polars, but it is possible. We’ll do it by splitting the series into two
+series: one for the month-day-year dates and one for the Excel dates. The
+former are easy to identify because they contain slashes (<code class="docutils literal notranslate"><span class="pre">/</span></code>). We can use the
+<code class="docutils literal notranslate"><span class="pre">.str.contains</span></code> method, which tests whether a string contains a character, to
+test for slashes. So a condition for the month-day-year dates of the
+<code class="docutils literal notranslate"><span class="pre">acquisition_delivery_date</span></code> column is:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">is_mdy</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;acquisition_delivery_date&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can use the condition with the <code class="docutils literal notranslate"><span class="pre">pl.when</span></code> function to get the month-day-year
+dates and the Excel dates. The <code class="docutils literal notranslate"><span class="pre">pl.when</span></code> function returns elements of a series
+specified in <code class="docutils literal notranslate"><span class="pre">.then</span></code> when its condition is true and returns <code class="docutils literal notranslate"><span class="pre">null</span></code> otherwise.
+So to create a new data frame <code class="docutils literal notranslate"><span class="pre">dates</span></code> with columns <code class="docutils literal notranslate"><span class="pre">mdy</span></code> and <code class="docutils literal notranslate"><span class="pre">excel</span></code> for the
+month-day-year and Excel dates, respectively:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dates</span> <span class="o">=</span> <span class="n">fleet</span><span class="o">.</span><span class="n">select</span><span class="p">(</span>
+    <span class="n">mdy</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">when</span><span class="p">(</span><span class="n">is_mdy</span><span class="p">)</span><span class="o">.</span><span class="n">then</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;acquisition_delivery_date&quot;</span><span class="p">)),</span>
+    <span class="n">excel</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">when</span><span class="p">(</span><span class="o">~</span><span class="n">is_mdy</span><span class="p">)</span><span class="o">.</span><span class="n">then</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;acquisition_delivery_date&quot;</span><span class="p">))</span>
+<span class="p">)</span>
+<span class="n">dates</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (5, 2)</small><table border="1" class="dataframe"><thead><tr><th>mdy</th><th>excel</th></tr><tr><td>str</td><td>str</td></tr></thead><tbody><tr><td>&quot;1/1/2001&quot;</td><td>null</td></tr><tr><td>&quot;1/1/1979&quot;</td><td>null</td></tr><tr><td>&quot;1/31/2001&quot;</td><td>null</td></tr><tr><td>&quot;1/1/2001&quot;</td><td>null</td></tr><tr><td>&quot;1/1/2001&quot;</td><td>null</td></tr></tbody></table></div></div></div>
+</div>
+<p>We can convert the <code class="docutils literal notranslate"><span class="pre">mdy</span></code> column to dates with <code class="docutils literal notranslate"><span class="pre">.str.to_date</span></code> and the
+<code class="docutils literal notranslate"><span class="pre">&quot;%m/%d/%Y&quot;</span></code> format string from earlier.</p>
+<p>To convert the <code class="docutils literal notranslate"><span class="pre">excel</span></code> column to dates, we have to start with the literal date
+30 December 1899 and offset it by the value of the column. We can use <code class="docutils literal notranslate"><span class="pre">dt.date</span></code>
+to create the date and <code class="docutils literal notranslate"><span class="pre">.dt.offset_by</span></code> to offset it. The code to transform both
+the <code class="docutils literal notranslate"><span class="pre">mdy</span></code> and <code class="docutils literal notranslate"><span class="pre">excel</span></code> columns is:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">start_date</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="mi">1899</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
+
+<span class="n">dates</span> <span class="o">=</span> <span class="n">dates</span><span class="o">.</span><span class="n">with_columns</span><span class="p">(</span>
+    <span class="n">mdy</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;mdy&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">to_date</span><span class="p">(</span><span class="s2">&quot;%m/</span><span class="si">%d</span><span class="s2">/%Y&quot;</span><span class="p">),</span>
+    <span class="n">excel</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">lit</span><span class="p">(</span><span class="n">start_date</span><span class="p">)</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">offset_by</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;excel&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;d&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">dates</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (5, 2)</small><table border="1" class="dataframe"><thead><tr><th>mdy</th><th>excel</th></tr><tr><td>date</td><td>date</td></tr></thead><tbody><tr><td>2001-01-01</td><td>null</td></tr><tr><td>1979-01-01</td><td>null</td></tr><tr><td>2001-01-31</td><td>null</td></tr><tr><td>2001-01-01</td><td>null</td></tr><tr><td>2001-01-01</td><td>null</td></tr></tbody></table></div></div></div>
+</div>
+<p>We can combine the two columns by replacing all of the <code class="docutils literal notranslate"><span class="pre">null</span></code> values in <code class="docutils literal notranslate"><span class="pre">mdy</span></code>
+with values from <code class="docutils literal notranslate"><span class="pre">excel</span></code>. This becomes the new <code class="docutils literal notranslate"><span class="pre">acquisition_delivery_date</span></code>
+column:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fleet</span> <span class="o">=</span> <span class="n">fleet</span><span class="o">.</span><span class="n">with_columns</span><span class="p">(</span>
+    <span class="n">acquisition_delivery_date</span> <span class="o">=</span> <span class="n">dates</span><span class="p">[</span><span class="s2">&quot;mdy&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">fill_null</span><span class="p">(</span><span class="n">dates</span><span class="p">[</span><span class="s2">&quot;excel&quot;</span><span class="p">])</span>
+<span class="p">)</span>
+<span class="n">fleet</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (5, 34)</small><table border="1" class="dataframe"><thead><tr><th>agency</th><th>report_year</th><th>disposed</th><th>equipment_number</th><th>asset_category</th><th>model_year</th><th>make_model</th><th>postal_code</th><th>asset_type</th><th>weight_class</th><th>passenger_vehicle</th><th>payload_rating</th><th>shipping_weight</th><th>wheel_type</th><th>tire_size</th><th>fuel_type</th><th>engine_configuration</th><th>emissions_type_code</th><th>primary_application</th><th>secondary_application</th><th>acquisition_delivery_date</th><th>suv_justification</th><th>pickup_4_by_4_justification</th><th>acquisition_method</th><th>purchase_price</th><th>annual_lease_rate</th><th>acquisition_mileage</th><th>disposition_date</th><th>transferred_to</th><th>disposition_method</th><th>disposition_reason</th><th>disposition_mileage</th><th>disposition_sold_amount</th><th>total_miles</th></tr><tr><td>str</td><td>i64</td><td>str</td><td>str</td><td>str</td><td>i64</td><td>str</td><td>i64</td><td>str</td><td>str</td><td>str</td><td>str</td><td>str</td><td>str</td><td>str</td><td>str</td><td>str</td><td>str</td><td>str</td><td>str</td><td>date</td><td>str</td><td>str</td><td>str</td><td>i64</td><td>str</td><td>str</td><td>str</td><td>str</td><td>str</td><td>str</td><td>i64</td><td>i64</td><td>str</td></tr></thead><tbody><tr><td>&quot;Parks and Recreation, Departme…</td><td>2015</td><td>&quot;No&quot;</td><td>&quot;93462&quot;</td><td>&quot;Ground&quot;</td><td>1976</td><td>&quot;TUCKER 1643&quot;</td><td>96142</td><td>&quot;Construction Equipment&quot;</td><td>null</td><td>&quot;No&quot;</td><td>null</td><td>null</td><td>null</td><td>null</td><td>&quot;Diesel&quot;</td><td>&quot;Dedicated&quot;</td><td>null</td><td>&quot;Maintenance of public faciliti…</td><td>null</td><td>2001-01-01</td><td>null</td><td>null</td><td>&quot;Purchase&quot;</td><td>2000</td><td>null</td><td>&quot;Null &quot;</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td></tr><tr><td>&quot;Parks and Recreation, Departme…</td><td>2015</td><td>&quot;No&quot;</td><td>&quot;100380&quot;</td><td>&quot;Ground&quot;</td><td>1979</td><td>&quot;FLEETWOOD HOMETTE&quot;</td><td>94954</td><td>&quot;Non-Self Propelled&quot;</td><td>null</td><td>&quot;Yes&quot;</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>&quot;Maintenance of public faciliti…</td><td>null</td><td>1979-01-01</td><td>null</td><td>null</td><td>&quot;Purchase&quot;</td><td>11483</td><td>null</td><td>&quot;Null &quot;</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td></tr><tr><td>&quot;Parks and Recreation, Departme…</td><td>2015</td><td>&quot;Yes&quot;</td><td>&quot;117844&quot;</td><td>&quot;Ground&quot;</td><td>2001</td><td>&quot;MACHETE CHIPPER&quot;</td><td>91302</td><td>&quot;Non-Self Propelled&quot;</td><td>null</td><td>&quot;Yes&quot;</td><td>null</td><td>null</td><td>null</td><td>null</td><td>&quot;Gasoline&quot;</td><td>&quot;Dedicated&quot;</td><td>null</td><td>&quot;Maintenance of public faciliti…</td><td>null</td><td>2001-01-31</td><td>null</td><td>null</td><td>&quot;Purchase&quot;</td><td>26870</td><td>null</td><td>&quot;Null &quot;</td><td>&quot;6/7/2018&quot;</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td></tr><tr><td>&quot;Parks and Recreation, Departme…</td><td>2015</td><td>&quot;No&quot;</td><td>&quot;115503&quot;</td><td>&quot;Ground&quot;</td><td>1987</td><td>&quot;KIT OFFICE TRAILER&quot;</td><td>95430</td><td>&quot;Non-Self Propelled&quot;</td><td>null</td><td>&quot;Yes&quot;</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>&quot;Maintenance of public faciliti…</td><td>null</td><td>2001-01-01</td><td>null</td><td>null</td><td>&quot;Purchase&quot;</td><td>10197</td><td>null</td><td>&quot;Null &quot;</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td></tr><tr><td>&quot;Parks and Recreation, Departme…</td><td>2015</td><td>&quot;No&quot;</td><td>&quot;3554&quot;</td><td>&quot;Ground&quot;</td><td>1960</td><td>&quot;MAVERICK MFG CORP WELDER&quot;</td><td>95430</td><td>&quot;Non-Self Propelled&quot;</td><td>&quot;Light Duty&quot;</td><td>&quot;Yes&quot;</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>&quot;Maintenance of public faciliti…</td><td>null</td><td>2001-01-01</td><td>null</td><td>null</td><td>&quot;Purchase&quot;</td><td>500</td><td>null</td><td>&quot;Null &quot;</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td></tr></tbody></table></div></div></div>
+</div>
+<p>With the dates in hand, we can compute the number of purchases from 2019 to
+2023. Since each row in the data set represents a vehicle-year, and we just
+want to count vehicles, we must first get a subset of unique vehicles. We can
+do this by grouping on the <code class="docutils literal notranslate"><span class="pre">equipment_number</span></code> column, which is a unique
+identifier for each vehicle:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">vehicles</span> <span class="o">=</span> <span class="n">fleet</span><span class="o">.</span><span class="n">group_by</span><span class="p">(</span><span class="s2">&quot;equipment_number&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can compute the number of purchases by extracting the years with the
+<code class="docutils literal notranslate"><span class="pre">.dt.year</span></code> method and then counting them with the <code class="docutils literal notranslate"><span class="pre">.value_counts</span></code> method:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">year</span> <span class="o">=</span> <span class="n">vehicles</span><span class="p">[</span><span class="s2">&quot;acquisition_delivery_date&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span><span class="p">()</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;year&quot;</span><span class="p">)</span>
+<span class="n">year</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">&quot;year&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (5, 2)</small><table border="1" class="dataframe"><thead><tr><th>year</th><th>count</th></tr><tr><td>i32</td><td>u32</td></tr></thead><tbody><tr><td>2019</td><td>345</td></tr><tr><td>2020</td><td>254</td></tr><tr><td>2021</td><td>189</td></tr><tr><td>2022</td><td>227</td></tr><tr><td>2023</td><td>192</td></tr></tbody></table></div></div></div>
+</div>
+<p>It’s unclear whether the data set contains complete records for 2023, so the
+count for that year might be too small. It’s also likely that the agency
+purchases vehicles months or years in advance of their delivery, so these
+counts are more accurately described as deliveries rather than purchases.</p>
+</section>
+</section>
+<section id="string-fundamentals">
+<h2><span class="section-number">1.2. </span>String Fundamentals<a class="headerlink" href="#string-fundamentals" title="Link to this heading">#</a></h2>
+<p>Strings represent text, but even if your data sets are composed entirely of
+numbers, you’ll need to know how to work with strings. Text formats for data
+are widespread: comma-separated values (CSV), tab-separated values (TSV),
+JavaScript object notation (JSON), a panopoly of markup languages (HTML, XML,
+YAML, TOML), and more. When you read data in these formats, sometimes Python
+will correctly convert the values to appropriate non-string types. The rest of
+the time, you need to know how to work with strings so that you can fix
+whatever went wrong and convert the data yourself.</p>
+<p>This section introduces fundamental concepts for computing on strings. The next
+section, <a class="reference internal" href="#processing-strings"><span class="std std-numref">Section 1.3</span></a>, describes how to find, extract, and
+replace patterns in strings.</p>
+<section id="escape-sequences">
+<span id="id1"></span><h3><span class="section-number">1.2.1. </span>Escape Sequences<a class="headerlink" href="#escape-sequences" title="Link to this heading">#</a></h3>
+<p>In a string, an <strong>escape sequence</strong> or <strong>escape code</strong> consists of a backslash
+followed by one or more characters. Escape sequences make it possible to:</p>
+<ol class="arabic simple">
+<li><p>Write quotes or backslashes within a string</p></li>
+<li><p>Write characters that don’t appear on your keyboard (for example, characters
+in a foreign language)</p></li>
+</ol>
+<p>For example, the escape sequence <code class="docutils literal notranslate"><span class="pre">\n</span></code> corresponds to the newline character.
+Notice that the <code class="docutils literal notranslate"><span class="pre">print</span></code> function prints <code class="docutils literal notranslate"><span class="pre">\n</span></code> as a literal new line:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;Hello</span><span class="se">\n</span><span class="s2">Nick&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Hello
+Nick
+</pre></div>
+</div>
+</div>
+</div>
+<p>On the other hand, when you let Python print a string or other object
+automatically (without explicitly calling <code class="docutils literal notranslate"><span class="pre">print</span></code>), it prints a
+programmer-friendly representation. For strings, the representation shows
+escape codes:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;Hello\nNick&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p>This makes it easy to identify characters that are not normally visible, such
+as whitespace, and also makes it easy to copy the string. You can use the
+built-in <code class="docutils literal notranslate"><span class="pre">repr</span></code> function to get a representation for any object.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Make sure to call <code class="docutils literal notranslate"><span class="pre">print</span></code> explicitly if you want to see what a string actually
+looks like.</p>
+</div>
+<p>As another example, suppose we want to put literal quotation marks in a string.
+We can either enclose the string in the other kind of quotation marks (single
+versus double), or escape the quotation marks in the string:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;She said, &quot;Hi&quot;&#39;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="n">y</span> <span class="o">=</span> <span class="s2">&quot;She said, </span><span class="se">\&quot;</span><span class="s2">Hi</span><span class="se">\&quot;</span><span class="s2">&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>She said, &quot;Hi&quot;
+She said, &quot;Hi&quot;
+</pre></div>
+</div>
+</div>
+</div>
+<p>Since escape sequences begin with backslash, we also need to use an escape
+sequence to write a literal backslash. The escape sequence for a literal
+backslash is two backslashes:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\
+</pre></div>
+</div>
+</div>
+</div>
+<p>The Python documentation provides a <a class="reference external" href="https://docs.python.org/3/reference/lexical_analysis.html#escape-sequences">complete list of escape sequences</a>.
+Other programming languages also use escape sequences, and many of them are the
+same.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>You can mark a string as <strong>raw</strong> by prefixing it with <code class="docutils literal notranslate"><span class="pre">r</span></code> or <code class="docutils literal notranslate"><span class="pre">R</span></code> (lowercase <code class="docutils literal notranslate"><span class="pre">r</span></code>
+is more common) to make Python ignore escape sequences. For example,
+<code class="docutils literal notranslate"><span class="pre">r&quot;backslashes</span> <span class="pre">\</span> <span class="pre">are</span> <span class="pre">okay&quot;</span></code> is a raw string.</p>
+<p>Raw strings are especially useful for writing regular expressions
+(<a class="reference internal" href="#processing-strings"><span class="std std-numref">Section 1.3</span></a>).</p>
+<p>A quirk of raw strings is that they can’t end with an odd number of
+backslashes, since the next character after a backslash is treated as part of
+the string.</p>
+</div>
+</section>
+<section id="character-encodings">
+<h3><span class="section-number">1.2.2. </span>Character Encodings<a class="headerlink" href="#character-encodings" title="Link to this heading">#</a></h3>
+<p>Computers store data as numbers. In order to store text on a computer, people
+have to agree on a <strong>character encoding</strong>, a system for mapping characters to
+numbers. For example, in <a class="reference external" href="https://en.wikipedia.org/wiki/ASCII">ASCII</a>, one of
+the most popular encodings in the United States, the character <code class="docutils literal notranslate"><span class="pre">a</span></code> maps to the
+number 97.</p>
+<p>Many different character encodings exist, and sharing text used to be an
+inconvenient process of asking or trying to guess the correct encoding. This
+was so inconvenient that in the 1980s, software engineers around the world
+united to create the <a class="reference external" href="https://home.unicode.org/">Unicode</a> standard. Unicode
+<a class="reference external" href="http://unicode.org/charts/">includes symbols</a> for nearly all languages in use
+today, as well as emoji and many ancient languages (such as Egyptian
+hieroglyphs).</p>
+<p>Unicode maps characters to numbers, but unlike a character encoding, it
+doesn’t dictate how those numbers should be mapped to bytes (sequences of ones
+and zeroes). As a result, there are several different character encodings that
+support and are synonymous with Unicode. The most popular of these is UTF-8.</p>
+<p>Python 3 uses Unicode by default. You can write Unicode characters with the
+escape sequence <code class="docutils literal notranslate"><span class="pre">\u</span></code> (or <code class="docutils literal notranslate"><span class="pre">\U</span></code>) followed by a 4-digit (or 8-digit) number for
+the character in <a class="reference external" href="https://en.wikipedia.org/wiki/Hexadecimal">base 16</a>. For instance, the number for <code class="docutils literal notranslate"><span class="pre">a</span></code> in Unicode is 97
+(the same as in ASCII). In base 16, 97 is <code class="docutils literal notranslate"><span class="pre">61</span></code>. So you can write an <code class="docutils literal notranslate"><span class="pre">a</span></code> as:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;</span><span class="se">\u0061</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;a&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p>Unicode escape sequences are usually only used for characters that are not easy
+to type. For example, the cat emoji is number <code class="docutils literal notranslate"><span class="pre">1f408</span></code> (in base 16) in Unicode.
+So <code class="docutils literal notranslate"><span class="pre">&quot;\U0001f408&quot;</span></code> is the cat emoji:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;</span><span class="se">\U0001f408</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;🐈&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Whether you can see a Unicode character depends on whether the current font has
+a glyph (image representation) for that character. Most fonts only have glyphs
+for a few languages.</p>
+<p>Make sure to use a font with good Unicode coverage if you love emoji or expect
+to work with many different languages. The [Noto Fonts][] project aims to
+create a collection of fonts with a common style and complete language
+coverage. The <a class="reference external" href="https://www.nerdfonts.com/">NerdFonts</a> project patches fonts commonly used for programming
+so that they have better coverage of symbols.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you ever read or write a text file (including CSV and other formats) and the
+text <a class="reference external" href="https://en.wikipedia.org/wiki/Mojibake">looks like gibberish</a>, it might be an encoding problem. This is
+especially true on Windows, the only modern operating system that does not
+(yet) use UTF-8 as the default encoding.</p>
+<p>Encoding problems when reading a file can usually be fixed by passing the
+encoding to the function doing the reading. For instance, the code to read an
+ISO-8859-1 encoded CSV file with Polars is:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pl</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;my_data.csv&quot;</span><span class="p">,</span> <span class="n">encoding</span> <span class="o">=</span> <span class="s2">&quot;iso-8859-1&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Other reader functions might have a different parameter for the encoding, so
+always check the documentation.</p>
+</div>
+</section>
+</section>
+<section id="processing-strings">
+<span id="id2"></span><h2><span class="section-number">1.3. </span>Processing Strings<a class="headerlink" href="#processing-strings" title="Link to this heading">#</a></h2>
+<p>String processing encompasses a variety of tasks such as searching for patterns
+within strings, extracting data from within strings, splitting strings into
+component parts, and removing or replacing unwanted characters (excess
+whitespace, punctuation, and so on). If you work with data, sooner or later
+you’ll run into a data set in text format that needs a few corrections, and for
+that you’ll find familiarity with string processing invaluable.</p>
+<section id="strings-in-polars">
+<h3><span class="section-number">1.3.1. </span>Strings in Polars<a class="headerlink" href="#strings-in-polars" title="Link to this heading">#</a></h3>
+<p>We recommend using Polars for most string processing, although Python’s
+built-in <code class="docutils literal notranslate"><span class="pre">str</span></code> data type and <code class="docutils literal notranslate"><span class="pre">re</span></code> module are also an excellent option. Polars
+is slightly more convenient and concise for handling many strings at once (in a
+data frame or series). It is also more efficient in some cases.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>The Polars user guide has <a class="reference external" href="https://docs.pola.rs/user-guide/expressions/strings/">a section about strings</a>.</p>
+</div>
+<p>For series (including columns), string methods are listed under the <code class="docutils literal notranslate"><span class="pre">.str</span></code>
+namespace. For example, the <code class="docutils literal notranslate"><span class="pre">.str.contains</span></code> method tests whether a pattern
+appears within a string. The method returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if the pattern is found and
+<code class="docutils literal notranslate"><span class="pre">False</span></code> if it isn’t. Try it out on a sample series:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">words</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;help&quot;</span><span class="p">,</span> <span class="s2">&quot;kelp&quot;</span><span class="p">,</span> <span class="s2">&quot;grow&quot;</span><span class="p">,</span> <span class="s2">&quot;tall&quot;</span><span class="p">])</span>
+<span class="n">words</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s2">&quot;el&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (4,)</small><table border="1" class="dataframe"><thead><tr><th></th></tr><tr><td>bool</td></tr></thead><tbody><tr><td>true</td></tr><tr><td>true</td></tr><tr><td>false</td></tr><tr><td>false</td></tr></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">words</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s2">&quot;g&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (4,)</small><table border="1" class="dataframe"><thead><tr><th></th></tr><tr><td>bool</td></tr></thead><tbody><tr><td>false</td></tr><tr><td>false</td></tr><tr><td>true</td></tr><tr><td>false</td></tr></tbody></table></div></div></div>
+</div>
+<p>As another example, the <code class="docutils literal notranslate"><span class="pre">.str.slice</span></code> method extracts a substring from a string,
+given the substring’s position and length. So to extract 9 characters beginning
+at position 5:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">quotes</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span>
+    <span class="s2">&quot;It&#39;s dangerous to go alone!&quot;</span><span class="p">,</span> <span class="s2">&quot;Tombs with piped in music.&quot;</span>
+<span class="p">])</span>
+
+<span class="n">quotes</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">slice</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (2,)</small><table border="1" class="dataframe"><thead><tr><th></th></tr><tr><td>str</td></tr></thead><tbody><tr><td>&quot;dangerous&quot;</td></tr><tr><td>&quot; with pip&quot;</td></tr></tbody></table></div></div></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">.str.slice</span></code> method is especially useful for extracting data from strings
+that have a fixed width.</p>
+<p>There are a lot of methods in the <code class="docutils literal notranslate"><span class="pre">.str</span></code> namespace, but five that are
+especially important (which we will use) are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">.str.contains</span></code>, to test whether a string contains a pattern</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.str.slice</span></code>, to extract a substring at a given position</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.str.replace</span></code>, to replace or remove part of a string</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.str.split</span></code>, to split a string into parts</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.str.extract_groups</span></code> to extract parts of a string that match a pattern</p></li>
+</ul>
+<p>You can find <a class="reference external" href="https://docs.pola.rs/api/python/stable/reference/expressions/string.html">a complete list of methods</a> with examples in the
+Polars API reference.</p>
+</section>
+<section id="regular-expressions">
+<h3><span class="section-number">1.3.2. </span>Regular Expressions<a class="headerlink" href="#regular-expressions" title="Link to this heading">#</a></h3>
+<p>Many of Polars’ <code class="docutils literal notranslate"><span class="pre">.str</span></code> methods use a special language called <strong>regular
+expressions</strong> or <strong>regex</strong> to describe patterns in strings. Python’s <code class="docutils literal notranslate"><span class="pre">re</span></code>
+module and many other programming languages also have string processing tools
+that use regular expressions, so fluency with regular expressions is a
+valuable, transferable skill.</p>
+<p>You can use a regular expression to describe a complicated pattern in just a
+few characters because some characters, called <strong>metacharacters</strong>, have special
+meanings. Metacharacters are usually punctuation characters. They are <em>never</em>
+letters or numbers, which always have their literal meaning.</p>
+<p>This table lists some of the most useful metacharacters:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Metacharacter</p></th>
+<th class="head"><p>Meaning</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">.</span></code></p></td>
+<td><p>any one character (wildcard)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">\</span></code></p></td>
+<td><p>escape character (in both Python and regex), see <a class="reference internal" href="#escape-sequences"><span class="std std-numref">Section 1.2.1</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">^</span></code></p></td>
+<td><p>the beginning of string (not a character)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">$</span></code></p></td>
+<td><p>the end of string (not a character)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">[ab]</span></code></p></td>
+<td><p>one character, either <code class="docutils literal notranslate"><span class="pre">'a'</span></code> or <code class="docutils literal notranslate"><span class="pre">'b'</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">[^ab]</span></code></p></td>
+<td><p>one character, anything except <code class="docutils literal notranslate"><span class="pre">'a'</span></code> or <code class="docutils literal notranslate"><span class="pre">'b'</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">?</span></code></p></td>
+<td><p>the previous character appears 0 or 1 times</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">*</span></code></p></td>
+<td><p>the previous character appears 0 or more times</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">+</span></code></p></td>
+<td><p>the previous character appears 1 or more times</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">()</span></code></p></td>
+<td><p>make a group</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">|</span></code></p></td>
+<td><p>match left OR right side (not a character)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><a class="reference internal" href="#regular-expression-examples"><span class="std std-numref">Section 1.4</span></a> provides examples of how most of the
+metacharacters work.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>You can find even more examples and a complete listing of regex metacharacters
+in <a class="reference external" href="https://docs.python.org/3/library/re.html">the documentation for the <code class="docutils literal notranslate"><span class="pre">re</span></code> module</a> and <a class="reference external" href="https://docs.rs/regex/latest/regex/">the documentation for
+Rust’s regex crate</a>. The former is more approachable if you’re not
+comfortable reading Rust code, but the latter is what Polars actually uses.
+Differences between the two are minor.</p>
+</div>
+<p>For Polars methods that support regex, you can disable them by setting the
+<code class="docutils literal notranslate"><span class="pre">literal</span></code> parameter to <code class="docutils literal notranslate"><span class="pre">True</span></code>. For example, to test whether a string contains a
+literal dot <code class="docutils literal notranslate"><span class="pre">.</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;No dot&quot;</span><span class="p">,</span> <span class="s2">&quot;Lotsa dots...&quot;</span><span class="p">])</span>
+<span class="n">x</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">literal</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (2,)</small><table border="1" class="dataframe"><thead><tr><th></th></tr><tr><td>bool</td></tr></thead><tbody><tr><td>false</td></tr><tr><td>true</td></tr></tbody></table></div></div></div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Make it a habit to set <code class="docutils literal notranslate"><span class="pre">literal</span> <span class="pre">=</span> <span class="pre">True</span></code> anytime you use a pattern that doesn’t
+contain regex metacharacters. Doing so communicates to the reader that you’re
+not using regex, prevents bugs, and makes your code more efficient.</p>
+</div>
+</section>
+<section id="replacing-parts-of-strings">
+<h3><span class="section-number">1.3.3. </span>Replacing Parts of Strings<a class="headerlink" href="#replacing-parts-of-strings" title="Link to this heading">#</a></h3>
+<p>Replacing part of a string is a common string processing task. For instance,
+quantitative data often contain non-numeric characters such as commas, currency
+symbols, and percent signs. These must be removed before converting to numeric
+data types. Replacement and removal go hand-in-hand, since removal is
+equivalent to replacing part of a string with the <strong>empty string</strong> <code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">.str.replace</span></code> method replaces the <em>first</em> part of a string that matches a
+pattern (from left to right), while the related <code class="docutils literal notranslate"><span class="pre">.str.replace_all</span></code> method
+replaces <em>every</em> part of a string that matches a pattern. Several Polars <code class="docutils literal notranslate"><span class="pre">.str</span></code>
+methods that do pattern matching come in a pair like this: one to process only
+the first match and one to process every match.</p>
+<p>As an example, suppose you want to remove commas from a series of numbers (in
+strings) so that you can cast them to a numeric data type. You want to remove
+<em>all</em> of the commas, so <code class="docutils literal notranslate"><span class="pre">.str.replace_all</span></code> is the method to use. The first
+argument is the pattern and the second argument is the replacement. In this
+case, the pattern is <code class="docutils literal notranslate"><span class="pre">&quot;,&quot;</span></code> and the replacement is the empty string <code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code>. So the
+code to remove the commas and cast the numbers is:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;1,000,000&quot;</span><span class="p">,</span> <span class="s2">&quot;525,600&quot;</span><span class="p">,</span> <span class="s2">&quot;42&quot;</span><span class="p">])</span>
+<span class="n">x</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace_all</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">literal</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">Int64</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (3,)</small><table border="1" class="dataframe"><thead><tr><th></th></tr><tr><td>i64</td></tr></thead><tbody><tr><td>1000000</td></tr><tr><td>525600</td></tr><tr><td>42</td></tr></tbody></table></div></div></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">.str.replace</span></code> method wouldn’t work as well for this task, since it only
+replaces the first match to the pattern:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">literal</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (3,)</small><table border="1" class="dataframe"><thead><tr><th></th></tr><tr><td>str</td></tr></thead><tbody><tr><td>&quot;1000,000&quot;</td></tr><tr><td>&quot;525600&quot;</td></tr><tr><td>&quot;42&quot;</td></tr></tbody></table></div></div></div>
+</div>
+<p>You can also use these methods to replace or remove longer patterns within
+words. For instance, suppose you want to change the word <code class="docutils literal notranslate"><span class="pre">&quot;dog&quot;</span></code> to <code class="docutils literal notranslate"><span class="pre">&quot;cat&quot;</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;dogs are great, dogs are fun&quot;</span><span class="p">,</span> <span class="s2">&quot;dogs are fluffy&quot;</span><span class="p">])</span>
+<span class="n">x</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;dog&quot;</span><span class="p">,</span> <span class="s2">&quot;cat&quot;</span><span class="p">,</span> <span class="n">literal</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (2,)</small><table border="1" class="dataframe"><thead><tr><th></th></tr><tr><td>str</td></tr></thead><tbody><tr><td>&quot;cats are great, dogs are fun&quot;</td></tr><tr><td>&quot;cats are fluffy&quot;</td></tr></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace_all</span><span class="p">(</span><span class="s2">&quot;dog&quot;</span><span class="p">,</span> <span class="s2">&quot;cat&quot;</span><span class="p">,</span> <span class="n">literal</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (2,)</small><table border="1" class="dataframe"><thead><tr><th></th></tr><tr><td>str</td></tr></thead><tbody><tr><td>&quot;cats are great, cats are fun&quot;</td></tr><tr><td>&quot;cats are fluffy&quot;</td></tr></tbody></table></div></div></div>
+</div>
+<p>As a final example, you can use the replacement methods and a regex pattern to
+replace repeated spaces with a single space. This is a good standardization
+step if you’re working with text. The key is to use the regex quantifier <code class="docutils literal notranslate"><span class="pre">+</span></code>,
+which means a character “repeats one or more times” in the pattern, and to use
+a single space <code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">&quot;</span></code> as the replacement:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;This    sentence  has  extra      space.&quot;</span><span class="p">])</span>
+<span class="n">x</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace_all</span><span class="p">(</span><span class="s2">&quot; +&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (1,)</small><table border="1" class="dataframe"><thead><tr><th></th></tr><tr><td>str</td></tr></thead><tbody><tr><td>&quot;This sentence has extra space.&quot;</td></tr></tbody></table></div></div></div>
+</div>
+<p>If you just want to remove all whitespace (or other characters) from the
+beginning and end of a string, you can use the <code class="docutils literal notranslate"><span class="pre">.str.strip_chars</span></code> method
+instead.</p>
+</section>
+<section id="splitting-strings">
+<h3><span class="section-number">1.3.4. </span>Splitting Strings<a class="headerlink" href="#splitting-strings" title="Link to this heading">#</a></h3>
+<p>Distinct data in a text are generally separated by a character like a space or
+a comma, to make them easy for people to read. Often these separators also make
+the data easy to parse with Polars. The idea is to split the string into a
+separate value at each separator.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">.str.split</span></code> method splits a string at each match to a pattern. The
+matching characters—that is, the separators—are discarded.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">.str.split</span></code> method and Polars’ other methods for splitting strings don’t
+support regular expressions yet (but this is a planned feature).</p>
+</div>
+<p>For example, suppose you want to split some sentences into words:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sentences</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span>
+    <span class="s2">&quot;The wonderful, wonderful cat!&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Who is this duke of zill anyway?&quot;</span>
+<span class="p">])</span>
+
+<span class="n">words</span> <span class="o">=</span> <span class="n">sentences</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+<span class="n">words</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (2,)</small><table border="1" class="dataframe"><thead><tr><th></th></tr><tr><td>list[str]</td></tr></thead><tbody><tr><td>[&quot;The&quot;, &quot;wonderful,&quot;, … &quot;cat!&quot;]</td></tr><tr><td>[&quot;Who&quot;, &quot;is&quot;, … &quot;anyway?&quot;]</td></tr></tbody></table></div></div></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">.str.split</span></code> method returns the splits for each string in a list. You can
+use the <code class="docutils literal notranslate"><span class="pre">.list.get</span></code> method to get all of the splits at a particular position:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">words</span><span class="o">.</span><span class="n">list</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (2,)</small><table border="1" class="dataframe"><thead><tr><th></th></tr><tr><td>str</td></tr></thead><tbody><tr><td>&quot;cat!&quot;</td></tr><tr><td>&quot;duke&quot;</td></tr></tbody></table></div></div></div>
+</div>
+<p>For lists with different lengths, you can set <code class="docutils literal notranslate"><span class="pre">null_on_oob</span> <span class="pre">=</span> <span class="pre">True</span></code> in
+<code class="docutils literal notranslate"><span class="pre">.list.get</span></code> to get splits that are beyond the end of the shortest list. The
+method will return <code class="docutils literal notranslate"><span class="pre">null</span></code> for any list shorter than the requested position. For
+example:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">words</span><span class="o">.</span><span class="n">list</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">null_on_oob</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (2,)</small><table border="1" class="dataframe"><thead><tr><th></th></tr><tr><td>str</td></tr></thead><tbody><tr><td>null</td></tr><tr><td>&quot;zill&quot;</td></tr></tbody></table></div></div></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">.list</span></code> namespace has other methods for working with series of lists as
+well.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>When you know exactly how many splits you expect a string to have, use
+the <code class="docutils literal notranslate"><span class="pre">.str.splitn</span></code> method instead of <code class="docutils literal notranslate"><span class="pre">.str.split</span></code>. It requires a second argument
+for the maximum number of splits. It returns the results in structs
+(fixed-length data structures) rather than lists. You can expand the structs
+into columns with the <code class="docutils literal notranslate"><span class="pre">.struct.unnest</span></code> method.</p>
+<!--
+For example:
+
+```{code-cell}
+x = pl.Series(["1, 2, 3", "10, 20, 30"])
+x.str.splitn(", ", 3).struct.unnest()
+```
+-->
+<p>Specifying the number of splits can help prevent bugs in your code and make
+splitting more efficient. In some cases it’s also more convenient to work with
+a data frame (from chaining <code class="docutils literal notranslate"><span class="pre">.struct.unnest</span></code>) than a series of lists.</p>
+<!--
+For example, suppose you want to get the area codes from some phone numbers:
+
+```{code-cell}
+phones = pl.Series(["717-555-3421", "629-555-8902", "903-555-6781"])
+result = phones.str.splitn("-", 3).struct.unnest()
+
+result[:, 0]
+```
+-->
+</div>
+</section>
+<section id="extracting-matches">
+<h3><span class="section-number">1.3.5. </span>Extracting Matches<a class="headerlink" href="#extracting-matches" title="Link to this heading">#</a></h3>
+<p>Occasionally, you might need to extract parts of a string in a more complicated
+way than string splitting allows. One solution is to write a regular expression
+that will match all of the data you want to capture, with parentheses <code class="docutils literal notranslate"><span class="pre">(</span> <span class="pre">)</span></code>,
+the regex metacharacter for a group, around each distinct value. Then you can
+use the <code class="docutils literal notranslate"><span class="pre">.str.extract_groups</span></code> method to extract the groups. <code class="xref std std-numref docutils literal notranslate"><span class="pre">groups</span></code>
+presents some examples of regex groups.</p>
+<p>For example, suppose you want to split an email address into three parts: the
+user name, the domain name, and the [top-level domain][tld]. To create a
+regular expression that matches email addresses, you can use the <code class="docutils literal notranslate"><span class="pre">&#64;</span></code> and <code class="docutils literal notranslate"><span class="pre">.</span></code> in
+the address as anchors. The surrounding characters are generally alphanumeric,
+which you can represent with the “word” metacharacter <code class="docutils literal notranslate"><span class="pre">\w</span></code>:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>\w+@\w+[.]\w+
+</pre></div>
+</div>
+<p>Next, put parentheses <code class="docutils literal notranslate"><span class="pre">(</span> <span class="pre">)</span></code> around each part that you want to extract:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>(\w+)@(\w+)[.](\w+)
+</pre></div>
+</div>
+<p>Finally, use this pattern in <code class="docutils literal notranslate"><span class="pre">.str.extract_groups</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;datalab@ucdavis.edu&quot;</span><span class="p">])</span>
+
+<span class="c1"># Note this is a raw string:</span>
+<span class="n">pattern</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;(\w+)@(\w+)[.](\w+)&quot;</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">extract_groups</span><span class="p">(</span><span class="n">pattern</span><span class="p">)</span>
+<span class="n">result</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (1,)</small><table border="1" class="dataframe"><thead><tr><th></th></tr><tr><td>struct[3]</td></tr></thead><tbody><tr><td>{&quot;datalab&quot;,&quot;ucdavis&quot;,&quot;edu&quot;}</td></tr></tbody></table></div></div></div>
+</div>
+<p>The method returns a series of structs (fixed-length data structures) with one
+field for each group. You can use the <code class="docutils literal notranslate"><span class="pre">.struct.unnest</span></code> method to expand the
+result into a data frame with a column for each group:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">result</span><span class="o">.</span><span class="n">struct</span><span class="o">.</span><span class="n">unnest</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (1, 3)</small><table border="1" class="dataframe"><thead><tr><th>1</th><th>2</th><th>3</th></tr><tr><td>str</td><td>str</td><td>str</td></tr></thead><tbody><tr><td>&quot;datalab&quot;</td><td>&quot;ucdavis&quot;</td><td>&quot;edu&quot;</td></tr></tbody></table></div></div></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">.struct</span></code> namespace has other methods for working with series of structs as
+well.</p>
+</div>
+<p>The pattern in this example doesn’t work for all possible email addresses,
+since user names can contain dots and other characters that are not
+alphanumeric. You could generalize the pattern if necessary. The point is that
+the <code class="docutils literal notranslate"><span class="pre">.str.extract_groups</span></code> method and groups provide an extremely flexible way
+to extract data from strings.</p>
+</section>
+</section>
+<section id="regular-expression-examples">
+<span id="id3"></span><h2><span class="section-number">1.4. </span>Regular Expression Examples<a class="headerlink" href="#regular-expression-examples" title="Link to this heading">#</a></h2>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>This section is intended as a reference and is not taught in the workshop.</p>
+</div>
+<p>This section provides examples of several different regular expression
+metacharacters and other features. Most of the examples use the
+<code class="docutils literal notranslate"><span class="pre">.str.extract_all</span></code> method, which extracts all matches to a pattern.</p>
+<p>The <a class="reference external" href="https://regexr.com/">RegExr</a> website is also helpful for testing regular expressions; it
+provides an interactive interface where you can write regular expressions and
+see where they match a string.</p>
+<section id="the-wildcard">
+<h3><span class="section-number">1.4.1. </span>The Wildcard<a class="headerlink" href="#the-wildcard" title="Link to this heading">#</a></h3>
+<p>The regex <strong>wildcard</strong> character is <code class="docutils literal notranslate"><span class="pre">.</span></code> and matches any single character. For
+example:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;dog&quot;</span><span class="p">])</span>
+<span class="n">x</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">extract_all</span><span class="p">(</span><span class="s2">&quot;d.g&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (1,)</small><table border="1" class="dataframe"><thead><tr><th></th></tr><tr><td>list[str]</td></tr></thead><tbody><tr><td>[&quot;dog&quot;]</td></tr></tbody></table></div></div></div>
+</div>
+<p>By default, regex searches from left to right:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">extract_all</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (1,)</small><table border="1" class="dataframe"><thead><tr><th></th></tr><tr><td>list[str]</td></tr></thead><tbody><tr><td>[&quot;d&quot;, &quot;o&quot;, &quot;g&quot;]</td></tr></tbody></table></div></div></div>
+</div>
+</section>
+<section id="id4">
+<h3><span class="section-number">1.4.2. </span>Escape Sequences<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<p>Like Python, regular expressions can contain escape sequences that begin with a
+backslash. These are computed separately and after Python escape sequences. The
+main use for escape sequences in regex is to turn a metacharacter into a
+literal character.</p>
+<p>For example, suppose you want to match a literal dot <code class="docutils literal notranslate"><span class="pre">.</span></code>. The regex for a
+literal dot is <code class="docutils literal notranslate"><span class="pre">\.</span></code>. Since backslashes in Python strings have to be escaped,
+the Python string for this regex is <code class="docutils literal notranslate"><span class="pre">&quot;\\.</span></code>. For example:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pl</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;this.string&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">extract_all</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (1,)</small><table border="1" class="dataframe"><thead><tr><th></th></tr><tr><td>list[str]</td></tr></thead><tbody><tr><td>[&quot;.&quot;]</td></tr></tbody></table></div></div></div>
+</div>
+<p>The double backslash can be confusing, and it gets worse if you want to match a
+literal backslash. You have to escape the backslash in the regex (because
+backslash is the regex escape character) and then also have to escape the
+backslashes in Python (because backslash is also the Python escape character).
+So to match a single literal backslash, the code is:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pl</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;this</span><span class="se">\\</span><span class="s2">that&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">extract_all</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\\\\</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (1,)</small><table border="1" class="dataframe"><thead><tr><th></th></tr><tr><td>list[str]</td></tr></thead><tbody><tr><td>[&quot;\&quot;]</td></tr></tbody></table></div></div></div>
+</div>
+<p>Raw strings (see <code class="xref std std-numref docutils literal notranslate"><span class="pre">raw-strings</span></code>) make regular expressions easier to
+read, because they make backslashes literal (but they still mark the beginning
+of an escape sequence in regex). You can use a raw string to write the above
+as:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pl</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="sa">r</span><span class="s2">&quot;this\that&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">extract_all</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (1,)</small><table border="1" class="dataframe"><thead><tr><th></th></tr><tr><td>list[str]</td></tr></thead><tbody><tr><td>[&quot;\&quot;]</td></tr></tbody></table></div></div></div>
+</div>
+</section>
+<section id="anchors">
+<h3><span class="section-number">1.4.3. </span>Anchors<a class="headerlink" href="#anchors" title="Link to this heading">#</a></h3>
+<p>By default, a regex will match anywhere in the string. If you want to force a
+match at specific place, use an <strong>anchor</strong>.</p>
+<p>The beginning of string anchor is <code class="docutils literal notranslate"><span class="pre">^</span></code>. It marks the beginning of the string,
+but doesn’t count as a character in the pattern.</p>
+<p>For example, suppose you want to match an <code class="docutils literal notranslate"><span class="pre">a</span></code> at the beginning of the string:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;abc&quot;</span><span class="p">,</span> <span class="s2">&quot;cab&quot;</span><span class="p">])</span>
+
+<span class="n">x</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">extract_all</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (2,)</small><table border="1" class="dataframe"><thead><tr><th></th></tr><tr><td>list[str]</td></tr></thead><tbody><tr><td>[&quot;a&quot;]</td></tr><tr><td>[&quot;a&quot;]</td></tr></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">extract_all</span><span class="p">(</span><span class="s2">&quot;^a&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (2,)</small><table border="1" class="dataframe"><thead><tr><th></th></tr><tr><td>list[str]</td></tr></thead><tbody><tr><td>[&quot;a&quot;]</td></tr><tr><td>[]</td></tr></tbody></table></div></div></div>
+</div>
+<p>It doesn’t make sense to put characters before <code class="docutils literal notranslate"><span class="pre">^</span></code>, since no characters can
+come before the beginning of the string.</p>
+<p>Likewise, the end of string anchor is <code class="docutils literal notranslate"><span class="pre">$</span></code>. It marks the end of the string, but
+doesn’t count as a character in the pattern.</p>
+</section>
+<section id="character-classes">
+<h3><span class="section-number">1.4.4. </span>Character Classes<a class="headerlink" href="#character-classes" title="Link to this heading">#</a></h3>
+<p>In regex, square brackets <code class="docutils literal notranslate"><span class="pre">[</span> <span class="pre">]</span></code> denote a <strong>character class</strong>. A character class
+matches exactly one character, but that character can be any of the characters
+inside of the square brackets. The square brackets themselves don’t count as
+characters in the pattern.</p>
+<p>For example, suppose you want to match <code class="docutils literal notranslate"><span class="pre">c</span></code> followed by either <code class="docutils literal notranslate"><span class="pre">a</span></code> or <code class="docutils literal notranslate"><span class="pre">t</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;ca&quot;</span><span class="p">,</span> <span class="s2">&quot;ct&quot;</span><span class="p">,</span> <span class="s2">&quot;cat&quot;</span><span class="p">,</span> <span class="s2">&quot;cta&quot;</span><span class="p">])</span>
+
+<span class="n">x</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">extract_all</span><span class="p">(</span><span class="s2">&quot;c[ta]&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (4,)</small><table border="1" class="dataframe"><thead><tr><th></th></tr><tr><td>list[str]</td></tr></thead><tbody><tr><td>[&quot;ca&quot;]</td></tr><tr><td>[&quot;ct&quot;]</td></tr><tr><td>[&quot;ca&quot;]</td></tr><tr><td>[&quot;ct&quot;]</td></tr></tbody></table></div></div></div>
+</div>
+<p>You can use a dash <code class="docutils literal notranslate"><span class="pre">-</span></code> in a character class to create a <strong>range</strong>. For example,
+to match letters <code class="docutils literal notranslate"><span class="pre">p</span></code> through <code class="docutils literal notranslate"><span class="pre">z</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">extract_all</span><span class="p">(</span><span class="s2">&quot;c[p-z]&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (4,)</small><table border="1" class="dataframe"><thead><tr><th></th></tr><tr><td>list[str]</td></tr></thead><tbody><tr><td>[]</td></tr><tr><td>[&quot;ct&quot;]</td></tr><tr><td>[]</td></tr><tr><td>[&quot;ct&quot;]</td></tr></tbody></table></div></div></div>
+</div>
+<p>Ranges also work with numbers and capital letters. To match a literal dash,
+place the dash at the end of the character class (instead of between two other
+characters), as in <code class="docutils literal notranslate"><span class="pre">[abc-]</span></code>.</p>
+<p>Most metacharacters are literal when inside a character class. For example,
+<code class="docutils literal notranslate"><span class="pre">[.]</span></code> matches a literal dot.</p>
+<p>A hat <code class="docutils literal notranslate"><span class="pre">^</span></code> at the beginning of the character class negates the class. So for
+example, <code class="docutils literal notranslate"><span class="pre">[^abc]</span></code> matches any one character <em>except</em> for <code class="docutils literal notranslate"><span class="pre">a</span></code>, <code class="docutils literal notranslate"><span class="pre">b</span></code>, or <code class="docutils literal notranslate"><span class="pre">c</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pl</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;abcdef&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">extract_all</span><span class="p">(</span><span class="s2">&quot;[^abc]&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (1,)</small><table border="1" class="dataframe"><thead><tr><th></th></tr><tr><td>list[str]</td></tr></thead><tbody><tr><td>[&quot;d&quot;, &quot;e&quot;, &quot;f&quot;]</td></tr></tbody></table></div></div></div>
+</div>
+</section>
+<section id="quantifiers">
+<h3><span class="section-number">1.4.5. </span>Quantifiers<a class="headerlink" href="#quantifiers" title="Link to this heading">#</a></h3>
+<p><strong>Quantifiers</strong> are metacharacters that affect how many times the preceding
+character must appear in a match. The quantifier itself doesn’t count as a
+character in the match.</p>
+<p>For example, the question mark <code class="docutils literal notranslate"><span class="pre">?</span></code> quantifier means the preceding character can
+appear 0 or 1 times. In other words, <code class="docutils literal notranslate"><span class="pre">?</span></code> makes the preceding character
+optional. For example:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;abc&quot;</span><span class="p">,</span> <span class="s2">&quot;ab&quot;</span><span class="p">,</span> <span class="s2">&quot;ac&quot;</span><span class="p">,</span> <span class="s2">&quot;abbc&quot;</span><span class="p">])</span>
+
+<span class="n">x</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">extract_all</span><span class="p">(</span><span class="s2">&quot;ab?c&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (4,)</small><table border="1" class="dataframe"><thead><tr><th></th></tr><tr><td>list[str]</td></tr></thead><tbody><tr><td>[&quot;abc&quot;]</td></tr><tr><td>[]</td></tr><tr><td>[&quot;ac&quot;]</td></tr><tr><td>[]</td></tr></tbody></table></div></div></div>
+</div>
+<p>The star <code class="docutils literal notranslate"><span class="pre">*</span></code> quantifier means the preceding character can appear 0 or more
+times. In other words, <code class="docutils literal notranslate"><span class="pre">*</span></code> means the preceding character can appear any number
+of times or not at all. For instance:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">extract_all</span><span class="p">(</span><span class="s2">&quot;ab*c&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (4,)</small><table border="1" class="dataframe"><thead><tr><th></th></tr><tr><td>list[str]</td></tr></thead><tbody><tr><td>[&quot;abc&quot;]</td></tr><tr><td>[]</td></tr><tr><td>[&quot;ac&quot;]</td></tr><tr><td>[&quot;abbc&quot;]</td></tr></tbody></table></div></div></div>
+</div>
+<p>The plus <code class="docutils literal notranslate"><span class="pre">+</span></code> quantifier means the preceding character must appear 1 or more
+times.</p>
+<p>Quantifiers are <strong>greedy</strong>, meaning they always match as many characters as
+possible. In this example, notice that the pattern matches the entire string,
+even though it could also match just <code class="docutils literal notranslate"><span class="pre">abba</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pl</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;abbabbba&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">extract_all</span><span class="p">(</span><span class="s2">&quot;.+a&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (1,)</small><table border="1" class="dataframe"><thead><tr><th></th></tr><tr><td>list[str]</td></tr></thead><tbody><tr><td>[&quot;abbabbba&quot;]</td></tr></tbody></table></div></div></div>
+</div>
+<p>You can add a question mark <code class="docutils literal notranslate"><span class="pre">?</span></code> after another quantifier to make it non-greedy:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pl</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;abbabbba&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">extract_all</span><span class="p">(</span><span class="s2">&quot;.+?a&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (1,)</small><table border="1" class="dataframe"><thead><tr><th></th></tr><tr><td>list[str]</td></tr></thead><tbody><tr><td>[&quot;abba&quot;, &quot;bbba&quot;]</td></tr></tbody></table></div></div></div>
+</div>
+</section>
+<section id="groups">
+<h3><span class="section-number">1.4.6. </span>Groups<a class="headerlink" href="#groups" title="Link to this heading">#</a></h3>
+<p>In regex, parentheses <code class="docutils literal notranslate"><span class="pre">(</span> <span class="pre">)</span></code> denote a <strong>group</strong>. The parentheses themselves
+don’t count as characters in the pattern. Groups are useful for repeating or
+extracting specific parts of a pattern (see Section &#64;ref(extracting-matches)).</p>
+<p>Quantifiers can act on groups in addition to individual characters. For
+example, suppose you want to make the entire substring <code class="docutils literal notranslate"><span class="pre">&quot;,</span> <span class="pre">dogs,&quot;</span></code> optional in
+a pattern, so that both of the test strings in this example match:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;cats, dogs, and frogs&quot;</span><span class="p">,</span> <span class="s2">&quot;cats and frogs&quot;</span><span class="p">])</span>
+
+<span class="n">x</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">extract_all</span><span class="p">(</span><span class="s2">&quot;cats(, dogs,)? and frogs&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (2,)</small><table border="1" class="dataframe"><thead><tr><th></th></tr><tr><td>list[str]</td></tr></thead><tbody><tr><td>[&quot;cats, dogs, and frogs&quot;]</td></tr><tr><td>[&quot;cats and frogs&quot;]</td></tr></tbody></table></div></div></div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapters"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Overview</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="02_tidy-relational-data.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">2. </span>Untidy &amp; Relational Data</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parsing-dates-times">1.1. Parsing Dates &amp; Times</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#extracting-components">1.1.1. Extracting Components</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#durations">1.1.2. Durations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#case-study-ca-parks-recreation-fleet">1.1.3. Case Study: CA Parks &amp; Recreation Fleet</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#string-fundamentals">1.2. String Fundamentals</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#escape-sequences">1.2.1. Escape Sequences</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#character-encodings">1.2.2. Character Encodings</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#processing-strings">1.3. Processing Strings</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#strings-in-polars">1.3.1. Strings in Polars</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#regular-expressions">1.3.2. Regular Expressions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#replacing-parts-of-strings">1.3.3. Replacing Parts of Strings</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#splitting-strings">1.3.4. Splitting Strings</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#extracting-matches">1.3.5. Extracting Matches</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#regular-expression-examples">1.4. Regular Expression Examples</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-wildcard">1.4.1. The Wildcard</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">1.4.2. Escape Sequences</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#anchors">1.4.3. Anchors</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#character-classes">1.4.4. Character Classes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quantifiers">1.4.5. Quantifiers</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#groups">1.4.6. Groups</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Nick Ulle
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
