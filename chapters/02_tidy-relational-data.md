@@ -483,35 +483,149 @@ reviews table. For example, suppose we want to count how many restaurants open
 before 10 a.m. *and* have at least 1 five-star review. We can use the reviews
 table to compute the number of five-star reviews for each restaurant, combine
 these with the restaurants table, and then count restaurants that meet our
-conditions in the resulting table. Operations that combine related tables based
-on columns they have in common are called **joins**.
+conditions in the resulting table. Operations that combine two related tables
+based on columns they have in common are called **joins**. The two tables are
+conventionally called the **left table** and **right table**.
 
-The case study in this section demonstrates several different kinds of joins
-and explains how they work and when to use them.
+There are a few different kinds of joins. We'll use a simplified, fictitious
+version of the restaurant reviews data to demonstrate some of them. The
+`restaurants` table contains names and phone numbers for three restaurants:
+
+```{code-cell}
+restaurants = pl.DataFrame({
+    "id": [1, 2, 3],
+    "name": ["Alice's Restaurant", "The Original Beef", "The Pie Hole"],
+    "phone": ["555-3213", "555-1111", "555-9983"]
+})
+restaurants
+```
+
+The `reviews` table contains scores from five restaurant reviews:
+
+```{code-cell}
+reviews = pl.DataFrame({
+    "id": [4, 2, 1, 2, 2],
+    "score": [4.2, 3.5, 4.7, 4.8, 4.0],
+})
+reviews
+```
 
 
-<!--
+### Inner Joins
+
+An **inner join** only keeps rows from the left table if they match rows in the
+right table and vice-versa.
+
+You can use the `.join` method to join two data frames with Polars. The data
+frame on the left side of `.join` is the left table. The right table is the
+first argument to `.join`. The `.join` method also requires an argument for the
+`on` parameter, which should be the name of the column to use to match the two
+data frames. By default, `.join` does an inner join.
+
+Try joining the `restaurants` table and the `reviews` table:
+
+```{code-cell}
+restaurants.join(reviews, on = "id")
+```
+
+The inner join keeps rows where `id` is `1` or `2`, since these values appear
+in both tables. It drops the row where `id` is `3` in `restaurants` and the row
+where `id` is `4` in `reviews`. The resulting table has 4 rows and the columns
+from both data frames.
+
+:::{tip}
+If the column you want to use to join two data frames has a different name in
+each one, set the `left_on` and `right_on` parameters instead of `on`.
+:::
+
+
+### Left & Right Joins
+
+A **left join** keeps all rows from the left table and only keeps rows from the
+right table if they match. Missing values fill any spaces where there was no
+match.
+
+You can do a left join with the `.join` method by setting `how = "left"`. Try a
+left join on the restaurant reviews data:
+
+```{code-cell}
+restaurants.join(reviews, on = "id", how = "left")
+```
+
+The left join keeps all of the rows from `restaurants`, and matches rows from
+`reviews` when possible. There are no reviews where the `id` is `3`, so `score`
+is missing for that row.
+
+A left join is asymmetric, so switching the order of the tables will generally
+produce a different result:
+
+```{code-cell}
+reviews.join(restaurants, on = "id", how = "left")
+```
+
+A **right join** is equivalent to a left join with the order of the tables
+switched. Because of this, some relational data tools don't have a right join
+command (only a left join command). You can do a right join with the `.join`
+method by setting `how = "right"`.
+
+
+### Full Joins
+
+A **full join** keeps all rows from both tables. Missing values fill any spaces
+where there was no match.
+
+You can do a full join with the `.join` method by setting `how = "full"`. Try a
+full join on the restaurant reviews data:
+
+```{code-cell}
+restaurants.join(reviews, on = "id", how = "full")
+```
+
+:::{seealso}
+There are a few more kinds of joins. The Polars User Guide has [a complete
+list with examples.][pl-joins].
+
+[pl-joins]: https://docs.pola.rs/user-guide/transformations/joins/
+:::
+
+
 ### Case Study: CA Crash Reporting System
 
 The California Highway Patrol publish data about vehicle crashes in the state
 as the California Crash Reporting System (CCRS). The CCRS is a relational data
 set with three tables per year which describe crash events, parties involved,
-and all injuries, witnesses, and passengers. We'll use the CCRS data for 2024
-to explore how to work with relational data and use different kinds of joins.
+and all injuries, witnesses, and passengers. Let's use the 2024 CCRS data for
+Sacramento and Yolo Counties to compute statistics about crashes in those
+counties.
 
 :::{important}
-[Click here][ccrs] to download the CA Crash Reporting System data set.
+[Click here][crash-data] to download the 2024 Sacramento & Yolo Crash data set
+(3 CSV files).
 
-[ccrs]: #
+[crash-data]: https://ucdavis.box.com/s/kjxowylvg3cfqgnofh03gn5e3xicsobt
 
 If you haven't already, we recommend you create a directory for this workshop.
 In your workshop directory, create a `data/` subdirectory. Download and save
 the data set in the `data/` subdirectory.
 :::
 
-:::{admonition} Documentation for the CA Crash Reporting System Data Set
+:::{admonition} Documentation for the 2024 Sacramento & Yolo Crash Data Set
 :class: note, dropdown
 
-The
+The data set consists of three tables:
+
+* `2024_sac-yolo_crashes.csv`, where each row is a crash.
+* `2024_sac-yolo_parties.csv`, where each row is a person directly involved in
+  the crash (not a witness or passenger).
+* `2024_sac-yolo_injured-witness-passenger.csv`, where each row is an injured
+  person (including drivers), witness, or passenger.
+
+[Click here][ccrs-docs] to download the documentation for the source data set.
+
+[ccrs-docs]: https://ucdavis.box.com/s/pfgbup6fw17nq7vajo1e05eoj0w57ygi
+
+This data set is a subset of the much larger [CA Crash Reporting System data
+set][ccrs].
+
+[ccrs]: https://data.ca.gov/dataset/ccrs
 :::
--->

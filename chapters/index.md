@@ -23,7 +23,7 @@ able to:
 
 
 :::{admonition} Prerequisites
-:class: caution
+:class: important
 Participants are expected to have taken DataLab’s [Python Basics workshop
 series][python-basics] and/or have prior experience using Python, be
 comfortable with basic Python syntax, and have it pre-installed and running on
